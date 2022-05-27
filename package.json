@@ -9,8 +9,7 @@
     }
   },
   "scripts": {
-    "dev": "vite serve src/packages/index/ --config ./vite.config.ts",
-    "preview": "vite serve src/packages/preview/ --config ./vite.config.ts",
+    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "lint": "eslint .",
     "commit": "git add . && git cz",
