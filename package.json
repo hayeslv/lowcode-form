@@ -9,7 +9,8 @@
     }
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite serve src/packages/index/ --config ./vite.config.ts",
+    "preview": "vite serve src/packages/preview/ --config ./vite.config.ts",
     "build": "vue-tsc --noEmit && vite build",
     "lint": "eslint .",
     "commit": "git add . && git cz",
@@ -34,13 +35,16 @@
     "lint-staged": "^12.3.7",
     "sass": "^1.49.9",
     "typescript": "^4.5.4",
-    "unplugin-auto-import": "^0.7.1",
     "vite": "^2.8.0",
     "vue-tsc": "^0.29.8"
   },
   "eslintConfig": {
-    "extends": ["@hayeslv"],
-    "ignorePatterns": ["auto-imports.d.ts"],
+    "extends": [
+      "@hayeslv"
+    ],
+    "ignorePatterns": [
+      "auto-imports.d.ts"
+    ],
     "rules": {}
   }
 }
