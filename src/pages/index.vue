@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import Foo from "~/components/Foo.vue";
+import "~/style/layout.scss";
+import LeftBoard from "~/pages/left-board";
 </script>
 
 <template>
-  <div>
-    <p>
-      <a href="https://github.com/hayeslv/vites/" target="_blank">Vites</a>
-    </p>
-    <p>
-      <em>Vite Starter Template</em>
-    </p>
-    <Foo />
+  <div class="container">
+    <LeftBoard />
+    <div class="center-board">center</div>
+    <div class="right-board">right</div>
   </div>
 </template>
 
