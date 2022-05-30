@@ -1,3 +1,4 @@
+import { ElScrollbar } from "element-plus";
 import { defineComponent } from "vue";
 import logo from "~/assets/logo.png";
 import { componentTypeList } from "~/config/component";
@@ -16,7 +17,7 @@ export default defineComponent({
           </a>
         </div>
       </div>
-      <el-scrollbar class="left-scrollbar">
+      <ElScrollbar class="left-scrollbar">
         <div class="components-list">
           {componentTypeList.map((item, index) => <div key={index}>
             <div class="components-title">
@@ -33,7 +34,7 @@ export default defineComponent({
             </div>
           </div>)}
         </div>
-      </el-scrollbar>
+      </ElScrollbar>
     </div>;
   },
 });

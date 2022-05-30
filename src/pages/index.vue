@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import "~/style/layout.scss";
 import LeftBoard from "~/pages/left-board";
+import CenterBoard from "~/pages/center-board";
 </script>
 
 <template>
   <div class="container">
     <LeftBoard />
-    <div class="center-board">center</div>
+    <CenterBoard />
     <div class="right-board">right</div>
   </div>
 </template>

@@ -11,6 +11,14 @@ interface Component {
   icon: string;
 }
 
+// 表单属性
+export const formConfig = {
+  gutter: 15,
+  labelPosition: "right",
+  disabled: false,
+  labelWidth: 100,
+};
+
 // 输入型组件
 export const inputComponents: Component[] = [
   {

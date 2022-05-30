@@ -1,0 +1,52 @@
+.action-bar{
+  position: relative;
+  height: 42px;
+  text-align: right;
+  padding: 0 15px;
+  box-sizing: border-box;;
+  border: 1px solid #f1e8e8;
+  border-top: none;
+  border-left: none;
+  .delete-btn{
+    color: #F56C6C;
+  }
+}
+.action-bar{
+  & .el-button+.el-button {
+    margin-left: 15px;
+  }
+  & i {
+    font-size: 20px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+}
+
+.center-scrollbar {
+  height: calc(100vh - 42px);
+  overflow: hidden;
+  border-left: 1px solid #f1e8e8;
+  border-right: 1px solid #f1e8e8;
+  box-sizing: border-box;
+}
+
+.center-board-row {
+  padding: 12px 12px 15px 12px;
+  box-sizing: border-box;
+  & > .el-form {
+    // 69 = 12+15+42
+    height: calc(100vh - 69px);
+  }
+}
+// 编辑器为空提示
+.empty-info{
+  position: absolute;
+  top: 46%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 18px;
+  color: #ccb1ea;
+  letter-spacing: 4px;
+}
