@@ -30,3 +30,30 @@
     }
   }
 }
+
+.left-scrollbar{
+  height: calc(100vh - 42px);
+  overflow: hidden;
+}
+// 组件列表
+.components-list {
+  padding: 8px;
+  box-sizing: border-box;
+  height: 100%;
+  .components-item {
+    display: inline-block;
+    width: 48%;
+    margin: 1%;
+    transition: transform 0ms !important;
+  }
+}
+// 组件列表标题
+.components-title{
+  font-size: 14px;
+  color: #222;
+  margin: 6px 2px;
+  .svg-icon{
+    color: #666;
+    font-size: 18px;
+  }
+}
