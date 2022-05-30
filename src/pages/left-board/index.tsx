@@ -16,16 +16,24 @@ export default defineComponent({
           </a>
         </div>
       </div>
-      {/* <el-scrollbar class="left-scrollbar"> */}
-      <div class="components-list">
-        {componentTypeList.map((item, index) => <div key={index}>
-          <div class="components-title">
-            <svg-icon icon-class="component" />
-            { item.title }
-          </div>
-        </div>)}
-      </div>
-      {/* </el-scrollbar> */}
+      <el-scrollbar class="left-scrollbar">
+        <div class="components-list">
+          {componentTypeList.map((item, index) => <div key={index}>
+            <div class="components-title">
+              <svg-icon icon-class="component" />
+              <span>{ item.title }</span>
+            </div>
+            <div class="components-draggable">
+              {item.list.map(element => <div key={element.key} class="components-item">
+                <div class="components-body">
+                  <svg-icon icon-class={element.icon} />
+                  <span>{element.title}</span>
+                </div>
+              </div>)}
+            </div>
+          </div>)}
+        </div>
+      </el-scrollbar>
     </div>;
   },
 });

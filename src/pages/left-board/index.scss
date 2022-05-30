@@ -56,4 +56,35 @@
     color: #666;
     font-size: 18px;
   }
+  >span{
+    display: inline-block;
+    margin-left: 4px;
+  }
+}
+.components-draggable{
+  padding-bottom: 20px;
+}
+// 组件内容
+.components-body {
+  padding: 8px 10px;
+  background: $selectedColor;
+  font-size: 12px;
+  cursor: move;
+  border: 1px dashed $selectedColor;
+  border-radius: 3px;
+  .svg-icon{
+    color: #777;
+    font-size: 15px;
+  }
+  > span{
+    display: inline-block;
+    margin-left: 4px;
+  }
+  &:hover {
+    border: 1px dashed #787be8;
+    color: #787be8;
+    .svg-icon {
+      color: #787be8;
+    }
+  }
 }
