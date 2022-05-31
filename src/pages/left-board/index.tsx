@@ -3,18 +3,26 @@ import { defineComponent } from "vue";
 import logo from "~/assets/logo.png";
 import type { EditorComponent } from "~/config/component";
 import { componentTypeList } from "~/config/component";
+import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
 
 export default defineComponent({
   setup() {
     const menuDragger = (() => { // 菜单中的组件拖拽
-      // const component = null as null | EditorComponent;
+      let component = null as null | EditorComponent;
       const componentHandler = {
         dragstart: (e: DragEvent, current: EditorComponent) => {
           // 处理拖拽菜单组件的开始动作
+          VisualDragStart.emit();
+          component = current; // 更新当前组件
+        },
+        dragover: () => {
+          VisualDragOver.emit();
         },
         dragend: () => {
+          VisualDragEnd.emit();
           // 处理拖拽菜单组件的结束动作
+          component = null;
         },
       };
       return componentHandler;
@@ -43,9 +51,10 @@ export default defineComponent({
               {item.list.map(component => (
                 <div class="component-item"
                   key={component.key}
-                  draggable
-                  onDragstart={(e) => this.menuDragger.dragstart(e, component)}
-                  onDragend={this.menuDragger.dragend}>
+                  draggable>
+                  {/* onDragstart={(e) => this.menuDragger.dragstart(e, component)}
+                  onDragend={this.menuDragger.dragend}
+                  onDragover={this.menuDragger.dragover}> */}
                   <div class="component-body">
                     <svg-icon icon-class={component.icon} />
                     <span>{component.label}</span>
