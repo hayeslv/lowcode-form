@@ -1,11 +1,26 @@
 import { ElScrollbar } from "element-plus";
 import { defineComponent } from "vue";
 import logo from "~/assets/logo.png";
+import type { EditorComponent } from "~/config/component";
 import { componentTypeList } from "~/config/component";
 import "./index.scss";
 
 export default defineComponent({
   setup() {
+    const menuDragger = (() => { // 菜单中的组件拖拽
+      // const component = null as null | EditorComponent;
+      const componentHandler = {
+        dragstart: (e: DragEvent, current: EditorComponent) => {
+          // 处理拖拽菜单组件的开始动作
+        },
+        dragend: () => {
+          // 处理拖拽菜单组件的结束动作
+        },
+      };
+      return componentHandler;
+    })();
+
+    return { menuDragger };
   },
   render() {
     return <div class="left-board">
@@ -25,12 +40,18 @@ export default defineComponent({
               <span>{ item.title }</span>
             </div>
             <div class="components-draggable">
-              {item.list.map(element => <div key={element.key} class="components-item">
-                <div class="components-body">
-                  <svg-icon icon-class={element.icon} />
-                  <span>{element.title}</span>
+              {item.list.map(component => (
+                <div class="component-item"
+                  key={component.key}
+                  draggable
+                  onDragstart={(e) => this.menuDragger.dragstart(e, component)}
+                  onDragend={this.menuDragger.dragend}>
+                  <div class="component-body">
+                    <svg-icon icon-class={component.icon} />
+                    <span>{component.label}</span>
+                  </div>
                 </div>
-              </div>)}
+              ))}
             </div>
           </div>)}
         </div>

@@ -40,7 +40,7 @@
   padding: 8px;
   box-sizing: border-box;
   height: 100%;
-  .components-item {
+  .component-item {
     display: inline-block;
     width: 48%;
     margin: 1%;
@@ -65,7 +65,7 @@
   padding-bottom: 20px;
 }
 // 组件内容
-.components-body {
+.component-body {
   padding: 8px 10px;
   background: $selectedColor;
   font-size: 12px;

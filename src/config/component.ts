@@ -2,12 +2,12 @@
 interface componentTypeItem {
   key: string;
   title: string;
-  list: Component[];
+  list: EditorComponent[];
 }
 
-interface Component {
+export interface EditorComponent {
   key: string;
-  title: string;
+  label: string;
   icon: string;
 }
 
@@ -20,15 +20,15 @@ export const formConfig = {
 };
 
 // 输入型组件
-export const inputComponents: Component[] = [
+export const inputComponents: EditorComponent[] = [
   {
     key: "input",
-    title: "输入框",
+    label: "输入框",
     icon: "input",
   },
   {
     key: "textarea",
-    title: "多行输入框",
+    label: "多行输入框",
     icon: "textarea",
   },
 ];
