@@ -1,3 +1,5 @@
+@import "~/style/common.scss";
+
 .action-bar{
   position: relative;
   height: 42px;
@@ -12,8 +14,17 @@
   }
 }
 .action-bar{
-  & .el-button+.el-button {
+  & .el-button {
     margin-left: 15px;
+    color: $primary;
+    &:focus, &:hover {
+      color: $primary-light !important;
+      background: transparent !important;
+    }
+    &:active {
+      color: $primary-dark !important;
+      background: transparent !important;
+    }
   }
   & i {
     font-size: 20px;

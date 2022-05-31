@@ -14,7 +14,7 @@ export default defineComponent({
   render() {
     return <div class="center-board">
       <div class="action-bar">
-        <ElButton icon={VideoPlay} type="text">运行</ElButton>
+        <ElButton icon={VideoPlay} text>运行</ElButton>
       </div>
       <ElScrollbar class="center-scrollbar">
         <ElRow class="center-board-row" gutter={formConfig.gutter}>
