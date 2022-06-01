@@ -1,7 +1,8 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, ref, TransitionGroup } from "vue";
-import DraggableItem from "./DraggableItem";
+// import DraggableItem from "./DraggableItem";
 import { formConfig } from "~/config/component";
+import { VisualDragEnd } from "~/utils";
 import "./index.scss";
 import TopBar from "./TopBar";
 // import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
@@ -16,7 +17,7 @@ export default defineComponent({
       { name: "jean", id: 3, active: false },
     ];
 
-    const dragging = ref(null);
+    const dragging = ref(null as any);
 
     const containerHandler = {
       // 拖拽组件，鼠标在容器中移动的时候
@@ -28,6 +29,9 @@ export default defineComponent({
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
       },
+      dragend: () => {
+        console.log("container end");
+      },
     };
 
     const blockHandler = {
@@ -38,13 +42,20 @@ export default defineComponent({
         });
       },
       dragend: (e: DragEvent, item) => {
+        dragging.value.active = false;
         dragging.value = null;
-        item.active = false;
       },
       dragenter: (e: DragEvent, item) => {
         e.preventDefault();
         e.dataTransfer!.effectAllowed = "move";
-        e.dataTransfer!.dropEffect = "move";
+        // e.dataTransfer!.dropEffect = "move";
+        if (!drawingList.value.includes(dragging.value)) {
+          // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
+          const item = { name: "ahahahhah", id: 4, active: true };
+          dragging.value = item;
+          drawingList.value.push(item);
+          return;
+        }
         if (item === dragging.value) {
           return;
         }
@@ -59,6 +70,11 @@ export default defineComponent({
       },
     };
 
+    VisualDragEnd.on(() => {
+      dragging.value.active = false;
+      dragging.value = null;
+    });
+
     return { drawingList, containerHandler, blockHandler };
   },
   render() {
@@ -66,8 +82,7 @@ export default defineComponent({
       {/* 顶部操作栏 */}
       <TopBar></TopBar>
       <ElScrollbar class="center-scrollbar">
-        <ElRow class="center-board-row"
-          gutter={formConfig.gutter}>
+        <ElRow class="center-board-row" gutter={formConfig.gutter}>
           <ElForm
             labelPosition={formConfig.labelPosition}
             disabled={formConfig.disabled}
@@ -78,6 +93,7 @@ export default defineComponent({
                 class: "drawing-board",
                 onDragover: ($event) => this.containerHandler.dragover($event),
                 onDragenter: ($event) => this.containerHandler.dragenter($event),
+                onDrop: () => this.containerHandler.dragend,
               }}
             >
               { this.drawingList.map((item) => (

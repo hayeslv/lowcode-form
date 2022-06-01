@@ -22,7 +22,9 @@ export default defineComponent({
         dragend: () => {
           VisualDragEnd.emit();
           // 处理拖拽菜单组件的结束动作
-          component = null;
+          // component = null;
+
+          // console.log("enenend");
         },
       };
       return componentHandler;
@@ -51,7 +53,8 @@ export default defineComponent({
               {item.list.map(component => (
                 <div class="component-item"
                   key={component.key}
-                  draggable>
+                  draggable
+                  onDragend={this.menuDragger.dragend}>
                   {/* onDragstart={(e) => this.menuDragger.dragstart(e, component)}
                   onDragend={this.menuDragger.dragend}
                   onDragover={this.menuDragger.dragover}> */}
