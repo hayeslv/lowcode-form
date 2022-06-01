@@ -1,5 +1,5 @@
 import { ElButton, ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, TransitionGroup } from "vue";
 import { VideoPlay } from "@element-plus/icons-vue";
 import DraggableItem from "./DraggableItem";
 import { VueDraggableNext as Draggable } from "vue-draggable-next";
@@ -35,6 +35,32 @@ export default defineComponent({
       console.log(event);
     };
 
+    const dragging = ref(null);
+    const handleDragStart = (e, item) => {
+      dragging.value = item;
+    };
+    const handleDragOver = (e, item) => {
+      e.dataTransfer.dropEffect = "move";
+    };
+    const handleDragEnter = (e, item) => {
+      // 为需要移动的元素设置dragstart事件
+      e.dataTransfer.effectAllowed = "move";
+      if (item === dragging.value) {
+        return;
+      }
+      const newItems = [...drawingList.value];
+      const src = newItems.indexOf(dragging.value);
+
+      const dst = newItems.indexOf(item);
+
+      newItems.splice(dst, 0, ...newItems.splice(src, 1));
+
+      drawingList.value = newItems;
+    };
+    const handleDragEnd = (e, item) => {
+      dragging.value = null;
+    };
+
     return () => <div class="center-board">
       <div class="action-bar">
         <ElButton icon={VideoPlay} text>运行</ElButton>
@@ -54,15 +80,19 @@ export default defineComponent({
             disabled={formConfig.disabled}
             labelWidth={formConfig.labelWidth + "px"}
           >
-            <Draggable class="drawing-board" list={drawingList.value} {...{ onChange: { logHandler } }}>
+            <TransitionGroup tag="div" name="slide" {...{ class: "container" }}>
               { drawingList.value.map((item) => (
-                // <DraggableItem key={index} />
-                <div key={item.name}>{item.name}</div>
+                <div class="item"
+                  key={item.name}
+                  draggable="true"
+                  style="background:#ffebcc; width:80px; height:80px;"
+                  onDragstart={($event) => handleDragStart($event, item)}
+                  onDragover={($event) => handleDragOver($event, item)}
+                  onDragenter={($event) => handleDragEnter($event, item)}
+                  onDragend={($event) => handleDragEnd($event, item)}
+                >-------{item.name}</div>
               )) }
-            </Draggable>
-            {/* <div class="drawing-board">
-              { drawingList.value.map((element, index) => <DraggableItem key={index} />) }
-            </div> */}
+            </TransitionGroup>
             {!drawingList.value.length && <div class="empty-info">
               从左侧拖入或点选组件进行表单设计
             </div>}
