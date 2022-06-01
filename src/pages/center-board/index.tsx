@@ -1,10 +1,9 @@
-import { ElButton, ElForm, ElRow, ElScrollbar } from "element-plus";
+import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, ref, TransitionGroup } from "vue";
-import { VideoPlay } from "@element-plus/icons-vue";
 import DraggableItem from "./DraggableItem";
 import { formConfig } from "~/config/component";
 import "./index.scss";
-import { addClass, removeClass } from "~/utils";
+import TopBar from "./TopBar";
 // import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 
 export default defineComponent({
@@ -58,18 +57,14 @@ export default defineComponent({
 
         drawingList.value = newItems;
       },
-      dragleave: (e: DragEvent) => {
-        // removeClass((e.target as HTMLElement), "sortable-ghost");
-      },
     };
 
     return { drawingList, containerHandler, blockHandler };
   },
   render() {
     return <div class="center-board">
-      <div class="action-bar">
-        <ElButton icon={VideoPlay} text>运行</ElButton>
-      </div>
+      {/* 顶部操作栏 */}
+      <TopBar></TopBar>
       <ElScrollbar class="center-scrollbar">
         <ElRow class="center-board-row"
           gutter={formConfig.gutter}>
@@ -91,7 +86,6 @@ export default defineComponent({
                   draggable="true"
                   onDragstart={($event) => this.blockHandler.dragstart($event, item)}
                   onDragenter={($event) => this.blockHandler.dragenter($event, item)}
-                  onDragleave={($event) => this.blockHandler.dragleave($event)}
                   onDragend={($event) => this.blockHandler.dragend($event, item)}
                 >
                   {item.name}</div>

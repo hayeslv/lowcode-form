@@ -1,0 +1,37 @@
+@import "~/style/common.scss";
+
+// 顶部按钮样式
+.action-bar{
+  position: relative;
+  height: 42px;
+  text-align: right;
+  padding: 0 15px;
+  box-sizing: border-box;;
+  border: 1px solid #f1e8e8;
+  border-top: none;
+  border-left: none;
+  .delete-btn{
+    color: #F56C6C;
+  }
+}
+// 修改element-ui组件样式
+.action-bar{
+  & .el-button {
+    margin-left: 15px;
+    color: $primary;
+    &:focus, &:hover {
+      color: $primary-light !important;
+      background: transparent !important;
+    }
+    &:active {
+      color: $primary-dark !important;
+      background: transparent !important;
+    }
+  }
+  & i {
+    font-size: 20px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+}
