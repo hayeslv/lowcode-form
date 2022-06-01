@@ -67,26 +67,29 @@
 .drawing-board {
   height: 100%;
   position: relative;
+  .component {
+    transition: all 0.3s;
+  }
   // .components-body {
   //   padding: 0;
   //   margin: 0;
   //   font-size: 0;
   // }
-  // .sortable-ghost {
-  //   position: relative;
-  //   display: block;
-  //   overflow: hidden;
-  //   &::before {
-  //     content: " ";
-  //     position: absolute;
-  //     left: 0;
-  //     right: 0;
-  //     top: 0;
-  //     height: 3px;
-  //     background: rgb(89, 89, 223);
-  //     z-index: 2;
-  //   }
-  // }
+  .sortable-ghost {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    &::before {
+      content: " ";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 3px;
+      background: rgb(89, 89, 223);
+      z-index: 2;
+    }
+  }
   // .components-item.sortable-ghost {
   //   width: 100%;
   //   height: 60px;
@@ -107,28 +110,4 @@
   // .el-form-item{
   //   margin-bottom: 15px;
   // }
-}
-
-
-
-.container {
-  width: 80px;
-
-  height: 300px;
-
-  position: absolute;
-
-  left: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  padding: 0;
-}
-
-.item {
-  margin-top: 10px;
-
-  transition: all linear 0.3s;
 }
