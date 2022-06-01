@@ -12,9 +12,9 @@ export default defineComponent({
     const drawingList = ref([] as any[]);
 
     drawingList.value = [
-      { name: "john", id: 1 },
-      { name: "dylan", id: 2 },
-      { name: "jean", id: 3 },
+      { name: "john", id: 1, active: false },
+      { name: "dylan", id: 2, active: false },
+      { name: "jean", id: 3, active: false },
     ];
 
     const dragging = ref(null);
@@ -33,12 +33,14 @@ export default defineComponent({
 
     const blockHandler = {
       dragstart: (e: DragEvent, item) => {
-        dragging.value = item;
-        addClass((e.target as HTMLElement), "sortable-ghost");
+        setTimeout(() => { // 异步对当前元素进行激活（active），可以让浏览器复制出来的ghost不带横线
+          item.active = true;
+          dragging.value = item;
+        });
       },
-      dragend: (e: DragEvent) => {
+      dragend: (e: DragEvent, item) => {
         dragging.value = null;
-        removeClass((e.target as HTMLElement), "sortable-ghost");
+        item.active = false;
       },
       dragenter: (e: DragEvent, item) => {
         e.preventDefault();
@@ -55,6 +57,9 @@ export default defineComponent({
         newItems.splice(dst, 0, ...newItems.splice(src, 1));
 
         drawingList.value = newItems;
+      },
+      dragleave: (e: DragEvent) => {
+        // removeClass((e.target as HTMLElement), "sortable-ghost");
       },
     };
 
@@ -81,13 +86,15 @@ export default defineComponent({
               }}
             >
               { this.drawingList.map((item) => (
-                <div class="component"
+                <div class={["component", item.active && "sortable-ghost"]}
                   key={item.name}
                   draggable="true"
                   onDragstart={($event) => this.blockHandler.dragstart($event, item)}
                   onDragenter={($event) => this.blockHandler.dragenter($event, item)}
-                  onDragend={($event) => this.blockHandler.dragend($event)}
-                >{item.name}</div>
+                  onDragleave={($event) => this.blockHandler.dragleave($event)}
+                  onDragend={($event) => this.blockHandler.dragend($event, item)}
+                >
+                  {item.name}</div>
               )) }
             </TransitionGroup>
             {!this.drawingList.length && <div class="empty-info">
