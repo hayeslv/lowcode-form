@@ -18,6 +18,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.1",
     "element-plus": "^2.2.2",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "vue": "^3.2.25",
     "vue-draggable-next": "^2.1.1",

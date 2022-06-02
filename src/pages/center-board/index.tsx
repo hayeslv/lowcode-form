@@ -1,8 +1,8 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, ref, TransitionGroup } from "vue";
+import { defineComponent, ref, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
 import { formConfig } from "~/config/component";
-import { VisualDragEnd } from "~/utils";
+import { getOriginArray, removeItem, VisualDragEnd } from "~/utils";
 import "./index.scss";
 import TopBar from "./TopBar";
 // import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
@@ -47,26 +47,25 @@ export default defineComponent({
       },
       dragenter: (e: DragEvent, item) => {
         e.preventDefault();
-        e.dataTransfer!.effectAllowed = "move";
+        // e.dataTransfer!.effectAllowed = "move";
         // e.dataTransfer!.dropEffect = "move";
         if (!drawingList.value.includes(dragging.value)) {
           // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
           const item = { name: "ahahahhah", id: 4, active: true };
           dragging.value = item;
           drawingList.value.push(item);
-          return;
         }
-        if (item === dragging.value) {
-          return;
-        }
-        const newItems = [...drawingList.value];
-        const src = newItems.indexOf(dragging.value);
 
-        const dst = newItems.indexOf(item);
+        // 获取原始数组
+        const nextComponents = getOriginArray(drawingList.value);
+        const dst = nextComponents.indexOf(toRaw(item));
+        // 删除旧位置上的数据
+        removeItem(nextComponents, toRaw(dragging.value));
+        // 在新位置（目标元素前面）添加数据
+        // insertBeforeItem(nextComponents, dragging.value, item);
+        nextComponents.splice(dst, 0, toRaw(dragging.value));
 
-        newItems.splice(dst, 0, ...newItems.splice(src, 1));
-
-        drawingList.value = newItems;
+        drawingList.value = nextComponents;
       },
     };
 
