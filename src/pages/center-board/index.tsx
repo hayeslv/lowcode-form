@@ -3,25 +3,35 @@ import { defineComponent, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
 import type { ElementComponent } from "~/config/component";
 import { formConfig } from "~/config/component";
-import { getOriginArray, removeItem, VisualDragEnd, VisualDragStart } from "~/utils";
+import { VisualDragEnd, VisualDragStart } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";
 
+// ----------获得一项测试数据----------
+const getRandomData = (): ElementComponent => {
+  return {
+    id: Math.floor(Math.random() * 9999999),
+    key: "input",
+    label: "输入框",
+  };
+};
+
 export default defineComponent({
   setup() {
     // 画布中的元素列表
-    const { drawingList, drawingListAdd } = useDrawingList();
+    const { drawingList, drawingListAdd, drawingListExistItem, drawingListChangePosition } = useDrawingList();
     // 当前正在拖拽的元素
-    const { dragging, setDraggingValue } = useDragging();
+    const { dragging, setDraggingValue, setDraggingValueAsync } = useDragging();
 
-    // 测试数据
-    const getRandomData = (): ElementComponent => {
-      return {
-        id: Math.floor(Math.random() * 9999999),
-        key: "input",
-        label: "输入框",
-      };
+    // 添加一个新元素
+    const addNewElement = () => {
+      if (!drawingListExistItem(dragging.value)) {
+        // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
+        const item = getRandomData();
+        setDraggingValue(item);
+        drawingListAdd(item);
+      }
     };
 
     const containerHandler = {
@@ -34,19 +44,14 @@ export default defineComponent({
         // 从另一个组件上出来，进入容器上方的时候，也会触发
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
-        if (!drawingList.value.some(item => item.id === dragging.value!.id)) {
-          const item = getRandomData();
-          setDraggingValue(item);
-          drawingListAdd(item);
-        }
+        addNewElement();
       },
     };
 
     const blockHandler = {
       dragstart: (e: DragEvent, item) => {
-        setTimeout(() => { // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
-          setDraggingValue(item);
-        });
+        // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
+        setDraggingValueAsync(item);
       },
       dragend: () => {
         setDraggingValue(null);
@@ -55,23 +60,10 @@ export default defineComponent({
         e.preventDefault();
         // e.dataTransfer!.effectAllowed = "move";
         // e.dataTransfer!.dropEffect = "move";
-        if (!drawingList.value.some(item => item.id === dragging.value!.id)) {
-          // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
-          const item = getRandomData();
-          setDraggingValue(item);
-          drawingList.value.push(item);
-        }
+        addNewElement();
 
-        // 获取原始数组
-        const nextComponents = getOriginArray(drawingList.value);
-        const dst = nextComponents.indexOf(toRaw(item));
-        // 删除旧位置上的数据
-        removeItem(nextComponents, toRaw(dragging.value));
-        // 在新位置（目标元素前面）添加数据
-        // insertBeforeItem(nextComponents, dragging.value, item);
-        nextComponents.splice(dst, 0, toRaw(dragging.value));
-
-        drawingList.value = nextComponents;
+        // 交换元素位置
+        drawingListChangePosition(dragging.value!, toRaw(item));
       },
     };
 
