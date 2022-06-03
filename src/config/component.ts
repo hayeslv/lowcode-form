@@ -2,13 +2,19 @@
 interface componentTypeItem {
   key: string;
   title: string;
-  list: EditorComponent[];
+  list: MenuComponent[];
 }
 
-export interface EditorComponent {
+// 左侧未实例化的组件
+export interface MenuComponent {
   key: string;
   label: string;
-  icon: string;
+  icon?: string;
+}
+
+// 中间的组件
+export interface ElementComponent extends MenuComponent {
+  id: number;
 }
 
 // 表单属性
@@ -20,7 +26,7 @@ export const formConfig = {
 };
 
 // 输入型组件
-export const inputComponents: EditorComponent[] = [
+export const inputComponents: MenuComponent[] = [
   {
     key: "input",
     label: "输入框",

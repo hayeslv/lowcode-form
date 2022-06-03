@@ -1,6 +1,7 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
+import type { ElementComponent } from "~/config/component";
 import { formConfig } from "~/config/component";
 import { getOriginArray, removeItem, VisualDragEnd, VisualDragStart } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
@@ -14,6 +15,15 @@ export default defineComponent({
     // 当前正在拖拽的元素
     const { dragging, setDraggingValue } = useDragging();
 
+    // 测试数据
+    const getRandomData = (): ElementComponent => {
+      return {
+        id: Math.floor(Math.random() * 9999999),
+        key: "input",
+        label: "输入框",
+      };
+    };
+
     const containerHandler = {
       dragover: (e: DragEvent) => { // 拖拽组件，组件在容器中移动的时候
         e.preventDefault();
@@ -24,8 +34,8 @@ export default defineComponent({
         // 从另一个组件上出来，进入容器上方的时候，也会触发
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
-        if (!drawingList.value.some(item => item.id === dragging.value.id)) {
-          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999) };
+        if (!drawingList.value.some(item => item.id === dragging.value!.id)) {
+          const item = getRandomData();
           setDraggingValue(item);
           drawingListAdd(item);
         }
@@ -45,9 +55,9 @@ export default defineComponent({
         e.preventDefault();
         // e.dataTransfer!.effectAllowed = "move";
         // e.dataTransfer!.dropEffect = "move";
-        if (!drawingList.value.some(item => item.id === dragging.value.id)) {
+        if (!drawingList.value.some(item => item.id === dragging.value!.id)) {
           // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
-          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999) };
+          const item = getRandomData();
           setDraggingValue(item);
           drawingList.value.push(item);
         }
@@ -94,13 +104,13 @@ export default defineComponent({
             >
               { this.drawingList.map((item) => (
                 <div class={["component", this.dragging && (item.id === this.dragging.id) && "sortable-ghost"]}
-                  key={item.name}
+                  key={item.id}
                   draggable="true"
                   onDragstart={($event) => this.blockHandler.dragstart($event, item)}
                   onDragenter={($event) => this.blockHandler.dragenter($event, item)}
                   onDragend={() => this.blockHandler.dragend()}
                 >
-                  {item.name}</div>
+                  {item.label}</div>
               )) }
             </TransitionGroup>
             {!this.drawingList.length && <div class="empty-info">

@@ -1,7 +1,7 @@
 import { ElScrollbar } from "element-plus";
 import { defineComponent } from "vue";
 import logo from "~/assets/logo.png";
-import type { EditorComponent } from "~/config/component";
+import type { MenuComponent } from "~/config/component";
 import { componentTypeList } from "~/config/component";
 import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
@@ -9,9 +9,9 @@ import "./index.scss";
 export default defineComponent({
   setup() {
     const menuDragger = (() => { // 菜单中的组件拖拽
-      // let component = null as null | EditorComponent;
+      // let component = null as null | MenuComponent;
       const componentHandler = {
-        dragstart: (e: DragEvent, current: EditorComponent) => {
+        dragstart: (e: DragEvent, current: MenuComponent) => {
           // 处理拖拽菜单组件的开始动作
           // component = current; // 更新当前组件
           VisualDragStart.emit(current);

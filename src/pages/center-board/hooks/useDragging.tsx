@@ -1,9 +1,10 @@
 import { ref } from "vue";
+import type { ElementComponent } from "~/config";
 
 export function useDragging() {
-  const dragging = ref(null as any);
+  const dragging = ref(null as ElementComponent | null);
 
-  const setDraggingValue = (element) => {
+  const setDraggingValue = (element: ElementComponent | null) => {
     dragging.value = element;
   };
 
