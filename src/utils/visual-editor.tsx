@@ -26,7 +26,7 @@ export const VisualDragStart = (() => {
   return {
     on: (fn) => event.on(fn),
     off: (fn) => event.off(fn),
-    emit: () => event.emit(),
+    emit: (...args) => event.emit(...args),
   };
 })();
 // 拖拽事件：移动

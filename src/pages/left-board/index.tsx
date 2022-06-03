@@ -9,12 +9,13 @@ import "./index.scss";
 export default defineComponent({
   setup() {
     const menuDragger = (() => { // 菜单中的组件拖拽
-      let component = null as null | EditorComponent;
+      // let component = null as null | EditorComponent;
       const componentHandler = {
         dragstart: (e: DragEvent, current: EditorComponent) => {
           // 处理拖拽菜单组件的开始动作
-          VisualDragStart.emit();
-          component = current; // 更新当前组件
+          // component = current; // 更新当前组件
+          console.log(121233123);
+          VisualDragStart.emit(current);
         },
         dragover: () => {
           VisualDragOver.emit();
@@ -54,8 +55,9 @@ export default defineComponent({
                 <div class="component-item"
                   key={component.key}
                   draggable
+                  onDragstart={(e) => this.menuDragger.dragstart(e, component)}
                   onDragend={this.menuDragger.dragend}>
-                  {/* onDragstart={(e) => this.menuDragger.dragstart(e, component)}
+                  {/*
                   onDragend={this.menuDragger.dragend}
                   onDragover={this.menuDragger.dragover}> */}
                   <div class="component-body">

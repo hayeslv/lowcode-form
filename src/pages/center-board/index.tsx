@@ -2,10 +2,9 @@ import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, ref, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
 import { formConfig } from "~/config/component";
-import { getOriginArray, removeItem, VisualDragEnd } from "~/utils";
+import { getOriginArray, removeItem, VisualDragEnd, VisualDragStart } from "~/utils";
 import "./index.scss";
 import TopBar from "./TopBar";
-// import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 
 export default defineComponent({
   setup() {
@@ -28,6 +27,12 @@ export default defineComponent({
       dragenter: (e: DragEvent) => {
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
+        console.log(dragging.value);
+        if (!drawingList.value.some(item => item.id === dragging.value.id)) {
+          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999), active: true };
+          dragging.value = item;
+          drawingList.value.push(item);
+        }
       },
       dragend: () => {
         console.log("container end");
@@ -42,16 +47,16 @@ export default defineComponent({
         });
       },
       dragend: (e: DragEvent, item) => {
-        dragging.value.active = false;
+        dragging.value && (dragging.value.active = false);
         dragging.value = null;
       },
       dragenter: (e: DragEvent, item) => {
         e.preventDefault();
         // e.dataTransfer!.effectAllowed = "move";
         // e.dataTransfer!.dropEffect = "move";
-        if (!drawingList.value.includes(dragging.value)) {
+        if (!drawingList.value.some(item => item.id === dragging.value.id)) {
           // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
-          const item = { name: "ahahahhah", id: 4, active: true };
+          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999), active: true };
           dragging.value = item;
           drawingList.value.push(item);
         }
@@ -69,8 +74,12 @@ export default defineComponent({
       },
     };
 
+    VisualDragStart.on((element) => {
+      console.log(element);
+      dragging.value = element;
+    });
     VisualDragEnd.on(() => {
-      dragging.value.active = false;
+      dragging.value && (dragging.value.active = false);
       dragging.value = null;
     });
 

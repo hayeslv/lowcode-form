@@ -4,5 +4,6 @@ export function removeItem(arr: any[], item) {
 
   const index = arr.indexOf(item);
   arr.splice(index, 1);
+  console.log(arr);
   return arr;
 }

@@ -1,4 +1,4 @@
-type SimplyListener = () => void;
+type SimplyListener = (...args) => void;
 
 export function createEvent() {
   const listeners: SimplyListener[] = [];
@@ -10,8 +10,8 @@ export function createEvent() {
       const index = listeners.indexOf(cb);
       if (index > -1) listeners.splice(index, 1);
     },
-    emit: () => {
-      listeners.forEach(fn => fn());
+    emit: (...args: any[]) => {
+      listeners.forEach(fn => fn(...args));
     },
   };
 }
