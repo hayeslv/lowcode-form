@@ -14,7 +14,6 @@ export default defineComponent({
         dragstart: (e: DragEvent, current: EditorComponent) => {
           // 处理拖拽菜单组件的开始动作
           // component = current; // 更新当前组件
-          console.log(121233123);
           VisualDragStart.emit(current);
         },
         dragover: () => {

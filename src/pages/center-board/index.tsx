@@ -1,54 +1,45 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, ref, toRaw, TransitionGroup } from "vue";
+import { defineComponent, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
 import { formConfig } from "~/config/component";
 import { getOriginArray, removeItem, VisualDragEnd, VisualDragStart } from "~/utils";
+import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";
 
 export default defineComponent({
   setup() {
-    const drawingList = ref([] as any[]);
-
-    drawingList.value = [
-      { name: "john", id: 1, active: false },
-      { name: "dylan", id: 2, active: false },
-      { name: "jean", id: 3, active: false },
-    ];
-
-    const dragging = ref(null as any);
+    // 画布中的元素列表
+    const { drawingList, drawingListAdd } = useDrawingList();
+    // 当前正在拖拽的元素
+    const { dragging, setDraggingValue } = useDragging();
 
     const containerHandler = {
-      // 拖拽组件，鼠标在容器中移动的时候
-      dragover: (e: DragEvent) => {
+      dragover: (e: DragEvent) => { // 拖拽组件，组件在容器中移动的时候
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
       },
       dragenter: (e: DragEvent) => {
+        // 拖拽组件，组件刚进入容器的时候
+        // 从另一个组件上出来，进入容器上方的时候，也会触发
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
-        console.log(dragging.value);
         if (!drawingList.value.some(item => item.id === dragging.value.id)) {
-          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999), active: true };
-          dragging.value = item;
-          drawingList.value.push(item);
+          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999) };
+          setDraggingValue(item);
+          drawingListAdd(item);
         }
-      },
-      dragend: () => {
-        console.log("container end");
       },
     };
 
     const blockHandler = {
       dragstart: (e: DragEvent, item) => {
-        setTimeout(() => { // 异步对当前元素进行激活（active），可以让浏览器复制出来的ghost不带横线
-          item.active = true;
-          dragging.value = item;
+        setTimeout(() => { // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
+          setDraggingValue(item);
         });
       },
-      dragend: (e: DragEvent, item) => {
-        dragging.value && (dragging.value.active = false);
-        dragging.value = null;
+      dragend: () => {
+        setDraggingValue(null);
       },
       dragenter: (e: DragEvent, item) => {
         e.preventDefault();
@@ -56,8 +47,8 @@ export default defineComponent({
         // e.dataTransfer!.dropEffect = "move";
         if (!drawingList.value.some(item => item.id === dragging.value.id)) {
           // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
-          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999), active: true };
-          dragging.value = item;
+          const item = { name: "ahahahhah", id: Math.floor(Math.random() * 9999) };
+          setDraggingValue(item);
           drawingList.value.push(item);
         }
 
@@ -75,15 +66,13 @@ export default defineComponent({
     };
 
     VisualDragStart.on((element) => {
-      console.log(element);
-      dragging.value = element;
+      setDraggingValue(element);
     });
     VisualDragEnd.on(() => {
-      dragging.value && (dragging.value.active = false);
-      dragging.value = null;
+      setDraggingValue(null);
     });
 
-    return { drawingList, containerHandler, blockHandler };
+    return { dragging, drawingList, containerHandler, blockHandler };
   },
   render() {
     return <div class="center-board">
@@ -101,16 +90,15 @@ export default defineComponent({
                 class: "drawing-board",
                 onDragover: ($event) => this.containerHandler.dragover($event),
                 onDragenter: ($event) => this.containerHandler.dragenter($event),
-                onDrop: () => this.containerHandler.dragend,
               }}
             >
               { this.drawingList.map((item) => (
-                <div class={["component", item.active && "sortable-ghost"]}
+                <div class={["component", this.dragging && (item.id === this.dragging.id) && "sortable-ghost"]}
                   key={item.name}
                   draggable="true"
                   onDragstart={($event) => this.blockHandler.dragstart($event, item)}
                   onDragenter={($event) => this.blockHandler.dragenter($event, item)}
-                  onDragend={($event) => this.blockHandler.dragend($event, item)}
+                  onDragend={() => this.blockHandler.dragend()}
                 >
                   {item.name}</div>
               )) }
