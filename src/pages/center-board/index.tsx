@@ -1,7 +1,7 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
-import type { ElementComponent } from "~/config";
+// import type { ElementComponent } from "~/config";
 import type { MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
 import { VisualDragEnd, VisualDragStart } from "~/utils";
@@ -10,13 +10,13 @@ import "./index.scss";
 import TopBar from "./TopBar";
 
 // ----------获得一项测试数据----------
-const getRandomData = (): ElementComponent => {
-  return {
-    id: Math.floor(Math.random() * 9999999),
-    key: "input",
-    label: "输入框",
-  };
-};
+// const getRandomData = (): ElementComponent => {
+//   return {
+//     id: Math.floor(Math.random() * 9999999),
+//     key: "input",
+//     label: "输入框",
+//   };
+// };
 
 export default defineComponent({
   setup() {
