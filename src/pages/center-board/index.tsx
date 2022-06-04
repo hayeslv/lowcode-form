@@ -99,18 +99,20 @@ export default defineComponent({
                 onDragenter: ($event) => this.containerHandler.dragenter($event),
               }}
             >
-              { this.drawingList.map((item) => (
+              { this.drawingList.map((component) => (
                 <div class={[
-                  item.isMenuComponent && "menu-component",
-                  this.dragging && (item.id === this.dragging.id) && "sortable-ghost",
+                  component.isMenuComponent && "menu-component",
+                  this.dragging && (component.id === this.dragging.id) && "sortable-ghost",
                 ]}
-                key={item.id}
+                key={component.id}
                 draggable="true"
-                onDragstart={($event) => this.blockHandler.dragstart($event, item)}
-                onDragenter={($event) => this.blockHandler.dragenter($event, item)}
+                onDragstart={($event) => this.blockHandler.dragstart($event, component)}
+                onDragenter={($event) => this.blockHandler.dragenter($event, component)}
                 onDragend={() => this.blockHandler.dragend()}
                 >
-                  {item.label}</div>
+                  {component.isMenuComponent && <svg-icon icon-class={component.icon} />}
+                  {component.label}
+                </div>
               )) }
             </TransitionGroup>
             {!this.drawingList.length && <div class="empty-info">
