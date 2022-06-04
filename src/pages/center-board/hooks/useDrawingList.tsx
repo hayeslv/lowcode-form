@@ -51,6 +51,13 @@ export function useDrawingList() {
     return drawingList.value.some(item => item.id === element.id);
   };
 
+  // 将drawingList中的isMenuComponent归位false
+  const resetDrawingListState = () => {
+    drawingList.value
+      .filter(v => v.isMenuComponent)
+      .forEach(v => (v.isMenuComponent = false));
+  };
+
   // ----------测试数据----------
   const initData = () => {
     drawingList.value = [
@@ -69,5 +76,6 @@ export function useDrawingList() {
     drawingListDelete,
     drawingListExistItem,
     drawingListChangePosition,
+    resetDrawingListState,
   };
 }

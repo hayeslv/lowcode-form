@@ -1,8 +1,9 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, toRaw, TransitionGroup } from "vue";
 // import DraggableItem from "./DraggableItem";
-import type { ElementComponent } from "~/config/component";
-import { formConfig } from "~/config/component";
+import type { ElementComponent } from "~/config";
+import type { MenuComponent } from "~/config/component";
+import { formConfig, menuComponentInstance } from "~/config/component";
 import { VisualDragEnd, VisualDragStart } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
@@ -20,15 +21,17 @@ const getRandomData = (): ElementComponent => {
 export default defineComponent({
   setup() {
     // 画布中的元素列表
-    const { drawingList, drawingListAdd, drawingListExistItem, drawingListChangePosition } = useDrawingList();
+    const { drawingList, drawingListAdd, drawingListExistItem, drawingListChangePosition, resetDrawingListState } = useDrawingList();
     // 当前正在拖拽的元素
     const { dragging, setDraggingValue, setDraggingValueAsync } = useDragging();
 
     // 添加一个新元素
     const addNewElement = () => {
+      if (!dragging.value) return;
       if (!drawingListExistItem(dragging.value)) {
         // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
-        const item = getRandomData();
+        // const item = getRandomData();
+        const item = dragging.value;
         setDraggingValue(item);
         drawingListAdd(item);
       }
@@ -67,10 +70,12 @@ export default defineComponent({
       },
     };
 
-    VisualDragStart.on((element) => {
-      setDraggingValue(element);
+    VisualDragStart.on((menuComp: MenuComponent) => {
+      const component = menuComponentInstance(menuComp);
+      setDraggingValue(component);
     });
     VisualDragEnd.on(() => {
+      resetDrawingListState();
       setDraggingValue(null);
     });
 
@@ -95,12 +100,15 @@ export default defineComponent({
               }}
             >
               { this.drawingList.map((item) => (
-                <div class={["component", this.dragging && (item.id === this.dragging.id) && "sortable-ghost"]}
-                  key={item.id}
-                  draggable="true"
-                  onDragstart={($event) => this.blockHandler.dragstart($event, item)}
-                  onDragenter={($event) => this.blockHandler.dragenter($event, item)}
-                  onDragend={() => this.blockHandler.dragend()}
+                <div class={[
+                  item.isMenuComponent && "menu-component",
+                  this.dragging && (item.id === this.dragging.id) && "sortable-ghost",
+                ]}
+                key={item.id}
+                draggable="true"
+                onDragstart={($event) => this.blockHandler.dragstart($event, item)}
+                onDragenter={($event) => this.blockHandler.dragenter($event, item)}
+                onDragend={() => this.blockHandler.dragend()}
                 >
                   {item.label}</div>
               )) }

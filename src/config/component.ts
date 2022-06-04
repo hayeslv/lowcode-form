@@ -10,6 +10,7 @@ export interface MenuComponent {
   key: string;
   label: string;
   icon?: string;
+  isMenuComponent?: boolean;
 }
 
 // 中间的组件
@@ -57,3 +58,12 @@ export const componentTypeList: componentTypeItem[] = [
     list: [],
   },
 ];
+
+// 左侧菜单组件实例化（添加id）
+export const menuComponentInstance = (element: MenuComponent): ElementComponent => {
+  return {
+    id: Math.floor(Math.random() * 9999999),
+    isMenuComponent: true,
+    ...element,
+  };
+};
