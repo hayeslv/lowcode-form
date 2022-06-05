@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import logo from "~/assets/logo.png";
 import type { MenuComponent } from "~/config/component";
 import { componentTypeList } from "~/config/component";
-import { VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
+import { VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
 
 export default defineComponent({
@@ -25,6 +25,9 @@ export default defineComponent({
           // component = null;
 
           // console.log("enenend");
+        },
+        click: (component: MenuComponent) => {
+          VisualComponentClick.emit(component);
         },
       };
       return componentHandler;
@@ -55,7 +58,8 @@ export default defineComponent({
                   key={component.key}
                   draggable
                   onDragstart={(e) => this.menuDragger.dragstart(e, component)}
-                  onDragend={this.menuDragger.dragend}>
+                  onDragend={() => this.menuDragger.dragend()}
+                  onClick={() => this.menuDragger.click(component)}>
                   {/*
                   onDragend={this.menuDragger.dragend}
                   onDragover={this.menuDragger.dragover}> */}

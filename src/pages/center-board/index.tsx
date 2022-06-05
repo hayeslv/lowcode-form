@@ -4,7 +4,7 @@ import { defineComponent, toRaw, TransitionGroup } from "vue";
 // import type { ElementComponent } from "~/config";
 import type { MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
-import { VisualDragEnd, VisualDragStart } from "~/utils";
+import { VisualComponentClick, VisualDragEnd, VisualDragStart } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";
@@ -77,6 +77,11 @@ export default defineComponent({
     VisualDragEnd.on(() => {
       resetDrawingListState();
       setDraggingValue(null);
+    });
+    VisualComponentClick.on((menuComp: MenuComponent) => {
+      const component = menuComponentInstance(menuComp);
+      drawingListAdd(component);
+      resetDrawingListState();
     });
 
     return { dragging, drawingList, containerHandler, blockHandler };

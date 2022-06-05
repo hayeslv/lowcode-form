@@ -47,3 +47,12 @@ export const VisualDragEnd = (() => {
     emit: () => event.emit(),
   };
 })();
+// 菜单组件点击
+export const VisualComponentClick = (() => {
+  const event = createEvent();
+  return {
+    on: (fn) => event.on(fn),
+    off: (fn) => event.off(fn),
+    emit: (...args) => event.emit(...args),
+  };
+})();
