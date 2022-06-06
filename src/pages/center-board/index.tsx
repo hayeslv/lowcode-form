@@ -1,6 +1,6 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, toRaw, TransitionGroup } from "vue";
-// import DraggableItem from "./DraggableItem";
+import DraggableItem from "./DraggableItem";
 // import type { ElementComponent } from "~/config";
 import type { MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
@@ -115,8 +115,7 @@ export default defineComponent({
                 onDragenter={($event) => this.blockHandler.dragenter($event, component)}
                 onDragend={() => this.blockHandler.dragend()}
                 >
-                  {component.isMenuComponent && <svg-icon icon-class={component.icon} />}
-                  {component.label}
+                  <DraggableItem component={component}></DraggableItem>
                 </div>
               )) }
             </TransitionGroup>
