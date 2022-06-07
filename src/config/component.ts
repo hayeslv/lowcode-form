@@ -10,12 +10,17 @@ export interface MenuComponent {
   key: string;
   label: string;
   icon?: string;
-  isMenuComponent?: boolean;
+  isMenuComponent?: boolean; // 是否是菜单组件
 }
 
-// 中间的组件
+// 中间的组件（实例化后）
 export interface ElementComponent extends MenuComponent {
   id: number;
+  layout: string;
+  __config__: {
+    span: number;
+    labelWidth?: number;
+  };
 }
 
 // 表单属性
@@ -59,11 +64,15 @@ export const componentTypeList: componentTypeItem[] = [
   },
 ];
 
-// 左侧菜单组件实例化（添加id）
+// 左侧菜单组件实例化
 export const menuComponentInstance = (element: MenuComponent): ElementComponent => {
   return {
     id: Math.floor(Math.random() * 9999999),
+    layout: "colFormItem", // 默认先用列排列
     isMenuComponent: true,
+    __config__: {
+      span: 24,
+    },
     ...element,
   };
 };
