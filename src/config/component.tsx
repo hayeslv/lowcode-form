@@ -1,3 +1,4 @@
+import { ElInput } from "element-plus";
 
 interface componentTypeItem {
   key: string;
@@ -11,6 +12,9 @@ export interface MenuComponent {
   label: string;
   icon?: string;
   isMenuComponent?: boolean; // 是否是菜单组件
+  render: (data?: {
+    props?: any;
+  }) => JSX.Element;
 }
 
 // 中间的组件（实例化后）
@@ -37,12 +41,13 @@ export const inputComponents: MenuComponent[] = [
     key: "input",
     label: "输入框",
     icon: "input",
+    render: () => <ElInput />,
   },
-  {
-    key: "textarea",
-    label: "多行输入框",
-    icon: "textarea",
-  },
+  // {
+  //   key: "textarea",
+  //   label: "多行输入框",
+  //   icon: "textarea",
+  // },
 ];
 
 // 组件类型列表

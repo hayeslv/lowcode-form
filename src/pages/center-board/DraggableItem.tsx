@@ -7,9 +7,10 @@ const layouts = {
   colFormItem(curComponent: ElementComponent) {
     const config = curComponent.__config__;
     const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
-    return <ElCol span={config.span} class="drawing-item">
-      <ElFormItem label-width={labelWidth}>
-        {curComponent.label}
+    return <ElCol class="drawing-item">
+      <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
+        {curComponent.isMenuComponent && <svg-icon icon-class={curComponent.icon} />}
+        {!curComponent.isMenuComponent && curComponent.render()}
       </ElFormItem>
     </ElCol>;
   },
