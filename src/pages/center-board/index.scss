@@ -1,5 +1,7 @@
 @import "~/style/common.scss";
 
+$transitionTime: 0.3s;
+
 .center-scrollbar {
   height: calc(100vh - 42px);
   overflow: hidden;
@@ -36,7 +38,7 @@
   height: 100%;
   position: relative;
   > * {
-    transition: all 0.3s;
+    transition: all $transitionTime;
   }
   .sortable-ghost {
     position: relative;

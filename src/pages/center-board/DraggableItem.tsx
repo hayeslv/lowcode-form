@@ -8,10 +8,14 @@ const layouts = {
     const config = curComponent.__config__;
     const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
     return <ElCol class="drawing-item">
-      <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
-        {curComponent.isMenuComponent && <svg-icon icon-class={curComponent.icon} />}
-        {!curComponent.isMenuComponent && curComponent.render()}
-      </ElFormItem>
+      { curComponent.isMenuComponent && <svg-icon icon-class={curComponent.icon} /> }
+      {
+        !curComponent.isMenuComponent &&
+        <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
+          {curComponent.render()}
+        </ElFormItem>
+      }
+
     </ElCol>;
   },
 };
@@ -23,12 +27,6 @@ export default defineComponent({
   setup() {},
   render() {
     const layout = layouts[this.component.layout];
-    console.log(this.component);
-    // return <div class="drawing-item">
-    //   {layout(this.component)}
-    //   {/* {this.component.isMenuComponent && <svg-icon icon-class={this.component.icon} />}
-    //   {this.component.label} */}
-    // </div>;
     return layout(this.component);
   },
 });

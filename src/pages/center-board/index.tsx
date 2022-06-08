@@ -1,22 +1,12 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, toRaw, TransitionGroup } from "vue";
 import DraggableItem from "./DraggableItem";
-// import type { ElementComponent } from "~/config";
-import type { MenuComponent } from "~/config/component";
+import type { ElementComponent, MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
 import { VisualComponentClick, VisualDragEnd, VisualDragStart } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";
-
-// ----------获得一项测试数据----------
-// const getRandomData = (): ElementComponent => {
-//   return {
-//     id: Math.floor(Math.random() * 9999999),
-//     key: "input",
-//     label: "输入框",
-//   };
-// };
 
 export default defineComponent({
   setup() {
@@ -39,8 +29,10 @@ export default defineComponent({
 
     const containerHandler = {
       dragover: (e: DragEvent) => { // 拖拽组件，组件在容器中移动的时候
+        console.log("container dragover");
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
+        // e.dataTransfer!.effectAllowed = "move";
       },
       dragenter: (e: DragEvent) => {
         // 拖拽组件，组件刚进入容器的时候
@@ -59,14 +51,19 @@ export default defineComponent({
       dragend: () => {
         setDraggingValue(null);
       },
-      dragenter: (e: DragEvent, item) => {
+      dragenter: (e: DragEvent, item: ElementComponent) => {
+        if (item.transiting) return;
         e.preventDefault();
         // e.dataTransfer!.effectAllowed = "move";
         // e.dataTransfer!.dropEffect = "move";
         addNewElement();
-
         // 交换元素位置
         drawingListChangePosition(dragging.value!, toRaw(item));
+
+        item.transiting = true;
+        setTimeout(() => {
+          item.transiting = false;
+        }, 200);
       },
     };
 

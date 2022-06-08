@@ -52,7 +52,8 @@
       "auto-imports.d.ts"
     ],
     "rules": {
-      "@typescript-eslint/no-use-before-define": "off"
+      "@typescript-eslint/no-use-before-define": "off",
+      "no-multi-spaces": "off"
     }
   }
 }

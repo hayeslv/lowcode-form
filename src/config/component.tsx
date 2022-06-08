@@ -21,6 +21,7 @@ export interface MenuComponent {
 export interface ElementComponent extends MenuComponent {
   id: number;
   layout: string;
+  transiting: boolean;      // 是否正在过渡（改变位置）
   __config__: {
     span: number;
     labelWidth?: number;
@@ -75,6 +76,7 @@ export const menuComponentInstance = (element: MenuComponent): ElementComponent 
     id: Math.floor(Math.random() * 9999999),
     layout: "colFormItem", // 默认先用列排列
     isMenuComponent: true,
+    transiting: false,
     __config__: {
       span: 24,
     },

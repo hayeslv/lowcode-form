@@ -29,6 +29,7 @@ export function useDrawingList() {
 
   // 交换元素位置
   const drawingListChangePosition = (dragging: ElementComponent, target: ElementComponent) => {
+    console.log("change positon");
     // 获取原始数组
     const componentList = getOriginArray(drawingList.value);
     // 目标元素位置
