@@ -9,8 +9,7 @@ export function getDrawingList() {
   const str = localStorage.getItem(DRAWING_LIST);
   try {
     if (str) return JSON.parse(str);
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
   }
   return [];
@@ -22,8 +21,7 @@ export function saveDrawingList(list: ElementComponent[]) {
   }
   try {
     localStorage.setItem(DRAWING_LIST, JSON.stringify(list));
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
   }
 }

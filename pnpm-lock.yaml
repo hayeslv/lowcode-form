@@ -4,7 +4,7 @@ specifiers:
   '@commitlint/cli': ^16.2.3
   '@commitlint/config-conventional': ^16.2.1
   '@element-plus/icons-vue': ^2.0.1
-  '@hayeslv/eslint-config': ^0.1.4
+  '@hayeslv/eslint-config': 0.1.6
   '@types/node': ^17.0.21
   '@types/nprogress': ^0.2.0
   '@vitejs/plugin-vue': ^2.2.0
@@ -39,7 +39,7 @@ dependencies:
 devDependencies:
   '@commitlint/cli': 16.2.3
   '@commitlint/config-conventional': 16.2.1
-  '@hayeslv/eslint-config': 0.1.4_eslint@8.11.0+typescript@4.6.2
+  '@hayeslv/eslint-config': 0.1.6_eslint@8.11.0+typescript@4.6.2
   '@types/node': 17.0.21
   '@types/nprogress': 0.2.0
   '@vitejs/plugin-vue': 2.2.4_vite@2.8.6+vue@3.2.31
@@ -590,8 +590,8 @@ packages:
       '@floating-ui/core': 0.7.2
     dev: false
 
-  /@hayeslv/eslint-config-basic/0.1.4_eslint@8.11.0:
-    resolution: {integrity: sha512-6oNctqyfiG9f24SqUX6xFHT/AsKbxcHJETyCU1qQiGdPgYsu9v3zeV7v9tjutVwzKD8pqbSfW9PIIqf3dM0ksg==}
+  /@hayeslv/eslint-config-basic/0.1.6_eslint@8.11.0:
+    resolution: {integrity: sha512-8zOQ9iZujXQVth5Z0z8euqe3v4dVHmYi7jJ1j3hvh4Fi90KKrAaecGdrP2M0b+YjvVRj0ctQ9sOsEeKQJ/BV+A==}
     peerDependencies:
       eslint: '>=7.4.0'
     dependencies:
@@ -603,13 +603,13 @@ packages:
       eslint-plugin-promise: 6.0.0_eslint@8.11.0
     dev: true
 
-  /@hayeslv/eslint-config-ts/0.1.4_eslint@8.11.0+typescript@4.6.2:
-    resolution: {integrity: sha512-I9KMzaMBuKFteLSXXLaChLWI2ziOqq1EwlTEC7i3zuMmm8m0oyKISLwBXVBwO9G4ECfRd9UbO4JeBbyzd2WNXA==}
+  /@hayeslv/eslint-config-ts/0.1.6_eslint@8.11.0+typescript@4.6.2:
+    resolution: {integrity: sha512-RcqomXHNAFTAIW9GNNjXWG4mXKrTzGQ0WOJM9HnNgGHZuPDbWnoBsgacqLIgt5xralgUoEsDtIMgG8nDoqeZpw==}
     peerDependencies:
       eslint: '>=7.4.0'
       typescript: '>=3.9'
     dependencies:
-      '@hayeslv/eslint-config-basic': 0.1.4_eslint@8.11.0
+      '@hayeslv/eslint-config-basic': 0.1.6_eslint@8.11.0
       '@typescript-eslint/eslint-plugin': 5.26.0_8f21ad58f555d91069d5e9e0ef9c2eb6
       '@typescript-eslint/parser': 5.26.0_eslint@8.11.0+typescript@4.6.2
       eslint: 8.11.0
@@ -618,12 +618,12 @@ packages:
       - supports-color
     dev: true
 
-  /@hayeslv/eslint-config-vue/0.1.4_eslint@8.11.0+typescript@4.6.2:
-    resolution: {integrity: sha512-8GYOxF1Cusu5pkd13mULHJprJ29aS0SGqu61peceHSFpXtoIRCTCbzSFeYTSevKagWoJVbZV8dkEQ9rwX0EEtA==}
+  /@hayeslv/eslint-config-vue/0.1.6_eslint@8.11.0+typescript@4.6.2:
+    resolution: {integrity: sha512-dINT1YCGADx3+2QQ5NsTSA6TzMC8qutebLJVXoFiBl7uVOcU5JIVh57wUZ6fCj1p1bj8XW2vdWsqVWwTVOubHg==}
     peerDependencies:
       eslint: '>=7.4.0'
     dependencies:
-      '@hayeslv/eslint-config-ts': 0.1.4_eslint@8.11.0+typescript@4.6.2
+      '@hayeslv/eslint-config-ts': 0.1.6_eslint@8.11.0+typescript@4.6.2
       eslint: 8.11.0
       eslint-plugin-vue: 8.7.1_eslint@8.11.0
     transitivePeerDependencies:
@@ -631,12 +631,12 @@ packages:
       - typescript
     dev: true
 
-  /@hayeslv/eslint-config/0.1.4_eslint@8.11.0+typescript@4.6.2:
-    resolution: {integrity: sha512-KTGKNMwYqMySJh1bJImQhgSRvzwVijUtWP2XVz7JzeIH8EE8zmZNa9yJ4+TxkF/k37l3QTG3VJQNffsH7uDwdw==}
+  /@hayeslv/eslint-config/0.1.6_eslint@8.11.0+typescript@4.6.2:
+    resolution: {integrity: sha512-yGa6ZZgjNamBzgfy7IAM5es9NlUIad90eHAWZtlG7DVslks2TPmzFm9/9b+B86GIPMoFc6y+AFQwWvYMeMRLpA==}
     peerDependencies:
       eslint: '>=7.4.0'
     dependencies:
-      '@hayeslv/eslint-config-vue': 0.1.4_eslint@8.11.0+typescript@4.6.2
+      '@hayeslv/eslint-config-vue': 0.1.6_eslint@8.11.0+typescript@4.6.2
       '@typescript-eslint/eslint-plugin': 5.26.0_8f21ad58f555d91069d5e9e0ef9c2eb6
       '@typescript-eslint/parser': 5.26.0_eslint@8.11.0+typescript@4.6.2
       eslint: 8.11.0
@@ -2539,7 +2539,7 @@ packages:
       natural-compare: 1.4.0
       nth-check: 2.1.1
       postcss-selector-parser: 6.0.10
-      semver: 7.3.5
+      semver: 7.3.7
       vue-eslint-parser: 8.3.0_eslint@8.11.0
     transitivePeerDependencies:
       - supports-color
@@ -3972,7 +3972,7 @@ packages:
     dev: true
 
   /natural-compare/1.4.0:
-    resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
+    resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
   /neo-async/2.6.2:
@@ -5394,14 +5394,14 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
       eslint: 8.11.0
       eslint-scope: 7.1.1
       eslint-visitor-keys: 3.3.0
       espree: 9.3.1
       esquery: 1.4.0
       lodash: 4.17.21
-      semver: 7.3.5
+      semver: 7.3.7
     transitivePeerDependencies:
       - supports-color
     dev: true

@@ -90,19 +90,12 @@ export default defineComponent({
     });
 
     watch(() => drawingList.value, debounce(() => {
-      // resetDrawingListState();
-      console.log(drawingList.value);
       saveDrawingList(drawingList.value);
     }, 300));
 
     onMounted(() => {
-      // drawingListInit(getDrawingList());
-      const list = getDrawingList();
-      list.forEach(item => {
-        setDraggingValue(item);
-        addNewElement();
-        setDraggingValue(null);
-      });
+      // 获取db中的组件列表，并进行初始化操作
+      drawingListInit(getDrawingList());
     });
 
     return { dragging, drawingList, containerHandler, blockHandler };
