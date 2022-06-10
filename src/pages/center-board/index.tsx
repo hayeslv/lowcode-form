@@ -1,17 +1,26 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, toRaw, TransitionGroup } from "vue";
+import { defineComponent, onMounted, toRaw, TransitionGroup, watch } from "vue";
 import DraggableItem from "./DraggableItem";
 import type { ElementComponent, MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
-import { VisualComponentClick, VisualDragEnd, VisualDragStart } from "~/utils";
+import { getOriginArray, VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";
+import { debounce } from "lodash";
 
 export default defineComponent({
   setup() {
     // 画布中的元素列表
-    const { drawingList, drawingListAdd, drawingListExistItem, drawingListChangePosition, resetDrawingListState } = useDrawingList();
+    const {
+      drawingList,
+      drawingListInit,
+      drawingListAdd,
+      drawingListExistItem,
+      drawingListChangePosition,
+      resetDrawingListState,
+    } = useDrawingList();
+
     // 当前正在拖拽的元素
     const { dragging, setDraggingValue, setDraggingValueAsync } = useDragging();
 
@@ -29,7 +38,6 @@ export default defineComponent({
 
     const containerHandler = {
       dragover: (e: DragEvent) => { // 拖拽组件，组件在容器中移动的时候
-        console.log("container dragover");
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
         // e.dataTransfer!.effectAllowed = "move";
@@ -79,6 +87,22 @@ export default defineComponent({
       const component = menuComponentInstance(menuComp);
       drawingListAdd(component);
       resetDrawingListState();
+    });
+
+    watch(() => drawingList.value, debounce(() => {
+      // resetDrawingListState();
+      console.log(drawingList.value);
+      saveDrawingList(drawingList.value);
+    }, 300));
+
+    onMounted(() => {
+      // drawingListInit(getDrawingList());
+      const list = getDrawingList();
+      list.forEach(item => {
+        setDraggingValue(item);
+        addNewElement();
+        setDraggingValue(null);
+      });
     });
 
     return { dragging, drawingList, containerHandler, blockHandler };

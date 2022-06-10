@@ -1,21 +1,27 @@
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import type { ElementComponent } from "~/config";
 import { getOriginArray } from "~/utils";
 
 export function useDrawingList() {
   const drawingList = ref([] as ElementComponent[]);
 
+  // 初始化drawingList数据
+  const drawingListInit = (list: ElementComponent[]) => {
+    // list.forEach(v => drawingList.value.push(toRaw(v)));
+    // drawingList.value = list;
+  };
+
   // 添加元素
   const drawingListAdd = (element: ElementComponent, anchor?: ElementComponent) => {
     if (!anchor) {
-      drawingList.value.push(element);
+      drawingList.value.push(toRaw(element));
       return;
     }
     // 获取anchor在drawingList中的位置
     const index = drawingList.value.map(item => item.id).indexOf(anchor.id);
     if (index === -1) return;
     // 在此位置前添加元素
-    drawingList.value.splice(index, 0, element);
+    drawingList.value.splice(index, 0, toRaw(element));
   };
 
   // 删除元素
@@ -29,7 +35,6 @@ export function useDrawingList() {
 
   // 交换元素位置
   const drawingListChangePosition = (dragging: ElementComponent, target: ElementComponent) => {
-    console.log("change positon");
     // 获取原始数组
     const componentList = getOriginArray(drawingList.value);
     // 目标元素位置
@@ -73,6 +78,7 @@ export function useDrawingList() {
 
   return {
     drawingList,
+    drawingListInit,
     drawingListAdd,
     drawingListDelete,
     drawingListExistItem,
