@@ -3,7 +3,7 @@ import { defineComponent, onMounted, toRaw, TransitionGroup, watch } from "vue";
 import DraggableItem from "./DraggableItem";
 import type { ElementComponent, MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
-import { getOriginArray, VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList } from "~/utils";
+import { VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList } from "~/utils";
 import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";

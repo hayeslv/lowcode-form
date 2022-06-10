@@ -1,15 +1,13 @@
 import { ref, toRaw } from "vue";
 import type { ElementComponent } from "~/config";
-import { getOriginArray, saveDrawingList } from "~/utils";
+import { getOriginArray } from "~/utils";
 
 export const useDrawingList = (function() {
   const drawingList = ref([] as ElementComponent[]);
   return function useDrawingList() {
     // 初始化drawingList数据
     const drawingListInit = (list: ElementComponent[]) => {
-      list.forEach(item => {
-        drawingListAdd(item);
-      });
+      drawingList.value = list;
     };
 
     // 添加元素

@@ -1,4 +1,3 @@
-import { ElInput } from "element-plus";
 
 interface componentTypeItem {
   key: string;
@@ -45,6 +44,11 @@ export const inputComponents: MenuComponent[] = [
     key: "textarea",
     label: "多行输入框",
     icon: "textarea",
+  },
+  {
+    key: "number",
+    label: "计数器",
+    icon: "number",
   },
 ];
 
