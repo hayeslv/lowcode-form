@@ -1,3 +1,5 @@
+import { reactive } from "vue";
+import { useGlobalId } from "~/utils";
 
 interface componentTypeItem {
   key: string;
@@ -19,6 +21,7 @@ export interface ElementComponent extends MenuComponent {
   id: number;
   layout: string;
   transiting: boolean;      // 是否正在过渡（改变位置）
+  __vModel__: string;
   __config__: {
     span: number;
     labelWidth?: number;
@@ -72,15 +75,39 @@ export const componentTypeList: componentTypeItem[] = [
 ];
 
 // 左侧菜单组件实例化
-export const menuComponentInstance = (element: MenuComponent): ElementComponent => {
-  return {
-    id: Math.floor(Math.random() * 9999999),
-    layout: "colFormItem", // 默认先用列排列
-    isMenuComponent: true,
-    transiting: false,
-    __config__: {
-      span: 24,
-    },
-    ...element,
+export const menuComponentInstance = (() => {
+  return (element: MenuComponent): ElementComponent => {
+    const { getGlobalId } = useGlobalId();
+    const { setFormValue } = useForm();
+    const id = getGlobalId(); // 组件id
+    const key = `field${id}`; // 组件绑定的key
+    setFormValue(key);
+
+    return {
+      id: id,
+      layout: "colFormItem", // 默认先用列排列
+      isMenuComponent: true,
+      transiting: false,
+      __vModel__: key,
+      __config__: {
+        span: 24,
+      },
+      ...element,
+    };
   };
-};
+})();
+
+// 使用form表单
+export const useForm = (() => {
+  const form = reactive({});
+  return () => {
+    const getForm = () => {
+      return form;
+    };
+    const setFormValue = (key: string, value?: any) => {
+      form[key] = value;
+    };
+
+    return { getForm, setFormValue };
+  };
+})();

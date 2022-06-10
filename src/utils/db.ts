@@ -25,3 +25,13 @@ export function saveDrawingList(list: ElementComponent[]) {
     console.error(error);
   }
 }
+
+export const useGlobalId = (() => {
+  let GLOBAL_ID = 100;
+  return () => {
+    const getGlobalId = (): number => {
+      return ++GLOBAL_ID;
+    };
+    return { getGlobalId };
+  };
+})();

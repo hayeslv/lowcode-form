@@ -13,7 +13,7 @@ const layouts = {
       {
         !curComponent.isMenuComponent &&
         <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
-          {renderComponentMap[curComponent.key] && renderComponentMap[curComponent.key]()}
+          {renderComponentMap[curComponent.key] && renderComponentMap[curComponent.key](curComponent)}
         </ElFormItem>
       }
 
