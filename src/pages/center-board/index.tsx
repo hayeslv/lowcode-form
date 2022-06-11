@@ -19,6 +19,7 @@ export default defineComponent({
       drawingList,
       drawingListInit,
       drawingListAdd,
+      drawingListDelete,
       drawingListExistItem,
       drawingListChangePosition,
       resetDrawingListState,
@@ -88,6 +89,9 @@ export default defineComponent({
         component.isMenuComponent = false;
         drawingListAdd(component);
       },
+      drawingItemDelete(currentItem: ElementComponent) {
+        drawingListDelete(currentItem);
+      },
     };
 
     VisualDragStart.on((menuComp: MenuComponent) => {
@@ -105,7 +109,6 @@ export default defineComponent({
     });
 
     watch(() => drawingList.value, debounce(() => {
-      console.log(123);
       saveDrawingList(drawingList.value);
     }, 300), { deep: true });
 
@@ -149,7 +152,8 @@ export default defineComponent({
                     activeId={this.activeId}
                     component={component}
                     activeItem={this.methodsHandler.activeFormItem}
-                    copyItem={this.methodsHandler.drawingItemCopy}></DraggableItem>
+                    copyItem={this.methodsHandler.drawingItemCopy}
+                    deleteItem={this.methodsHandler.drawingItemDelete}></DraggableItem>
                 </div>
               )) }
             </TransitionGroup>

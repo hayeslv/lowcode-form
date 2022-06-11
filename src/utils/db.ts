@@ -28,14 +28,13 @@ export function saveDrawingList(list: ElementComponent[]) {
 // 获取全局DrawingList的最大id
 export const getDrawingListMaxId = () => {
   const list = getDrawingList();
-  if (list.length === 0) return null;
+  if (list.length === 0) return 0;
   return Math.max(...list.map(v => v.id || 0));
 };
 
 export const useGlobalId = (() => {
   const maxId = getDrawingListMaxId();
   let GLOBAL_ID = maxId || 100;
-  console.log(GLOBAL_ID);
   return () => {
     const getGlobalId = (): number => {
       return ++GLOBAL_ID;

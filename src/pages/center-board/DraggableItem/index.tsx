@@ -6,7 +6,7 @@ import type { ElementComponent } from "~/config";
 import { renderComponentMap } from "~/config";
 import "./index.scss";
 
-const itemBtns = ({ curComponent, copyItem }) => {
+const itemBtns = ({ curComponent, copyItem, deleteItem }) => {
   return [
     <span class="drawing-item-copy" title="复制" onClick={($event) => {
       copyItem(curComponent);
@@ -14,8 +14,9 @@ const itemBtns = ({ curComponent, copyItem }) => {
     }}>
       <ElIcon size={14}><CopyDocument /></ElIcon>
     </span>,
-    <span class="drawing-item-delete" title="删除" onClick={() => {
-      console.log("delete");
+    <span class="drawing-item-delete" title="删除" onClick={($event) => {
+      deleteItem(curComponent);
+      $event.stopPropagation();
     }}>
       <ElIcon size={14}><Delete /></ElIcon>
     </span>,
@@ -27,10 +28,11 @@ interface ColFormItemParams {
   curComponent: ElementComponent;
   activeItem: (...args) => void;
   copyItem: (...args) => void;
+  deleteItem: (...args) => void;
 }
 
 const layouts = {
-  colFormItem({ activeId, curComponent, activeItem, copyItem }: ColFormItemParams) {
+  colFormItem({ activeId, curComponent, activeItem, copyItem, deleteItem }: ColFormItemParams) {
     const config = curComponent.__config__;
     const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
     return <ElCol class={["drawing-item", activeId === curComponent.id && "active-from-item"]} {...{
@@ -43,7 +45,7 @@ const layouts = {
           {renderComponentMap[curComponent.key] && renderComponentMap[curComponent.key](curComponent)}
         </ElFormItem>
       }
-      {itemBtns({ curComponent, copyItem })}
+      {itemBtns({ curComponent, copyItem, deleteItem })}
     </ElCol>;
   },
 };
@@ -54,6 +56,7 @@ export default defineComponent({
     component: { type: Object as PropType<ElementComponent>, required: true },
     activeItem: { type: Function },
     copyItem: { type: Function },
+    deleteItem: { type: Function },
   },
   setup() {},
   render() {
@@ -63,6 +66,7 @@ export default defineComponent({
       curComponent: this.component,
       activeItem: this.activeItem,
       copyItem: this.copyItem,
+      deleteItem: this.deleteItem,
     });
   },
 });
