@@ -1,0 +1,78 @@
+@import "~/style/common.scss";
+.drawing-board{
+  .active-from-item {
+    & > .el-form-item{
+      background: $selectedColor;
+      border-radius: 6px;
+    }
+    & > .drawing-item-copy, & > .drawing-item-delete{
+      display: initial;
+    }
+    & > .component-name{
+      color: $primary-light;
+    }
+  }
+}
+
+.drawing-item{
+  position: relative;
+  cursor: move;
+  &.unfocus-bordered:not(.active-from-item) > div:first-child {
+    border: 1px dashed #ccc;
+  }
+  .el-icon{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  // .el-form-item{
+  //   padding: 12px 10px;
+  // }
+}
+
+.drawing-item, .drawing-row-item{
+  
+  &:hover {
+    & > .el-form-item{
+      background: $selectedColor;
+      border-radius: 6px;
+    }
+    // & > .drawing-item-copy, & > .drawing-item-delete{
+    //   display: initial;
+    // }
+  }
+  & > .drawing-item-copy, & > .drawing-item-delete{
+    display: none;
+    position: absolute;
+    top: -10px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+    border: 1px solid;
+    cursor: pointer;
+    z-index: 1;
+  }
+  & > .drawing-item-copy{
+    right: 56px;
+    border-color: $primary;
+    color: $primary;
+    background: #fff;
+    &:hover{
+      background: $primary;
+      color: #fff;
+    }
+  }
+  & > .drawing-item-delete{
+    right: 24px;
+    border-color: #F56C6C;
+    color: #F56C6C;
+    background: #fff;
+    &:hover{
+      background: #F56C6C;
+      color: #fff;
+    }
+  }
+}

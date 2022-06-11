@@ -1,5 +1,5 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, onMounted, toRaw, TransitionGroup, watch } from "vue";
+import { defineComponent, onMounted, ref, toRaw, TransitionGroup, watch } from "vue";
 import DraggableItem from "./DraggableItem";
 import type { ElementComponent, MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
@@ -11,6 +11,9 @@ import { debounce } from "lodash";
 
 export default defineComponent({
   setup() {
+    const activeId = ref(-1);
+    const activeData = ref(null as ElementComponent | null);
+
     // 画布中的元素列表
     const {
       drawingList,
@@ -75,6 +78,13 @@ export default defineComponent({
       },
     };
 
+    const methodsHandler = {
+      activeFormItem(currentItem: ElementComponent) {
+        activeId.value = currentItem.id;
+        activeData.value = currentItem;
+      },
+    };
+
     VisualDragStart.on((menuComp: MenuComponent) => {
       const component = menuComponentInstance(menuComp);
       setDraggingValue(component);
@@ -98,7 +108,7 @@ export default defineComponent({
       drawingListInit(getDrawingList());
     });
 
-    return { dragging, drawingList, containerHandler, blockHandler };
+    return { activeId, dragging, drawingList, containerHandler, blockHandler, methodsHandler };
   },
   render() {
     return <div class="center-board">
@@ -129,7 +139,7 @@ export default defineComponent({
                 onDragenter={($event) => this.blockHandler.dragenter($event, component)}
                 onDragend={() => this.blockHandler.dragend()}
                 >
-                  <DraggableItem component={component}></DraggableItem>
+                  <DraggableItem activeId={this.activeId} component={component} activeItem={this.methodsHandler.activeFormItem}></DraggableItem>
                 </div>
               )) }
             </TransitionGroup>
