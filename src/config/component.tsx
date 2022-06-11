@@ -84,6 +84,7 @@ export const menuComponentInstance = (() => {
     setFormValue(key);
 
     return {
+      ...element,
       id: id,
       layout: "colFormItem", // 默认先用列排列
       isMenuComponent: true,
@@ -92,7 +93,6 @@ export const menuComponentInstance = (() => {
       __config__: {
         span: 24,
       },
-      ...element,
     };
   };
 })();

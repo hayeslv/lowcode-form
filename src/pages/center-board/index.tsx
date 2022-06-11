@@ -83,6 +83,11 @@ export default defineComponent({
         activeId.value = currentItem.id;
         activeData.value = currentItem;
       },
+      drawingItemCopy(currentItem: ElementComponent) {
+        const component = menuComponentInstance(currentItem);
+        component.isMenuComponent = false;
+        drawingListAdd(component);
+      },
     };
 
     VisualDragStart.on((menuComp: MenuComponent) => {
@@ -100,8 +105,9 @@ export default defineComponent({
     });
 
     watch(() => drawingList.value, debounce(() => {
+      console.log(123);
       saveDrawingList(drawingList.value);
-    }, 300));
+    }, 300), { deep: true });
 
     onMounted(() => {
       // 获取db中的组件列表，并进行初始化操作
@@ -139,7 +145,11 @@ export default defineComponent({
                 onDragenter={($event) => this.blockHandler.dragenter($event, component)}
                 onDragend={() => this.blockHandler.dragend()}
                 >
-                  <DraggableItem activeId={this.activeId} component={component} activeItem={this.methodsHandler.activeFormItem}></DraggableItem>
+                  <DraggableItem
+                    activeId={this.activeId}
+                    component={component}
+                    activeItem={this.methodsHandler.activeFormItem}
+                    copyItem={this.methodsHandler.drawingItemCopy}></DraggableItem>
                 </div>
               )) }
             </TransitionGroup>

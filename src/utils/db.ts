@@ -5,7 +5,7 @@ import { getOriginArray } from "./vue";
 // 先使用localStorage存储，之后可能会改为数据库存储
 const DRAWING_LIST = "drawing_list";
 
-export function getDrawingList() {
+export function getDrawingList(): ElementComponent[] {
   const str = localStorage.getItem(DRAWING_LIST);
   try {
     if (str) return JSON.parse(str);
@@ -25,9 +25,17 @@ export function saveDrawingList(list: ElementComponent[]) {
     console.error(error);
   }
 }
+// 获取全局DrawingList的最大id
+export const getDrawingListMaxId = () => {
+  const list = getDrawingList();
+  if (list.length === 0) return null;
+  return Math.max(...list.map(v => v.id || 0));
+};
 
 export const useGlobalId = (() => {
-  let GLOBAL_ID = 100;
+  const maxId = getDrawingListMaxId();
+  let GLOBAL_ID = maxId || 100;
+  console.log(GLOBAL_ID);
   return () => {
     const getGlobalId = (): number => {
       return ++GLOBAL_ID;

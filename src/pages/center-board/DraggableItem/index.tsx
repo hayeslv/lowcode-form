@@ -6,10 +6,11 @@ import type { ElementComponent } from "~/config";
 import { renderComponentMap } from "~/config";
 import "./index.scss";
 
-const itemBtns = () => {
+const itemBtns = ({ curComponent, copyItem }) => {
   return [
-    <span class="drawing-item-copy" title="复制" onClick={() => {
-      console.log("copy");
+    <span class="drawing-item-copy" title="复制" onClick={($event) => {
+      copyItem(curComponent);
+      $event.stopPropagation();
     }}>
       <ElIcon size={14}><CopyDocument /></ElIcon>
     </span>,
@@ -25,10 +26,11 @@ interface ColFormItemParams {
   activeId: number | null;
   curComponent: ElementComponent;
   activeItem: (...args) => void;
+  copyItem: (...args) => void;
 }
 
 const layouts = {
-  colFormItem({ activeId, curComponent, activeItem }: ColFormItemParams) {
+  colFormItem({ activeId, curComponent, activeItem, copyItem }: ColFormItemParams) {
     const config = curComponent.__config__;
     const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
     return <ElCol class={["drawing-item", activeId === curComponent.id && "active-from-item"]} {...{
@@ -41,7 +43,7 @@ const layouts = {
           {renderComponentMap[curComponent.key] && renderComponentMap[curComponent.key](curComponent)}
         </ElFormItem>
       }
-      {itemBtns()}
+      {itemBtns({ curComponent, copyItem })}
     </ElCol>;
   },
 };
@@ -50,7 +52,8 @@ export default defineComponent({
   props: {
     activeId: { type: Number },
     component: { type: Object as PropType<ElementComponent>, required: true },
-    activeItem: { type: Function as PropType<(...args) => void> },
+    activeItem: { type: Function },
+    copyItem: { type: Function },
   },
   setup() {},
   render() {
@@ -59,6 +62,7 @@ export default defineComponent({
       activeId: this.activeId,
       curComponent: this.component,
       activeItem: this.activeItem,
+      copyItem: this.copyItem,
     });
   },
 });
