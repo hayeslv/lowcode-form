@@ -1,6 +1,7 @@
 import { defineComponent } from "vue";
 import LeftBoard from "~/pages/left-board";
 import CenterBoard from "~/pages/center-board";
+import RightBoard from "~/pages/right-board";
 import "~/style/layout.scss";
 
 export default defineComponent({
@@ -9,7 +10,7 @@ export default defineComponent({
     return <div class="container">
       <LeftBoard />
       <CenterBoard />
-      <div class="right-board">right</div>
+      <RightBoard />
     </div>;
   },
 });
