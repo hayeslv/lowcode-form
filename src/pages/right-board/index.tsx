@@ -1,7 +1,7 @@
 import { Link } from "@element-plus/icons-vue";
 import { ElIcon, ElScrollbar, ElTabPane, ElTabs } from "element-plus";
-import { defineComponent, ref } from "vue";
-import { useActiveComp } from "~/hooks";
+import { defineComponent, onMounted, ref } from "vue";
+import { useActiveComp, useDrawingList } from "~/hooks";
 import CompProperty from "./CompProperty";
 import FormProperty from "./FormProperty";
 import "./index.scss";
@@ -15,11 +15,13 @@ export default defineComponent({
   setup() {
     const currentTab = ref(TabItem.Field);
 
-    return { currentTab };
+    return {  currentTab };
   },
   render() {
-    const { getActiveComp } = useActiveComp();
+    const { drawingList } =  useDrawingList();
+    const { getActiveComp, setActiveComp } = useActiveComp();
     const component = getActiveComp();
+    if (!component && drawingList.value.length) setActiveComp(drawingList.value[0]);
 
     return <div class="right-board">
       <ElTabs v-model={this.currentTab} class="center-tabs">
