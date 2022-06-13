@@ -55,7 +55,7 @@ export default defineComponent({
             <div class="components-draggable">
               {item.list.map(component => (
                 <div class="component-item"
-                  key={component.key}
+                  key={component.type}
                   draggable
                   onDragstart={(e) => this.menuDragger.dragstart(e, component)}
                   onDragend={() => this.menuDragger.dragend()}

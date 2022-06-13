@@ -8,11 +8,12 @@ import { useDragging, useDrawingList } from "./hooks";
 import "./index.scss";
 import TopBar from "./TopBar";
 import { debounce } from "lodash";
+import { useActiveComp } from "~/hooks";
 
 export default defineComponent({
   setup() {
-    const activeId = ref(-1);
-    const activeData = ref(null as ElementComponent | null);
+    // 使用当前激活的元素
+    const { setActiveComp } = useActiveComp();
 
     // 画布中的元素列表
     const {
@@ -81,8 +82,8 @@ export default defineComponent({
 
     const methodsHandler = {
       activeFormItem(currentItem: ElementComponent) {
-        activeId.value = currentItem.id;
-        activeData.value = currentItem;
+        // 设置激活组件
+        setActiveComp(currentItem);
       },
       drawingItemCopy(currentItem: ElementComponent) {
         const component = menuComponentInstance(currentItem);
@@ -117,9 +118,10 @@ export default defineComponent({
       drawingListInit(getDrawingList());
     });
 
-    return { activeId, dragging, drawingList, containerHandler, blockHandler, methodsHandler };
+    return { dragging, drawingList, containerHandler, blockHandler, methodsHandler };
   },
   render() {
+    const { getActiveId } = useActiveComp();
     return <div class="center-board">
       {/* 顶部操作栏 */}
       <TopBar></TopBar>
@@ -149,7 +151,7 @@ export default defineComponent({
                 onDragend={() => this.blockHandler.dragend()}
                 >
                   <DraggableItem
-                    activeId={this.activeId}
+                    activeId={getActiveId()}
                     component={component}
                     activeItem={this.methodsHandler.activeFormItem}
                     copyItem={this.methodsHandler.drawingItemCopy}

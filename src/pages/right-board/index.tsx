@@ -1,6 +1,7 @@
 import { Link } from "@element-plus/icons-vue";
 import { ElIcon, ElScrollbar, ElTabPane, ElTabs } from "element-plus";
 import { defineComponent, ref } from "vue";
+import { useActiveComp } from "~/hooks";
 import CompProperty from "./CompProperty";
 import FormProperty from "./FormProperty";
 import "./index.scss";
@@ -17,6 +18,9 @@ export default defineComponent({
     return { currentTab };
   },
   render() {
+    const { getActiveComp } = useActiveComp();
+    const component = getActiveComp();
+
     return <div class="right-board">
       <ElTabs v-model={this.currentTab} class="center-tabs">
         <ElTabPane label="组件属性" name={TabItem.Field} />
@@ -28,7 +32,7 @@ export default defineComponent({
         </a>
         <ElScrollbar class="right-scrollbar">
           {/* 组件属性 */}
-          {this.currentTab === TabItem.Field && <CompProperty></CompProperty>}
+          {this.currentTab === TabItem.Field && component && <CompProperty></CompProperty>}
           {/* 表单属性 */}
           {this.currentTab === TabItem.Form && <FormProperty></FormProperty>}
         </ElScrollbar>
