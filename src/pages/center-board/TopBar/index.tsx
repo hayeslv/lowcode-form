@@ -1,8 +1,8 @@
 import { ElButton, ElMessageBox } from "element-plus";
 import { Delete, VideoPlay } from "@element-plus/icons-vue";
 import { defineComponent } from "vue";
+import { useDrawingList } from "~/hooks";
 import "./index.scss";
-import { useDrawingList } from "../hooks";
 
 export default defineComponent({
   setup() {

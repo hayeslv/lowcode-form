@@ -1,14 +1,13 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, onMounted, ref, toRaw, TransitionGroup, watch } from "vue";
+import { defineComponent, onMounted, toRaw, TransitionGroup, watch } from "vue";
 import DraggableItem from "./DraggableItem";
 import type { ElementComponent, MenuComponent } from "~/config/component";
 import { formConfig, menuComponentInstance } from "~/config/component";
 import { VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList } from "~/utils";
-import { useDragging, useDrawingList } from "./hooks";
-import "./index.scss";
 import TopBar from "./TopBar";
 import { debounce } from "lodash";
-import { useActiveComp } from "~/hooks";
+import { useActiveComp, useDragging, useDrawingList } from "~/hooks";
+import "./index.scss";
 
 export default defineComponent({
   setup() {
