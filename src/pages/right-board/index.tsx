@@ -1,6 +1,6 @@
 import { Link } from "@element-plus/icons-vue";
 import { ElIcon, ElScrollbar, ElTabPane, ElTabs } from "element-plus";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useActiveComp, useDrawingList } from "~/hooks";
 import CompProperty from "./CompProperty";
 import FormProperty from "./FormProperty";

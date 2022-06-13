@@ -10,10 +10,6 @@ export const useDrawingList = () => {
     drawingList.value = list;
   };
 
-  const getDrawingList = () => {
-    return drawingList.value;
-  };
-
   // 添加元素
   const drawingListAdd = (element: ElementComponent, anchor?: ElementComponent) => {
     if (!anchor) {

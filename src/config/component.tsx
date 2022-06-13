@@ -12,6 +12,7 @@ export interface MenuComponent {
   label: string;
   type: string;
   typeName: string;
+  placeholder: string;
   icon?: string;
   isMenuComponent?: boolean; // 是否是菜单组件
   // render: () => JSX.Element;
@@ -40,20 +41,23 @@ export const formConfig = {
 // 输入型组件
 export const inputComponents: MenuComponent[] = [
   {
-    label: "单行输入框",
-    icon: "input",
     type: "input",
     typeName: "单行输入框",
+    placeholder: "请输入单行文本",
+    label: "单行输入框",
+    icon: "input",
   },
   {
     type: "textarea",
     typeName: "多行输入框",
+    placeholder: "请输入多行文本",
     label: "多行输入框",
     icon: "textarea",
   },
   {
     type: "number",
     typeName: "计数器",
+    placeholder: "计数器",
     label: "计数器",
     icon: "number",
   },
