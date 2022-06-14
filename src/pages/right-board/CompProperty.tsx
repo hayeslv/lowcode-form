@@ -1,15 +1,22 @@
 import { ElForm, ElFormItem, ElInput, ElSlider } from "element-plus";
 import { defineComponent } from "vue";
+import type { ElementComponent } from "~/config";
 import { useForm } from "~/config";
-import { useActiveComp } from "~/hooks";
+import { useActiveComp, useDrawingList } from "~/hooks";
 
 export default defineComponent({
   setup() {
+    const { drawingList } = useDrawingList();
     const { getForm } = useForm();
     const form = getForm();
 
-    const onDefaultValueInput = (value, component) => {
-      component.__config__.defaultValue = value;
+    const onDefaultValueInput = (value, component: ElementComponent) => {
+      const vModel = component.__vModel__;
+      drawingList.value.forEach(v => {
+        if (v.__vModel__ === vModel) {
+          v.__config__.defaultValue = value;
+        }
+      });
       form[component.__vModel__] = value;
     };
 
