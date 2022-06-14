@@ -27,6 +27,7 @@ export interface ElementComponent extends MenuComponent {
   __config__: {
     span: number;
     labelWidth?: number;
+    defaultValue?: any;
   };
 }
 

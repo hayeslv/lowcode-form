@@ -5,9 +5,18 @@ import { useForm } from "./component";
 const { getForm } = useForm();
 const form = getForm();
 
+const onDefaultValueInput = (value, component) => {
+  component.__config__.defaultValue = value;
+  form[component.__vModel__] = value;
+};
+
 export const renderComponentMap = {
+//   input: (component: ElementComponent) =>
+//     <ElInput v-model={form[component.__vModel__]} placeholder={component.placeholder} />,
   input: (component: ElementComponent) =>
-    <ElInput v-model={form[component.__vModel__]} placeholder={component.placeholder} />,
+    <ElInput modelValue={form[component.__vModel__]}
+      onInput={(value) => onDefaultValueInput(value, component)}
+      placeholder={component.placeholder} />,
   textarea: (component: ElementComponent) =>
     <ElInput v-model={form[component.__vModel__]}
       placeholder={component.placeholder}
