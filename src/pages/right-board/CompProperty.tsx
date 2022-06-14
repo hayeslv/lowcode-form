@@ -1,6 +1,10 @@
 import { ElForm, ElFormItem, ElInput, ElSlider } from "element-plus";
 import { defineComponent } from "vue";
+import { useForm } from "~/config";
 import { useActiveComp } from "~/hooks";
+
+const { getForm } = useForm();
+const form = getForm();
 
 export default defineComponent({
   setup() {},
@@ -23,6 +27,9 @@ export default defineComponent({
       </ElFormItem> }
       <ElFormItem label="标签宽度：">
         <ElInput v-model={component.__config__.labelWidth} type="number" placeholder="请输入标签宽度" />
+      </ElFormItem>
+      <ElFormItem label="默认值：">
+        <ElInput v-model={form[component.__vModel__]} placeholder="请输入默认值" clearable />
       </ElFormItem>
     </ElForm>;
   },
