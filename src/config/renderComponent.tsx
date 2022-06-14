@@ -7,13 +7,16 @@ const { drawingList } = useDrawingList();
 const { getForm } = useForm();
 const form = getForm();
 
-const onDefaultValueInput = (value, component: ElementComponent) => {
+// 更新默认值
+export const onDefaultValueInput = (value, component: ElementComponent) => {
   const vModel = component.__vModel__;
+  // 从drawingList中找到绑定值是vModel的对象，将其默认值更新
   drawingList.value.forEach(v => {
     if (v.__vModel__ === vModel) {
       v.__config__.defaultValue = value;
     }
   });
+  // 更新form的值
   form[component.__vModel__] = value;
 };
 
@@ -23,12 +26,14 @@ export const renderComponentMap = {
       onInput={(value) => onDefaultValueInput(value, component)}
       placeholder={component.placeholder} />,
   textarea: (component: ElementComponent) =>
-    <ElInput v-model={form[component.__vModel__]}
+    <ElInput modelValue={form[component.__vModel__]}
+      onInput={(value) => onDefaultValueInput(value, component)}
       placeholder={component.placeholder}
       type="textarea" {...{ rows: 2 }}
     />,
   number: (component: ElementComponent) =>
-    <ElInputNumber v-model={form[component.__vModel__]}
+    <ElInputNumber modelValue={parseInt(form[component.__vModel__])}
+      onInput={(value) => onDefaultValueInput(value, component)}
       placeholder={component.placeholder}
     />,
 };

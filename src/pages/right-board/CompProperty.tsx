@@ -1,26 +1,14 @@
 import { ElForm, ElFormItem, ElInput, ElSlider } from "element-plus";
 import { defineComponent } from "vue";
-import type { ElementComponent } from "~/config";
-import { useForm } from "~/config";
-import { useActiveComp, useDrawingList } from "~/hooks";
+import { onDefaultValueInput, useForm } from "~/config";
+import { useActiveComp } from "~/hooks";
 
 export default defineComponent({
   setup() {
-    const { drawingList } = useDrawingList();
     const { getForm } = useForm();
     const form = getForm();
 
-    const onDefaultValueInput = (value, component: ElementComponent) => {
-      const vModel = component.__vModel__;
-      drawingList.value.forEach(v => {
-        if (v.__vModel__ === vModel) {
-          v.__config__.defaultValue = value;
-        }
-      });
-      form[component.__vModel__] = value;
-    };
-
-    return { form, onDefaultValueInput };
+    return { form };
   },
   render() {
     const { getActiveComp } = useActiveComp();
@@ -43,11 +31,9 @@ export default defineComponent({
         <ElInput v-model={component.__config__.labelWidth} type="number" placeholder="请输入标签宽度" />
       </ElFormItem>
       <ElFormItem label="默认值：">
-        {/* <ElInput v-model={form[component.__vModel__]} placeholder="请输入默认值" clearable /> */}
-        {/* <ElInput modelValue={component.__config__.defaultValue} onInput={(value) => (component.__config__.defaultValue = value)} placeholder="请输入默认值" clearable /> */}
         <ElInput
           modelValue={this.form[component.__vModel__]}
-          onInput={(value) => this.onDefaultValueInput(value, component)}
+          onInput={(value) => onDefaultValueInput(value, component)}
           placeholder="请输入默认值"
           clearable
         />

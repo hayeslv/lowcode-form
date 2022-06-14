@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { useGlobalId } from "~/utils";
+import { useGlobalId } from "~/hooks";
 
 interface componentTypeItem {
   key: string;

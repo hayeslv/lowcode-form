@@ -15,6 +15,7 @@ export function getDrawingList(): ElementComponent[] {
   return [];
 }
 
+// 存储drawingList
 export function saveDrawingList(list: ElementComponent[]) {
   if (isProxy(list)) {
     list = getOriginArray(list);
@@ -31,14 +32,3 @@ export const getDrawingListMaxId = () => {
   if (list.length === 0) return 0;
   return Math.max(...list.map(v => v.id || 0));
 };
-
-export const useGlobalId = (() => {
-  const maxId = getDrawingListMaxId();
-  let GLOBAL_ID = maxId || 100;
-  return () => {
-    const getGlobalId = (): number => {
-      return ++GLOBAL_ID;
-    };
-    return { getGlobalId };
-  };
-})();
