@@ -3,6 +3,7 @@ import LeftBoard from "~/pages/left-board";
 import CenterBoard from "~/pages/center-board";
 import RightBoard from "~/pages/right-board";
 import "~/style/layout.scss";
+import "~/style/element-reset.scss";
 
 export default defineComponent({
   setup() {},

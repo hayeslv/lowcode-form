@@ -1,4 +1,4 @@
-import { ElForm, ElFormItem, ElInput } from "element-plus";
+import { ElForm, ElFormItem, ElInput, ElSlider } from "element-plus";
 import { defineComponent } from "vue";
 import { useActiveComp } from "~/hooks";
 
@@ -18,6 +18,9 @@ export default defineComponent({
       <ElFormItem label="占位提示：">
         <ElInput v-model={component.placeholder} placeholder="请输入占位提示" clearable />
       </ElFormItem>
+      { component.__config__.span !== undefined && <ElFormItem label="表单栅格：">
+        <ElSlider v-model={component.__config__.span} min={1} max={24} marks={{ 12: "" }} />
+      </ElFormItem> }
     </ElForm>;
   },
 });

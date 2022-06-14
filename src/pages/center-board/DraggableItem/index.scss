@@ -17,6 +17,7 @@
 .drawing-item{
   position: relative;
   cursor: move;
+  width: 100%;
   &.unfocus-bordered:not(.active-from-item) > div:first-child {
     border: 1px dashed #ccc;
   }

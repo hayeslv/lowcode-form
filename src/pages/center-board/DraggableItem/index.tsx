@@ -35,9 +35,11 @@ const layouts = {
   colFormItem({ activeId, curComponent, activeItem, copyItem, deleteItem }: ColFormItemParams) {
     const config = curComponent.__config__;
     const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
-    return <ElCol class={["drawing-item", activeId === curComponent.id && "active-from-item"]} {...{
-      onClick: $event => { activeItem(curComponent); $event.stopPropagation();  },
-    }}>
+    return <ElCol class={["drawing-item", activeId === curComponent.id && "active-from-item"]}
+      span={curComponent.__config__.span}
+      {...{
+        onClick: $event => { activeItem(curComponent); $event.stopPropagation();  },
+      }}>
       { curComponent.isMenuComponent && <svg-icon icon-class={curComponent.icon} /> }
       {
         !curComponent.isMenuComponent &&
