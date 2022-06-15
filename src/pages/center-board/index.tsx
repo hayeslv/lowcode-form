@@ -2,8 +2,8 @@ import { ElForm, ElRow, ElScrollbar } from "element-plus";
 import { defineComponent, onMounted, toRaw, TransitionGroup, watch } from "vue";
 import DraggableItem from "./DraggableItem";
 import type { ElementComponent, MenuComponent } from "~/config/component";
-import { formConfig, menuComponentInstance } from "~/config/component";
-import { VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList } from "~/utils";
+import { menuComponentInstance } from "~/config/component";
+import { VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList, useFormConfig } from "~/utils";
 import TopBar from "./TopBar";
 import { debounce } from "lodash";
 import { useActiveComp, useDragging, useDrawingList } from "~/hooks";
@@ -13,6 +13,9 @@ export default defineComponent({
   setup() {
     // 使用当前激活的元素
     const { setActiveComp } = useActiveComp();
+    // 表单属性
+    const { getFormConfig } = useFormConfig();
+    const formConfig = getFormConfig();
 
     // 画布中的元素列表
     const {
@@ -117,7 +120,7 @@ export default defineComponent({
       drawingListInit(getDrawingList());
     });
 
-    return { dragging, drawingList, containerHandler, blockHandler, methodsHandler };
+    return { dragging, drawingList, formConfig, containerHandler, blockHandler, methodsHandler };
   },
   render() {
     const { getActiveId } = useActiveComp();
@@ -125,11 +128,11 @@ export default defineComponent({
       {/* 顶部操作栏 */}
       <TopBar></TopBar>
       <ElScrollbar class="center-scrollbar">
-        <ElRow class="center-board-row" gutter={formConfig.gutter}>
+        <ElRow class="center-board-row" gutter={this.formConfig.gutter}>
           <ElForm
-            labelPosition={formConfig.labelPosition}
-            disabled={formConfig.disabled}
-            labelWidth={formConfig.labelWidth + "px"}
+            labelPosition={this.formConfig.labelPosition}
+            disabled={this.formConfig.disabled}
+            labelWidth={this.formConfig.labelWidth + "px"}
           >
             <TransitionGroup tag="div" name="slide"
               {...{
