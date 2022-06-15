@@ -1,6 +1,6 @@
 import { ElButton, ElMessageBox } from "element-plus";
 import { Delete, Download } from "@element-plus/icons-vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { EventName, useDrawingList, useGlobalEvent } from "~/hooks";
 import "./index.scss";
 
