@@ -1,23 +1,21 @@
 import { ElForm, ElFormItem, ElInput } from "element-plus";
-import { defineComponent, reactive, watch } from "vue";
+import { defineComponent, watch } from "vue";
+import { debounce } from "lodash";
 import { useFormConfig } from "~/utils";
 
 export default defineComponent({
   setup() {
     const { getFormConfig, setFormConfig } = useFormConfig();
 
-    let formConfig = reactive({} as any);
-    formConfig = getFormConfig();
-    console.log(formConfig);
+    const formConfig = getFormConfig();
 
     const formConfigInput = (key, value) => {
-      console.log(key, value);
       formConfig[key] = value;
     };
 
-    watch(() => formConfig, () => {
+    watch(() => formConfig, debounce(() => {
       setFormConfig(formConfig);
-    }, { deep: true });
+    }, 300), { deep: true });
 
     return { formConfig, formConfigInput };
   },
