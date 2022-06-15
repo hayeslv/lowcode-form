@@ -7,6 +7,11 @@ export function removeItem(arr: any[], item) {
   return arr;
 }
 
+// 首字母大写
+export function titleCase(str: string) {
+  return str.replace(/( |^)[a-z]/g, L => L.toUpperCase());
+}
+
 export function isBoolean(value): boolean {
   return Object.prototype.toString.call(value) === "[object Boolean]";
 }

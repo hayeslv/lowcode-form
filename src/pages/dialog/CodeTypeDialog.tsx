@@ -12,11 +12,12 @@ export default defineComponent({
     visible: { type: Boolean, default: false },
     title: { type: String, default: "" },
   },
+  emits: ["update:visible", "confirm"],
   setup(props, { emit }) {
     const elForm = ref(null as any);
     const formData = reactive({
       fileName: "",
-      type: "file",
+      type: "download",
     });
 
     const dialogMethods = {

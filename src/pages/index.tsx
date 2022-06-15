@@ -7,12 +7,23 @@ import { EventName, useDrawingList, useGlobalEvent } from "~/hooks";
 import CodeTypeDialog from "~/pages/dialog/CodeTypeDialog";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
+import { generateMethods } from "~/plugins";
 
 export default defineComponent({
   setup() {
     const codeTypeVisible = ref(false);
     const codeTypeVisibleEvent = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
     codeTypeVisibleEvent.on((flag: boolean) => { codeTypeVisible.value = flag; });
+
+    const generate = (data) => {
+      const func = generateMethods[data.type];
+      func && func();
+    };
+
+    // 收集form数据
+    // const assembleFormData = () => {
+
+    // };
 
     onMounted(() => {
       // 初始化form
@@ -24,14 +35,14 @@ export default defineComponent({
       });
     });
 
-    return { codeTypeVisible };
+    return { codeTypeVisible, generate };
   },
   render() {
     return <div class="container">
       <LeftBoard />
       <CenterBoard />
       <RightBoard />
-      <CodeTypeDialog v-model:visible={this.codeTypeVisible} title="选择生成类型"/>
+      <CodeTypeDialog v-model:visible={this.codeTypeVisible} title="选择生成类型" onConfirm={this.generate} />
     </div>;
   },
 });

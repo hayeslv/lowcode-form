@@ -35,8 +35,16 @@ export const getDrawingListMaxId = () => {
 };
 
 /* ---------------------------------------- 表单属性 ---------------------------------------- */
-
-const defaultFormConfig = {
+export interface FormConfigType {
+  formRef: string;
+  formModel: string;
+  formRules?: string;
+  labelWidth: number;
+  gutter?: number;
+  labelPosition: string;
+  disabled?: boolean;
+}
+const defaultFormConfig: FormConfigType = {
   formRef: "elForm",
   formModel: "formData",
   formRules: "rules",
