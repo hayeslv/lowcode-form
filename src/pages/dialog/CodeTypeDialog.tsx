@@ -12,7 +12,6 @@ export default defineComponent({
     visible: { type: Boolean, default: false },
     title: { type: String, default: "" },
   },
-  emits: ["update:visible"],
   setup(props, { emit }) {
     const elForm = ref(null as any);
     const formData = reactive({
@@ -22,17 +21,16 @@ export default defineComponent({
 
     const dialogMethods = {
       open() {
-        console.log(123);
         formData.fileName = `${+new Date()}.vue`;
       },
       close() {
         emit("update:visible", false);
       },
       confirm() {
-        elForm.value.validate((flag: boolean) => {
-          if (flag) {
-            console.log("通过");
-          }
+        elForm.value.validate((valid: boolean) => {
+          if (!valid) return;
+          emit("confirm", { ...formData });
+          dialogMethods.close();
         });
       },
     };

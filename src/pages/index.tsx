@@ -1,14 +1,19 @@
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import LeftBoard from "~/pages/left-board";
 import CenterBoard from "~/pages/center-board";
 import RightBoard from "~/pages/right-board";
+import { useForm } from "~/config";
+import { EventName, useDrawingList, useGlobalEvent } from "~/hooks";
+import CodeTypeDialog from "~/pages/dialog/CodeTypeDialog";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
-import { useForm } from "~/config";
-import { useDrawingList } from "~/hooks";
 
 export default defineComponent({
   setup() {
+    const codeTypeVisible = ref(false);
+    const codeTypeVisibleEvent = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
+    codeTypeVisibleEvent.on((flag: boolean) => { codeTypeVisible.value = flag; });
+
     onMounted(() => {
       // 初始化form
       const { getForm } = useForm();
@@ -18,12 +23,15 @@ export default defineComponent({
         form[v.__vModel__] = v.__config__.defaultValue;
       });
     });
+
+    return { codeTypeVisible };
   },
   render() {
     return <div class="container">
       <LeftBoard />
       <CenterBoard />
       <RightBoard />
+      <CodeTypeDialog v-model:visible={this.codeTypeVisible} title="选择生成类型"/>
     </div>;
   },
 });
