@@ -8,6 +8,7 @@ import CodeTypeDialog from "~/pages/dialog/CodeTypeDialog";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
 import { generateMethods } from "~/plugins";
+import type { DialogFormType } from "~/types";
 
 export default defineComponent({
   setup() {
@@ -15,9 +16,9 @@ export default defineComponent({
     const codeTypeVisibleEvent = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
     codeTypeVisibleEvent.on((flag: boolean) => { codeTypeVisible.value = flag; });
 
-    const generate = (data) => {
+    const generate = (data: DialogFormType) => {
       const func = generateMethods[data.type];
-      func && func();
+      func && func(data);
     };
 
     // 收集form数据

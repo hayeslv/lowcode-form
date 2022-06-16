@@ -1,5 +1,6 @@
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput } from "element-plus";
 import { defineComponent, reactive, ref } from "vue";
+import type { DialogFormType } from "~/types";
 
 const rules = {
   fileName: [
@@ -18,7 +19,7 @@ export default defineComponent({
     const formData = reactive({
       fileName: "",
       type: "download",
-    });
+    } as DialogFormType);
 
     const dialogMethods = {
       open() {

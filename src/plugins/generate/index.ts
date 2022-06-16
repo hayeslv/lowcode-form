@@ -1,8 +1,9 @@
 import { cloneDeep } from "lodash";
 import { useDrawingList } from "~/hooks";
-import type { FormConfigTotalType } from "~/types";
+import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { useFormConfig } from "~/utils";
 import { makeUpHtml, vueTemplate } from "./html";
+import { saveAs } from "file-saver";
 
 /**
  * 集合表单数据
@@ -22,14 +23,15 @@ const generateCode = () => {
   const formData =  assembleFormData();
 
   const html = vueTemplate(makeUpHtml(formData));
-  console.log(html);
+  return html;
 };
 
 export const generateMethods = {
-  download() {
+  download(data: DialogFormType) {
     // 生成代码字符串
-    // const codeStr = generateCode();
-    generateCode();
+    const codeStr = generateCode();
+    const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, data.fileName);
   },
 };
 

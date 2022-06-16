@@ -14,6 +14,7 @@ specifiers:
   cz-conventional-changelog-zh: ^0.0.2
   element-plus: ^2.2.2
   eslint: ^8.11.0
+  file-saver: ^2.0.5
   husky: ^7.0.4
   lint-staged: ^12.3.7
   lodash: ^4.17.21
@@ -30,6 +31,7 @@ specifiers:
 dependencies:
   '@element-plus/icons-vue': 2.0.1_vue@3.2.31
   element-plus: 2.2.2_vue@3.2.31
+  file-saver: 2.0.5
   lodash: 4.17.21
   nprogress: 0.2.0
   vue: 3.2.31
@@ -2784,6 +2786,10 @@ packages:
     dependencies:
       escape-string-regexp: 1.0.5
     dev: true
+
+  /file-saver/2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+    dev: false
 
   /fill-range/4.0.0:
     resolution: {integrity: sha512-VcpLTWqWDiTerugjj8e3+esbg+skS3M9e54UuR3iCeIDMXCLTsAH8hTSzDQU/X6/6t3eYkOKoZSef2PlU6U1XQ==}
