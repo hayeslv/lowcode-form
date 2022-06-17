@@ -4,6 +4,7 @@ import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { useFormConfig } from "~/utils";
 import { makeUpHtml, vueTemplate } from "./html";
 import { saveAs } from "file-saver";
+import { makeUpJs } from "./js";
 
 /**
  * 集合表单数据
@@ -23,6 +24,9 @@ const generateCode = () => {
   const formData =  assembleFormData();
 
   const html = vueTemplate(makeUpHtml(formData));
+  const script = makeUpJs(formData);
+  console.log(script);
+  // const css =  // 处理css--暂时没有
   return html;
 };
 

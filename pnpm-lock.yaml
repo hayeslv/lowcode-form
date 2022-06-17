@@ -24,7 +24,6 @@ specifiers:
   vite: ^2.8.0
   vite-plugin-svg-icons: ^2.0.1
   vue: ^3.2.25
-  vue-draggable-next: ^2.1.1
   vue-router: ^4.0.14
   vue-tsc: ^0.29.8
 
@@ -35,7 +34,6 @@ dependencies:
   lodash: 4.17.21
   nprogress: 0.2.0
   vue: 3.2.31
-  vue-draggable-next: 2.1.1_vue@3.2.31
   vue-router: 4.0.14_vue@3.2.31
 
 devDependencies:
@@ -5381,15 +5379,6 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
-    dependencies:
-      vue: 3.2.31
-    dev: false
-
-  /vue-draggable-next/2.1.1_vue@3.2.31:
-    resolution: {integrity: sha512-f5lmA7t6LMaL4viR7dU30zzvqJzaKQs0ymL0Jy9UDT9uiZ2tXF3MzPzEvpTH2UODXZJkT+SnjeV1fXHMsgXLYA==}
-    peerDependencies:
-      sortablejs: ^1.14.0
-      vue: ^3.2.2
     dependencies:
       vue: 3.2.31
     dev: false
