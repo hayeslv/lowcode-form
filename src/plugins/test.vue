@@ -2,11 +2,11 @@
   <div>test</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
-  setup() {},
-});
+<script lang="ts" setup>
+import { reactive } from "vue";
+
+const form = reactive({});
+
 </script>
 
 <style lang="scss" scoped>

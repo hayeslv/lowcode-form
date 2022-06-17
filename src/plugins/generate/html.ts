@@ -11,6 +11,13 @@ export const vueTemplate = (str: string) => {
   </template>`;
 };
 
+export const vueScript = (str: string) => {
+  return `<script lang="ts" setup>
+    import { reactive } from "vue";
+    ${str}
+  </script>`;
+};
+
 const attrBuilder = (el: ElementComponent) => {
   return {
     tag: `el-${el.type}`,
