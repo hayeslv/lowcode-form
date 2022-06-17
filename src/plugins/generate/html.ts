@@ -35,8 +35,15 @@ const attrBuilder = (el: ElementComponent) => {
 const tags = {
   input: (el: ElementComponent) => {
     const { tag, vModel, placeholder } = attrBuilder(el);
-
     return `<${tag} ${vModel} ${placeholder}></${tag}>`;
+  },
+  textarea: (el: ElementComponent) => {
+    const { vModel, placeholder } = attrBuilder(el);
+    return `<el-input type="textarea" ${vModel} ${placeholder}></el-input>`;
+  },
+  number: (el: ElementComponent) => {
+    const { vModel, placeholder } = attrBuilder(el);
+    return `<el-input-number ${vModel} ${placeholder}></el-input-number>`;
   },
 };
 
