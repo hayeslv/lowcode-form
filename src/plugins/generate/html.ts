@@ -18,6 +18,11 @@ export const vueScript = (str: string) => {
   </script>`;
 };
 
+export const vueCssStyle = () => {
+  return `<style>
+  </style>`;
+};
+
 const attrBuilder = (el: ElementComponent) => {
   return {
     tag: `el-${el.type}`,

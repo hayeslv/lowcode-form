@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { useDrawingList } from "~/hooks";
 import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { useFormConfig } from "~/utils";
-import { makeUpHtml, vueScript, vueTemplate } from "./html";
+import { makeUpHtml, vueCssStyle, vueScript, vueTemplate } from "./html";
 import { saveAs } from "file-saver";
 import { makeUpJs } from "./js";
 
@@ -25,8 +25,8 @@ const generateCode = () => {
 
   const html = vueTemplate(makeUpHtml(formData));
   const script = vueScript(makeUpJs(formData));
-  // const css =  // 处理css--暂时没有
-  return html + "\n" + script;
+  const css =  vueCssStyle();
+  return html + "\n\n" + script + "\n\n" + css;
 };
 
 export const generateMethods = {
