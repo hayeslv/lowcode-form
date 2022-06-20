@@ -48,6 +48,13 @@ export const inputComponents: MenuComponent[] = [
     icon: "textarea",
   },
   {
+    type: "password",
+    typeName: "密码",
+    placeholder: "请输入密码",
+    label: "密码",
+    icon: "password",
+  },
+  {
     type: "number",
     typeName: "计数器",
     placeholder: "计数器",

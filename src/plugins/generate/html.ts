@@ -45,6 +45,10 @@ const tags = {
     const { vModel, placeholder } = attrBuilder(el);
     return `<el-input-number ${vModel} ${placeholder}></el-input-number>`;
   },
+  password: (el: ElementComponent) => {
+    const { vModel, placeholder } = attrBuilder(el);
+    return `<el-input type="password" show-password ${vModel} ${placeholder}></el-input>`;
+  },
 };
 
 // span不为24的用el-col包裹

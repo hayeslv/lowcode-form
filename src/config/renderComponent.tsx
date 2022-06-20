@@ -36,4 +36,10 @@ export const renderComponentMap = {
       onInput={(value) => onDefaultValueInput(value, component)}
       placeholder={component.placeholder}
     />,
+  password: (component: ElementComponent) =>
+    <ElInput modelValue={form[component.__vModel__]}
+      onInput={(value) => onDefaultValueInput(value, component)}
+      placeholder={component.placeholder}
+      type="password"
+      show-password />,
 };
