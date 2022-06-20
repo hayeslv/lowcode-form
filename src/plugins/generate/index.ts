@@ -20,19 +20,22 @@ const assembleFormData = (): FormConfigTotalType => {
 };
 
 // 生成代码
-const generateCode = () => {
+const generateCode = (beautifier) => {
   const formData =  assembleFormData();
 
   const html = vueTemplate(makeUpHtml(formData));
   const script = vueScript(makeUpJs(formData));
   const css =  vueCssStyle();
-  return html + "\n\n" + script + "\n\n" + css;
+  return beautifier.html(html + "\n\n" + script + "\n\n" + css, {
+    end_with_newline: true,
+    indent_size: 2,
+  });
 };
 
 export const generateMethods = {
-  download(data: DialogFormType) {
+  download(data: DialogFormType, beautifier) {
     // 生成代码字符串
-    const codeStr = generateCode();
+    const codeStr = generateCode(beautifier);
     const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
     saveAs(blob, data.fileName);
   },

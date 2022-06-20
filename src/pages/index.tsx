@@ -7,7 +7,7 @@ import { EventName, useDrawingList, useGlobalEvent } from "~/hooks";
 import CodeTypeDialog from "~/pages/dialog/CodeTypeDialog";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
-import { generateMethods } from "~/plugins";
+import { generateMethods, loadBeautifier } from "~/plugins";
 import type { DialogFormType } from "~/types";
 
 export default defineComponent({
@@ -18,13 +18,14 @@ export default defineComponent({
 
     const generate = (data: DialogFormType) => {
       const func = generateMethods[data.type];
-      func && func(data);
+      func && func(data, beautifier);
     };
 
     // 收集form数据
     // const assembleFormData = () => {
 
     // };
+    let beautifier;
 
     onMounted(() => {
       // 初始化form
@@ -33,6 +34,10 @@ export default defineComponent({
       const form = getForm();
       drawingList.value.forEach(v => {
         form[v.__vModel__] = v.__config__.defaultValue;
+      });
+
+      loadBeautifier(btf => {
+        beautifier = btf;
       });
     });
 
