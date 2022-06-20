@@ -25,7 +25,7 @@ export const vueCssStyle = () => {
 
 const attrBuilder = (el: ElementComponent) => {
   return {
-    tag: `el-${el.type}`,
+    tag: el.tag,
     vModel: `v-model="${globalConfig.formModel}.${el.__vModel__}"`,
     placeholder: el.placeholder ? `placeholder="${el.placeholder}"` : "",
   };
@@ -38,16 +38,16 @@ const tags = {
     return `<${tag} ${vModel} ${placeholder}></${tag}>`;
   },
   textarea: (el: ElementComponent) => {
-    const { vModel, placeholder } = attrBuilder(el);
-    return `<el-input type="textarea" ${vModel} ${placeholder}></el-input>`;
+    const { tag, vModel, placeholder } = attrBuilder(el);
+    return `<${tag} type="textarea" ${vModel} ${placeholder}></${tag}>`;
   },
   number: (el: ElementComponent) => {
-    const { vModel, placeholder } = attrBuilder(el);
-    return `<el-input-number ${vModel} ${placeholder}></el-input-number>`;
+    const { tag, vModel, placeholder } = attrBuilder(el);
+    return `<${tag} ${vModel} ${placeholder}></${tag}>`;
   },
   password: (el: ElementComponent) => {
-    const { vModel, placeholder } = attrBuilder(el);
-    return `<el-input type="password" show-password ${vModel} ${placeholder}></el-input>`;
+    const { tag, vModel, placeholder } = attrBuilder(el);
+    return `<${tag} type="password" show-password ${vModel} ${placeholder}></${tag}>`;
   },
 };
 

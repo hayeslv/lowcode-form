@@ -9,6 +9,7 @@ interface componentTypeItem {
 
 // 左侧未实例化的组件
 export interface MenuComponent {
+  tag: string;
   label: string;
   type: string;
   typeName: string;
@@ -34,6 +35,7 @@ export interface ElementComponent extends MenuComponent {
 // 输入型组件
 export const inputComponents: MenuComponent[] = [
   {
+    tag: "el-input",
     type: "input",
     typeName: "单行输入框",
     placeholder: "请输入单行文本",
@@ -41,6 +43,7 @@ export const inputComponents: MenuComponent[] = [
     icon: "input",
   },
   {
+    tag: "el-input",
     type: "textarea",
     typeName: "多行输入框",
     placeholder: "请输入多行文本",
@@ -48,6 +51,7 @@ export const inputComponents: MenuComponent[] = [
     icon: "textarea",
   },
   {
+    tag: "el-input",
     type: "password",
     typeName: "密码",
     placeholder: "请输入密码",
@@ -55,6 +59,7 @@ export const inputComponents: MenuComponent[] = [
     icon: "password",
   },
   {
+    tag: "el-input-number",
     type: "number",
     typeName: "计数器",
     placeholder: "计数器",
