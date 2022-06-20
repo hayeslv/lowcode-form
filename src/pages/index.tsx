@@ -2,7 +2,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import LeftBoard from "~/pages/left-board";
 import CenterBoard from "~/pages/center-board";
 import RightBoard from "~/pages/right-board";
-import { EventName, useDrawingList, useForm, useGlobalEvent } from "~/hooks";
+import { EventName, GlobelItem, useDrawingList, useForm, useGlobalEvent, useGlobalObject } from "~/hooks";
 import CodeTypeDialog from "~/pages/dialog/CodeTypeDialog";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
@@ -11,20 +11,16 @@ import type { DialogFormType } from "~/types";
 
 export default defineComponent({
   setup() {
+    const { setGlobalItem } = useGlobalObject();
+
     const codeTypeVisible = ref(false);
     const codeTypeVisibleEvent = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
     codeTypeVisibleEvent.on((flag: boolean) => { codeTypeVisible.value = flag; });
 
     const generate = (data: DialogFormType) => {
       const func = generateMethods[data.type];
-      func && func(data, beautifier);
+      func && func(data);
     };
-
-    // 收集form数据
-    // const assembleFormData = () => {
-
-    // };
-    let beautifier;
 
     onMounted(() => {
       // 初始化form
@@ -36,7 +32,7 @@ export default defineComponent({
       });
 
       loadBeautifier(btf => {
-        beautifier = btf;
+        setGlobalItem(GlobelItem.beautifier, btf);
       });
     });
 

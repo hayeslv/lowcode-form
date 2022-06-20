@@ -38,9 +38,9 @@
       background: $selectedColor;
       border-radius: 6px;
     }
-    // & > .drawing-item-copy, & > .drawing-item-delete{
-    //   display: initial;
-    // }
+  }
+  > .el-form-item {
+    padding: 12px 10px;
   }
   & > .drawing-item-copy, & > .drawing-item-delete{
     display: none;

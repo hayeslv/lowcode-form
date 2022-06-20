@@ -21,7 +21,6 @@ export function loadBeautifier(cb) {
 
   loadScript(beautifierUrl, () => {
     loading.close();
-    console.log((window as any).beautifier);
     beautifierObj = (window as any).beautifier;
     cb(beautifierObj);
   });
