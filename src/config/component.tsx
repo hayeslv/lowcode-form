@@ -1,5 +1,9 @@
+import { ElInput } from "element-plus";
 import { reactive } from "vue";
-import { useGlobalId } from "~/hooks";
+import { useForm, useGlobalId } from "~/hooks";
+
+// const { getForm } = useForm();
+// const form = getForm();
 
 interface componentTypeItem {
   key: string;
@@ -16,7 +20,7 @@ export interface MenuComponent {
   placeholder: string;
   icon?: string;
   isMenuComponent?: boolean; // 是否是菜单组件
-  // render: () => JSX.Element;
+  // render: (...args) => JSX.Element;
 }
 
 // 中间的组件（实例化后）
@@ -41,6 +45,10 @@ export const inputComponents: MenuComponent[] = [
     placeholder: "请输入单行文本",
     label: "单行输入框",
     icon: "input",
+    // render: (component: ElementComponent) =>
+    //   <ElInput modelValue={form[component.__vModel__]}
+    //     onInput={(value) => onDefaultValueInput(value, component)}
+    //     placeholder={component.placeholder} />,
   },
   {
     tag: "el-input",
@@ -107,20 +115,5 @@ export const menuComponentInstance = (() => {
         span: 24,
       },
     };
-  };
-})();
-
-// 使用form表单
-export const useForm = (() => {
-  const form = reactive({});
-  return () => {
-    const getForm = () => {
-      return form;
-    };
-    const setFormValue = (key: string, value?: any) => {
-      form[key] = value;
-    };
-
-    return { getForm, setFormValue };
   };
 })();

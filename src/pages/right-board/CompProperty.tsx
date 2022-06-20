@@ -1,7 +1,7 @@
 import { ElForm, ElFormItem, ElInput, ElSlider } from "element-plus";
 import { defineComponent } from "vue";
-import { onDefaultValueInput, useForm } from "~/config";
-import { useActiveComp } from "~/hooks";
+import { onDefaultValueInput } from "~/config";
+import { useActiveComp, useForm } from "~/hooks";
 
 export default defineComponent({
   setup() {
