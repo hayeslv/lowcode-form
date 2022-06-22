@@ -29,7 +29,7 @@ export default defineComponent({
 
     const dialogMethods = {
       open() {
-        formData.fileName = `${+new Date()}.vue`;
+        formData.fileName = `${+new Date()}.tsx`;
       },
       close() {
         emit("update:visible", false);

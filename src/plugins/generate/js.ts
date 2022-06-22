@@ -23,12 +23,16 @@ const buildData = (component: ElementComponent, dataList: KeyValue[]) => {
 };
 
 // 构建js代码
-const buildJsCode = (formData: FormConfigTotalType, dataList: KeyValue[]) => {
+const buildJsCode = (formData: FormConfigTotalType, dataList: KeyValue[], html: string) => {
   const dataStr = dataList.map(v => `${v.key}: "${v.value}"`).join(",\n");
-  const str = `const ${formData.formModel} = reactive({
+  const str = `const elForm = ref();
+  const ${formData.formModel} = reactive({
     ${dataStr}
   })`;
-  return str;
+  return `setup() {
+    ${str}
+    ${html}
+  }`;
 };
 
 /**
@@ -36,7 +40,7 @@ const buildJsCode = (formData: FormConfigTotalType, dataList: KeyValue[]) => {
  *
  * @param {FormConfigTotalType} formData 整个表单的配置
  */
-export const makeUpJs = (formData: FormConfigTotalType) => {
+export const makeUpJs = (formData: FormConfigTotalType, html: string) => {
   // globalConfig = formData;
   const dataList: KeyValue[] = []; // 组件数据参数
 
@@ -44,7 +48,7 @@ export const makeUpJs = (formData: FormConfigTotalType) => {
     buildAttributes(component, dataList);
   });
 
-  const script = buildJsCode(formData, dataList);
+  const script = buildJsCode(formData, dataList, html);
 
   return script;
 };

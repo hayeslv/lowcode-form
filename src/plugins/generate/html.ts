@@ -4,18 +4,38 @@ import type { FormConfigTotalType } from "~/types";
 let globalConfig: FormConfigTotalType; // 全局配置
 
 export const vueTemplate = (str: string) => {
-  return `<template>
-    <div>
-      ${str}
-    </div>
-  </template>`;
+  // return `<template>
+  //   <div>
+  //     ${str}
+  //   </div>
+  // </template>`;
+
+  // setup返回值部分
+  return `return () => ${str}`;
 };
 
-export const vueScript = (str: string) => {
-  return `<script lang="ts" setup>
-    import { reactive } from "vue";
+/**
+ * 包裹defineComponent
+ *
+ * @param {string} str
+ * @returns
+ */
+export const vueWrapDefineComponent = (str: string) => {
+  return `export default defineComponent({
     ${str}
-  </script>`;
+  })`;
+};
+
+/**
+ * 添加import
+ *
+ * @param {string} str
+ * @returns
+ */
+export const vueScriptImport = (str: string) => {
+  return `import { defineComponent, reactive, ref } from "vue";
+  import { ElForm, ElFormItem, ElInput, ElInputNumber } from "element-plus";
+    ${str}`;
 };
 
 export const vueCssStyle = () => {
@@ -46,29 +66,33 @@ const attrBuilder = (el: ElementComponent) => {
 // 组装相对应的tag
 const tags = {
   input: (el: ElementComponent) => {
-    const { tag, vModel, placeholder } = attrBuilder(el);
-    return `<${tag} ${vModel} ${placeholder}></${tag}>`;
+    const { vModel, placeholder } = attrBuilder(el);
+    // return `<${tag} ${vModel} ${placeholder}></${tag}>`;
+    return `<ElInput ${vModel} ${placeholder} />`;
   },
   textarea: (el: ElementComponent) => {
-    const { tag, vModel, placeholder } = attrBuilder(el);
-    return `<${tag} type="textarea" ${vModel} ${placeholder}></${tag}>`;
+    const { vModel, placeholder } = attrBuilder(el);
+    // return `<${tag} type="textarea" ${vModel} ${placeholder}></${tag}>`;
+    return `<ElInput type="textarea" ${vModel} ${placeholder} />`;
   },
   number: (el: ElementComponent) => {
-    const { tag, vModel, placeholder } = attrBuilder(el);
-    return `<${tag} ${vModel} ${placeholder}></${tag}>`;
+    const { vModel, placeholder } = attrBuilder(el);
+    // return `<${tag} ${vModel} ${placeholder}></${tag}>`;
+    return `<ElInputNumber ${vModel} ${placeholder} />`;
   },
   password: (el: ElementComponent) => {
-    const { tag, vModel, placeholder } = attrBuilder(el);
-    return `<${tag} type="password" show-password ${vModel} ${placeholder}></${tag}>`;
+    const { vModel, placeholder } = attrBuilder(el);
+    // return `<${tag} type="password" show-password ${vModel} ${placeholder}></${tag}>`;
+    return `<ElInput type="password" showPassword ${vModel} ${placeholder} />`;
   },
 };
 
 // span不为24的用el-col包裹
 const colWrapper = (component: ElementComponent, str: string) => {
   if (component.__config__.span !== 24) {
-    return `<el-col :span="${component.__config__.span}">
+    return `<ElCol span={${component.__config__.span}}>
       ${str}
-    </el-col>`;
+    </ElCol>`;
   }
   return str;
 };
@@ -78,7 +102,7 @@ const layouts = {
   colFormItem(component: ElementComponent) {
     const config = component.__config__;
     let labelWidth = "";
-    const label = `label=${component.label}`;
+    const label = `label="${component.label}"`;
 
     if (config.labelWidth && config.labelWidth !== globalConfig.labelWidth) {
       // 当前组件配置的labelWidth存在；并且和全局的labelWidth不一样（如果一样的话也就不需要再配置这里了）
@@ -86,9 +110,9 @@ const layouts = {
     }
     const tagDom = tags[component.type] ? tags[component.type](component) : null;
 
-    let str = `<el-form-item ${labelWidth} ${label} prop="${component.__vModel__}">
+    let str = `<ElFormItem ${labelWidth} ${label} prop="${component.__vModel__}">
       ${tagDom}
-    </el-form-item>`;
+    </ElFormItem>`;
     str = colWrapper(component, str);
     return str;
   },
@@ -124,8 +148,8 @@ export const makeUpHtml = (formData: FormConfigTotalType, type: string) => {
  * @param {string} children 内容
  */
 const buildFormTemplate = (formData: FormConfigTotalType, children: string) => {
-  const str = `<el-form ref="${formData.formRef}" :model="${formData.formModel}" label-width="${formData.labelWidth}px">
+  const str = `<ElForm ref={${formData.formRef}} model={${formData.formModel}} label-width="${formData.labelWidth}px">
     ${children}
-  </el-form>`;
+  </ElForm>`;
   return str;
 };

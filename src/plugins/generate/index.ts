@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { GlobelItem, useDrawingList, useGlobalObject } from "~/hooks";
 import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { useFormConfig } from "~/utils";
-import { makeUpHtml, vueCssStyle, vueScript, vueTemplate } from "./html";
+import { makeUpHtml, vueScriptImport, vueTemplate, vueWrapDefineComponent } from "./html";
 import { saveAs } from "file-saver";
 import { makeUpJs } from "./js";
 
@@ -23,12 +23,17 @@ const assembleFormData = (): FormConfigTotalType => {
 const generateCode = (data: DialogFormType) => {
   const { getGlobalItem } = useGlobalObject();
   const formData =  assembleFormData();
+  let str = "";
 
   const html = vueTemplate(makeUpHtml(formData, data.type));
-  const script = vueScript(makeUpJs(formData));
-  const css =  vueCssStyle();
+  const js = makeUpJs(formData, html);
+  // 添加defineComponent
+  str = vueWrapDefineComponent(js);
+  // 添加 import
+  const script = vueScriptImport(str);
+  // const css =  vueCssStyle();
   return getGlobalItem(GlobelItem.beautifier)
-    .html(html + "\n\n" + script + "\n\n" + css, {
+    .html(script, {
       end_with_newline: true,
       indent_size: 2,
     });
