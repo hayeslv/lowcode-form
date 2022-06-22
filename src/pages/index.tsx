@@ -8,17 +8,23 @@ import "~/style/layout.scss";
 import "~/style/element-reset.scss";
 import { generateMethods, loadBeautifier } from "~/plugins";
 import type { DialogFormType } from "~/types";
+import { TopOperateType } from "~/types";
 
 export default defineComponent({
   setup() {
     const { setGlobalItem } = useGlobalObject();
 
     const codeTypeVisible = ref(false);
+    const operateType = ref<TopOperateType>(TopOperateType.Download);
+
     const codeTypeVisibleEvent = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
-    codeTypeVisibleEvent.on((flag: boolean) => { codeTypeVisible.value = flag; });
+    codeTypeVisibleEvent.on((flag: boolean, type: TopOperateType) => {
+      codeTypeVisible.value = flag;
+      operateType.value = type;
+    });
 
     const generate = (data: DialogFormType) => {
-      const func = generateMethods[data.type];
+      const func = generateMethods[data.operateType];
       func && func(data);
     };
 
@@ -36,14 +42,14 @@ export default defineComponent({
       });
     });
 
-    return { codeTypeVisible, generate };
+    return { codeTypeVisible, operateType, generate };
   },
   render() {
     return <div class="container">
       <LeftBoard />
       <CenterBoard />
       <RightBoard />
-      <CodeTypeDialog v-model:visible={this.codeTypeVisible} title="选择生成类型" onConfirm={this.generate} />
+      <CodeTypeDialog v-model:visible={this.codeTypeVisible} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
     </div>;
   },
 });

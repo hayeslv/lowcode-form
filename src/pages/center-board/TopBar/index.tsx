@@ -3,6 +3,7 @@ import { Delete, Download } from "@element-plus/icons-vue";
 import { defineComponent } from "vue";
 import { EventName, useDrawingList, useGlobalEvent } from "~/hooks";
 import "./index.scss";
+import { TopOperateType } from "~/types";
 
 export default defineComponent({
   setup() {
@@ -19,7 +20,7 @@ export default defineComponent({
       download() {
         // visible.value = true;
         const event = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
-        event.emit(true);
+        event.emit(true, TopOperateType.Download);
       },
     };
 
