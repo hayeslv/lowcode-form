@@ -20,11 +20,11 @@ const assembleFormData = (): FormConfigTotalType => {
 };
 
 // 生成代码
-const generateCode = () => {
+const generateCode = (data: DialogFormType) => {
   const { getGlobalItem } = useGlobalObject();
   const formData =  assembleFormData();
 
-  const html = vueTemplate(makeUpHtml(formData));
+  const html = vueTemplate(makeUpHtml(formData, data.type));
   const script = vueScript(makeUpJs(formData));
   const css =  vueCssStyle();
   return getGlobalItem(GlobelItem.beautifier)
@@ -37,7 +37,7 @@ const generateCode = () => {
 export const generateMethods = {
   download(data: DialogFormType) {
     // 生成代码字符串
-    const codeStr = generateCode();
+    const codeStr = generateCode(data);
     const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
     saveAs(blob, data.fileName);
   },

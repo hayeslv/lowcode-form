@@ -23,6 +23,18 @@ export const vueCssStyle = () => {
   </style>`;
 };
 
+export const dialogWrapper = (str: string) => {
+  return `<el-dialog v-model="dialogVisible" title="Dialog Title">
+    ${str}
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+      </span>
+    </template>
+  </el-dialog>`;
+};
+
 const attrBuilder = (el: ElementComponent) => {
   return {
     tag: el.tag,
@@ -86,7 +98,7 @@ const layouts = {
  * 组装html代码。【入口函数】
  * @param {FormConfigTotalType} formData 整个表单的配置
  */
-export const makeUpHtml = (formData: FormConfigTotalType) => {
+export const makeUpHtml = (formData: FormConfigTotalType, type: string) => {
   globalConfig = formData;
   const htmlList: string[] = [];
   // 遍历渲染每个组件的html
@@ -96,7 +108,11 @@ export const makeUpHtml = (formData: FormConfigTotalType) => {
 
   const htmlStr = htmlList.join("\n");
   // 将组件代码放进form标签
-  const template = buildFormTemplate(formData, htmlStr);
+  let template = buildFormTemplate(formData, htmlStr);
+  // dialog标签包裹代码
+  if (type === "dialog") {
+    template = dialogWrapper(template);
+  }
 
   return template;
 };
