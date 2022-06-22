@@ -2,9 +2,8 @@ import { cloneDeep } from "lodash";
 import { GlobelItem, useDrawingList, useGlobalObject } from "~/hooks";
 import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { useFormConfig } from "~/utils";
-import { makeUpHtml, vueScriptImport, vueTemplate, vueWrapDefineComponent } from "./html";
 import { saveAs } from "file-saver";
-import { makeUpJs } from "./js";
+import { GenerateCode } from "./GenerateCode";
 
 /**
  * 集合表单数据
@@ -22,20 +21,21 @@ const assembleFormData = (): FormConfigTotalType => {
 // 生成代码
 const generateCode = (data: DialogFormType) => {
   const { getGlobalItem } = useGlobalObject();
-  const formData =  assembleFormData();
-  let str = "";
+  const formData = assembleFormData();
 
-  const html = vueTemplate(makeUpHtml(formData, data.type));
-  const js = makeUpJs(formData, html);
-  // 添加defineComponent
-  str = vueWrapDefineComponent(js);
-  // 添加 import
-  const script = vueScriptImport(str);
-  // const css =  vueCssStyle();
+  const generateCode = new GenerateCode(formData);
+  const code = generateCode
+    .makeUpHtml(data.type)
+    .buildSetup()
+    .defineComponentWrap()
+    .buildScriptImport()
+    .code;
+
   return getGlobalItem(GlobelItem.beautifier)
-    .html(script, {
-      end_with_newline: true,
-      indent_size: 2,
+    .html(code, {
+      end_with_newline: true, // 最后一行是否需要空行
+      indent_size: 2, // 缩进大小
+      indent_with_tabs: false, // 使用tab缩进
     });
 };
 
@@ -47,5 +47,3 @@ export const generateMethods = {
     saveAs(blob, data.fileName);
   },
 };
-
-export * from "./html";

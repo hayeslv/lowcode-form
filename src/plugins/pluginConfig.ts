@@ -5,5 +5,5 @@ function splicingPluginUrl(PluginName, version, fileName) {
 }
 
 export default {
-  beautifierUrl: splicingPluginUrl("js-beautify", "1.13.5", "beautifier.min.js"),
+  beautifierUrl: splicingPluginUrl("js-beautify", "1.14.4", "beautifier.min.js"),
 };

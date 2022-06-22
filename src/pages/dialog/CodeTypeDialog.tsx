@@ -1,6 +1,7 @@
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElRadioButton, ElRadioGroup } from "element-plus";
 import type { PropType } from "vue";
 import { defineComponent, reactive, ref } from "vue";
+import { CodeType } from "~/plugins/generate/GenerateCode";
 import type { DialogFormType, TopOperateType } from "~/types";
 
 const rules = {
@@ -20,7 +21,7 @@ export default defineComponent({
     const elForm = ref(null as any);
     const formData = reactive({
       fileName: "",
-      type: "page",
+      type: CodeType.Page,
     } as DialogFormType);
     const typeOptions = [
       { label: "页面", value: "page" },
