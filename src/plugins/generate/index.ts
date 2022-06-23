@@ -23,9 +23,9 @@ const generateCode = (data: DialogFormType) => {
   const { getGlobalItem } = useGlobalObject();
   const formData = assembleFormData();
 
-  const generateCode = new GenerateCode(formData);
+  const generateCode = new GenerateCode(formData, data.type);
   const code = generateCode
-    .makeUpHtml(data.type)
+    .makeUpHtml()
     .buildSetup()
     .defineComponentWrap()
     .buildScriptImport()

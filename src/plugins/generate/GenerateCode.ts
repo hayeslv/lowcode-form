@@ -40,22 +40,18 @@ const colWrapper = (component: ElementComponent, str: string) => {
 const tags = {
   input: (el: ElementComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
-    // return `<${tag} ${vModel} ${placeholder}></${tag}>`;
     return `<ElInput ${vModel} ${placeholder} />`;
   },
   textarea: (el: ElementComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
-    // return `<${tag} type="textarea" ${vModel} ${placeholder}></${tag}>`;
     return `<ElInput type="textarea" ${vModel} ${placeholder} />`;
   },
   number: (el: ElementComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
-    // return `<${tag} ${vModel} ${placeholder}></${tag}>`;
     return `<ElInputNumber ${vModel} ${placeholder} />`;
   },
   password: (el: ElementComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
-    // return `<${tag} type="password" show-password ${vModel} ${placeholder}></${tag}>`;
     return `<ElInput type="password" showPassword ${vModel} ${placeholder} />`;
   },
 };
@@ -82,22 +78,33 @@ const buildFormWrap = (formData: FormConfigTotalType, children: string) => {
 };
 
 export const dialogWrapper = (str: string) => {
-  return `<el-dialog v-model="dialogVisible" title="Dialog Title">
+  return `<ElDialog 
+  modelValue={props.visible} 
+  title="Dialog Title"
+  v-slots={{ 
+    footer:  () => <div class="dialog-footer">
+    <ElButton onClick={() => emit("update:visible", false)}>取消</ElButton>
+    <ElButton type="primary" onClick={() => emit("update:visible", false)}>确定</ElButton>
+  </div>
+  }}>
     ${str}
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
-      </span>
-    </template>
-  </el-dialog>`;
+  </ElDialog>`;
 };
 
 export class GenerateCode {
+  //* 表单配置 */
+  private _formData: FormConfigTotalType;
+  //* 生成的代码类型：表单、弹窗 */
+  private _codeType: GenerateCodeType;
+  //* props配置 */
+  private _propsCode = "";
+  //* 最终生成的代码 */
   private _code = "";
-  private _formData: FormConfigTotalType | null = null;
-  constructor(formData: FormConfigTotalType) {
+
+  constructor(formData: FormConfigTotalType, type: GenerateCodeType) {
     this._formData = formData;
+    this._codeType = type;
+
     globalConfig = formData;
   }
 
@@ -106,8 +113,8 @@ export class GenerateCode {
   }
 
   // 组装html代码（setup的返回部分）
-  makeUpHtml(type: GenerateCodeType) {
-    const elements = this._formData!.fileds; // 当前画布的元素
+  makeUpHtml() {
+    const elements = this._formData.fileds; // 当前画布的元素
     const htmlList: string[] = [];
 
     // 遍历渲染每个组件的html
@@ -117,9 +124,9 @@ export class GenerateCode {
     // 转换为字符串
     const htmlStr = htmlList.join("\n");
     // 将组件代码放进form标签
-    let template = buildFormWrap(this._formData!, htmlStr);
+    let template = buildFormWrap(this._formData, htmlStr);
     // dialog标签包裹代码
-    if (type === GenerateCodeType.Dialog) {
+    if (this._codeType === GenerateCodeType.Dialog) {
       template = dialogWrapper(template);
     }
 
@@ -128,10 +135,23 @@ export class GenerateCode {
     return this;
   }
 
+  // 生成props配置
+  private _buildProps() {
+    // TODO 目前只有dialog需要用到props.visible，这里先写死，以后再考虑动态化
+    if (this._codeType === GenerateCodeType.Dialog) {
+      this._propsCode = `props: {
+        visible: { type: Boolean, default: false },
+      },`;
+      this._code = `${this._propsCode}
+        ${this._code}
+      `;
+    }
+  }
+
   // 生成setup函数
   buildSetup() {
     // 获得formData的字符串键值对形式："key: value, key: value"
-    const dataStr = this._formData!.fileds
+    const dataStr = this._formData.fileds
       .map(v => ({
         key: v.__vModel__,
         value: v.__config__.defaultValue || "",
@@ -139,14 +159,14 @@ export class GenerateCode {
       .map(v => `${v.key}: "${v.value}"`)
       .join(",\n");
 
-    // 参数声明
-    const str = `const elForm = ref();
-    const ${this._formData!.formModel} = reactive({
+    // 参数声明（elForm、formData）
+    const str = `const ${this._formData.formRef} = ref();
+    const ${this._formData.formModel} = reactive({
       ${dataStr}
     })`;
 
     // 包裹setup
-    this._code = `setup() {
+    this._code = `setup(props, {emit}) {
       ${str}
       ${this._code}
     }`;
@@ -156,6 +176,7 @@ export class GenerateCode {
 
   // 包裹defineComponent
   defineComponentWrap() {
+    this._buildProps();
     this._code = `export default defineComponent({
       ${this._code}
     })`;
@@ -172,15 +193,3 @@ export class GenerateCode {
     return this;
   }
 }
-
-// export const dialogWrapper = (str: string) => {
-//   return `<el-dialog v-model="dialogVisible" title="Dialog Title">
-//     ${str}
-//     <template #footer>
-//       <span class="dialog-footer">
-//         <el-button @click="dialogVisible = false">取消</el-button>
-//         <el-button type="primary" @click="dialogVisible = false">确定</el-button>
-//       </span>
-//     </template>
-//   </el-dialog>`;
-// };
