@@ -1,18 +1,8 @@
 import type { ElementComponent } from "~/config";
 import type { FormConfigTotalType } from "~/types";
-
-interface KeyValue {
-  key: string | number;
-  value: string;
-}
+import { GenerateCodeType  } from "~/types";
 
 let globalConfig: FormConfigTotalType; // 全局配置
-
-// 生成的代码类型
-export const enum CodeType {
-  Page = "page",
-  Dialog = "dialog",
-}
 
 // 布局
 const layouts = {
@@ -78,20 +68,6 @@ const attrBuilder = (el: ElementComponent) => {
   };
 };
 
-// 构建参数
-const buildAttributes = (component: ElementComponent, dataList: KeyValue[]) => {
-  buildData(component, dataList);
-};
-
-// 构建data数据
-const buildData = (component: ElementComponent, dataList: KeyValue[]) => {
-  if (component.__vModel__ === undefined) return;
-  dataList.push({
-    key: component.__vModel__,
-    value: component.__config__.defaultValue || "",
-  });
-};
-
 /**
  * 组装Form表单：外层包裹form
  *
@@ -117,19 +93,6 @@ export const dialogWrapper = (str: string) => {
   </el-dialog>`;
 };
 
-// 构建js代码
-const buildJsCode = (formData: FormConfigTotalType, dataList: KeyValue[], html: string) => {
-  const dataStr = dataList.map(v => `${v.key}: "${v.value}"`).join(",\n");
-  const str = `const elForm = ref();
-  const ${formData.formModel} = reactive({
-    ${dataStr}
-  })`;
-  return `setup() {
-    ${str}
-    ${html}
-  }`;
-};
-
 export class GenerateCode {
   private _code = "";
   private _formData: FormConfigTotalType | null = null;
@@ -143,7 +106,7 @@ export class GenerateCode {
   }
 
   // 组装html代码（setup的返回部分）
-  makeUpHtml(type: CodeType) {
+  makeUpHtml(type: GenerateCodeType) {
     const elements = this._formData!.fileds; // 当前画布的元素
     const htmlList: string[] = [];
 
@@ -156,7 +119,7 @@ export class GenerateCode {
     // 将组件代码放进form标签
     let template = buildFormWrap(this._formData!, htmlStr);
     // dialog标签包裹代码
-    if (type === CodeType.Dialog) {
+    if (type === GenerateCodeType.Dialog) {
       template = dialogWrapper(template);
     }
 
@@ -167,28 +130,28 @@ export class GenerateCode {
 
   // 生成setup函数
   buildSetup() {
-    const dataList: KeyValue[] = []; // 组件数据参数
+    // 获得formData的字符串键值对形式："key: value, key: value"
+    const dataStr = this._formData!.fileds
+      .map(v => ({
+        key: v.__vModel__,
+        value: v.__config__.defaultValue || "",
+      }))
+      .map(v => `${v.key}: "${v.value}"`)
+      .join(",\n");
 
-    this._formData!.fileds.forEach(component => {
-      buildAttributes(component, dataList);
-    });
-
-    const setupAttr = this._buildJsCode(dataList);
-    this._code = setupAttr;
-
-    return this;
-  }
-
-  private _buildJsCode(dataList: KeyValue[]) {
-    const dataStr = dataList.map(v => `${v.key}: "${v.value}"`).join(",\n");
+    // 参数声明
     const str = `const elForm = ref();
     const ${this._formData!.formModel} = reactive({
       ${dataStr}
     })`;
-    return `setup() {
+
+    // 包裹setup
+    this._code = `setup() {
       ${str}
       ${this._code}
     }`;
+
+    return this;
   }
 
   // 包裹defineComponent
