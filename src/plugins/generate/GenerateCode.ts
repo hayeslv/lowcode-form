@@ -91,6 +91,22 @@ export const dialogWrapper = (str: string) => {
   </ElDialog>`;
 };
 
+/**
+ * 生成代码流程：
+ * 1、setup配置项
+ *    1-生成setup的return部分
+ *        1-根据“组件列表”中的组件类型，生成对应的组件
+ *        2-包裹ElFormItem
+ *        3-根据条件判断是否包裹ElCol
+ *        4-包裹ElForm
+ *        5-如果是dialog，就在外面包裹一层dialog
+ *    2-生成setup的formData（reactive）部分
+ *    3-使用setup参数包裹
+ * 2、props配置项
+ *    1-生成props
+ * 3、使用defineComponent包裹全部配置项
+ * 4、生成import内容
+ */
 export class GenerateCode {
   //* 表单配置 */
   private _formData: FormConfigTotalType;
