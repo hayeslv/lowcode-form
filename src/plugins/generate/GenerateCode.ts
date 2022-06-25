@@ -4,9 +4,14 @@ import { GenerateCodeType  } from "~/types";
 
 let globalConfig: FormConfigTotalType; // 全局配置
 
+// 是否有span不是24的Col
+const hasNot24Col = (components: ElementComponent[]) => {
+  return components.some(v => v.__config__.span !== 24);
+};
+
 // 布局
 const layouts = {
-  colFormItem(component: ElementComponent) {
+  colFormItem(component: ElementComponent, isRenderCol: boolean) {
     const config = component.__config__;
     let labelWidth = "";
     const label = `label="${component.label}"`;
@@ -20,19 +25,18 @@ const layouts = {
     let str = `<ElFormItem ${labelWidth} ${label} prop="${component.__vModel__}">
       ${tagDom}
     </ElFormItem>`;
-    str = colWrapper(component, str);
+    if (isRenderCol) {
+      str = colWrapper(component, str);
+    }
     return str;
   },
 };
 
 // span不为24的用el-col包裹
 const colWrapper = (component: ElementComponent, str: string) => {
-  if (component.__config__.span !== 24) {
-    return `<ElCol span={${component.__config__.span}}>
-      ${str}
-    </ElCol>`;
-  }
-  return str;
+  return `<ElCol span={${component.__config__.span}} style="width: 100%;">
+    ${str}
+  </ElCol>`;
 };
 
 // 组装相对应的tag
@@ -71,9 +75,11 @@ const attrBuilder = (el: ElementComponent) => {
  * @param {string} children 内容
  */
 const buildFormWrap = (formData: FormConfigTotalType, children: string) => {
-  const str = `<ElForm ref={${formData.formRef}} model={${formData.formModel}} label-width="${formData.labelWidth}px">
-    ${children}
-  </ElForm>`;
+  const str = `<ElRow>
+    <ElForm ref={${formData.formRef}} model={${formData.formModel}} label-width="${formData.labelWidth}px">
+      ${children}
+    </ElForm>
+  </ElRow>`;
   return str;
 };
 
@@ -133,9 +139,12 @@ export class GenerateCode {
     const elements = this._formData.fileds; // 当前画布的元素
     const htmlList: string[] = [];
 
+    // 是否需要渲染Col判断是否有span不是24的col
+    const isRenderCol = hasNot24Col(elements);
+
     // 遍历渲染每个组件的html
     elements.forEach(el => {
-      htmlList.push(layouts[el.layout](el));
+      htmlList.push(layouts[el.layout](el, isRenderCol));
     });
     // 转换为字符串
     const htmlStr = htmlList.join("\n");
