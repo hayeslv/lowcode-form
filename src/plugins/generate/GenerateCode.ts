@@ -38,6 +38,11 @@ const colWrapper = (component: ElementComponent, str: string) => {
     ${str}
   </ElCol>`;
 };
+const rowWrapper = (code: string) => {
+  return `<ElRow>
+    ${code}
+  </ElRow>`;
+};
 
 // 组装相对应的tag
 // TODO 改为注册的方式
@@ -75,11 +80,9 @@ const attrBuilder = (el: ElementComponent) => {
  * @param {string} children 内容
  */
 const buildFormWrap = (formData: FormConfigTotalType, children: string) => {
-  const str = `<ElRow>
-    <ElForm ref={${formData.formRef}} model={${formData.formModel}} label-width="${formData.labelWidth}px">
-      ${children}
-    </ElForm>
-  </ElRow>`;
+  const str = `<ElForm ref={${formData.formRef}} model={${formData.formModel}} label-width="${formData.labelWidth}px">
+    ${children}
+  </ElForm>`;
   return str;
 };
 
@@ -151,6 +154,10 @@ export class GenerateCode {
     const htmlStr = htmlList.join("\n");
     // 将组件代码放进form标签
     let template = buildFormWrap(this._formData, htmlStr);
+    // 包裹Row
+    if (isRenderCol) {
+      template = rowWrapper(template);
+    }
     // dialog标签包裹代码
     if (this._codeType === GenerateCodeType.Dialog) {
       template = dialogWrapper(template);
