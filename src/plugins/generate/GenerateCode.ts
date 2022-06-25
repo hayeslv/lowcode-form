@@ -130,6 +130,7 @@ export class GenerateCode {
     globalConfig = formData;
   }
 
+  // TODO 是否可以改成状态机的模式？
   get code() {
     return this._code;
   }
@@ -211,8 +212,12 @@ export class GenerateCode {
 
   // 添加import
   buildScriptImport() {
+    // 收集当前code中的全部El**
+    const allTag = this._code.match(/El\w*/g);
+    const shouldImportStr = [...new Set(allTag)].join(", ");
+
     this._code = `import { defineComponent, reactive, ref } from "vue";
-    import { ElForm, ElFormItem, ElInput, ElInputNumber } from "element-plus";\n
+    import { ${shouldImportStr} } from "element-plus";\n
       ${this._code}`;
 
     return this;
