@@ -77,3 +77,37 @@
     }
   }
 }
+
+.drawing-row-item{
+  position: relative;
+  cursor: move;
+  box-sizing: border-box;
+  border: 1px dashed #ccc;
+  border-radius: 3px;
+  padding: 0 2px;
+  margin-bottom: 15px;
+  &.active-from-item{
+    border: 1px dashed $primary-light;
+  }
+  .drawing-row-item {
+    margin-bottom: 2px;
+  }
+  .drag-wrapper{
+    min-height: 80px;
+    width: 100%;
+  }
+  .layout-name{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 12px;
+    color: #bbb;
+    display: inline-block;
+    padding: 0 6px;
+  }
+}
+
+// ---------- 修改element样式 ----------
+.el-col {
+  width: 100%;
+}

@@ -1,5 +1,5 @@
 import { CopyDocument, Delete } from "@element-plus/icons-vue";
-import { ElCol, ElFormItem, ElIcon } from "element-plus";
+import { ElCol, ElFormItem, ElIcon, ElRow } from "element-plus";
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
 import type { ElementComponent } from "~/config";
@@ -24,11 +24,16 @@ const itemBtns = ({ curComponent, copyItem, deleteItem }) => {
 };
 
 interface ColFormItemParams {
-  activeId: number | null;
+  activeId?: number;
   curComponent: ElementComponent;
   activeItem: (...args) => void;
   copyItem: (...args) => void;
   deleteItem: (...args) => void;
+}
+interface RowFormItemParams {
+  activeId?: number;
+  curComponent: ElementComponent;
+  activeItem: (...args) => void;
 }
 
 const layouts = {
@@ -50,18 +55,31 @@ const layouts = {
       {itemBtns({ curComponent, copyItem, deleteItem })}
     </ElCol>;
   },
+  // 行容器
+  rowFormItem({ activeId, curComponent, activeItem }: RowFormItemParams) {
+    return <ElCol span={curComponent.__config__.span}>
+      <ElRow class={["drawing-row-item", activeId === curComponent.id && "active-from-item"]}
+        {...{
+          onClick: $event => { activeItem(curComponent); $event.stopPropagation();  },
+        }}>
+        <span class="layout-name">{"row" + curComponent.id}</span>
+        <div class="drag-wrapper"></div>
+      </ElRow>
+    </ElCol>;
+  },
 };
 
 export default defineComponent({
   props: {
     activeId: { type: Number },
     component: { type: Object as PropType<ElementComponent>, required: true },
-    activeItem: { type: Function },
-    copyItem: { type: Function },
-    deleteItem: { type: Function },
+    activeItem: { type: Function as PropType<(...args) => void>, required: true  },
+    copyItem: { type: Function as PropType<(...args) => void>, required: true },
+    deleteItem: { type: Function as PropType<(...args) => void>, required: true },
   },
   setup() {},
   render() {
+    console.log(this.component.layout);
     const layout = layouts[this.component.layout];
     return layout({
       activeId: this.activeId,

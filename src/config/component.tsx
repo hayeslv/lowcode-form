@@ -16,7 +16,8 @@ export interface MenuComponent {
   label: string;
   type: string;
   typeName: string;
-  placeholder: string;
+  layout: "colFormItem" | "rowFormItem";
+  placeholder?: string;
   icon?: string;
   isMenuComponent?: boolean; // 是否是菜单组件
   // render: (...args) => JSX.Element;
@@ -25,13 +26,21 @@ export interface MenuComponent {
 // 中间的组件（实例化后）
 export interface ElementComponent extends MenuComponent {
   id: number;
-  layout: string;
   transiting: boolean;      // 是否正在过渡（改变位置）
   __vModel__: string;
   __config__: {
     span: number;
     labelWidth?: number;
     defaultValue?: any;
+  };
+}
+
+// 布局型组件（实例化后）
+export interface LayoutComponent extends MenuComponent {
+  id: number;
+  transiting: boolean;      // 是否正在过渡（改变位置）
+  __config__: {
+    span: number;
   };
 }
 
@@ -44,6 +53,7 @@ export const inputComponents: MenuComponent[] = [
     placeholder: "请输入单行文本",
     label: "单行输入框",
     icon: "input",
+    layout: "colFormItem",
     // render: (component: ElementComponent) =>
     //   <ElInput modelValue={form[component.__vModel__]}
     //     onInput={(value) => onDefaultValueInput(value, component)}
@@ -56,6 +66,7 @@ export const inputComponents: MenuComponent[] = [
     placeholder: "请输入多行文本",
     label: "多行输入框",
     icon: "textarea",
+    layout: "colFormItem",
   },
   {
     tag: "el-input",
@@ -64,6 +75,7 @@ export const inputComponents: MenuComponent[] = [
     placeholder: "请输入密码",
     label: "密码",
     icon: "password",
+    layout: "colFormItem",
   },
   {
     tag: "el-input-number",
@@ -72,6 +84,20 @@ export const inputComponents: MenuComponent[] = [
     placeholder: "计数器",
     label: "计数器",
     icon: "number",
+    layout: "colFormItem",
+  },
+];
+
+// 布局型组件
+export const layoutComponents: MenuComponent[] = [
+  // TODO 待优化：类型、名称过于冗余
+  {
+    tag: "el-col",
+    type: "layout",
+    typeName: "容器",
+    label: "容器",
+    icon: "row",
+    layout: "rowFormItem",
   },
 ];
 
@@ -90,7 +116,7 @@ export const componentTypeList: componentTypeItem[] = [
   {
     key: "layout",
     title: "布局型组件",
-    list: [],
+    list: layoutComponents,
   },
 ];
 
@@ -106,7 +132,6 @@ export const menuComponentInstance = (() => {
     return {
       ...element,
       id: id,
-      layout: "colFormItem", // 默认先用列排列
       isMenuComponent: true,
       transiting: false,
       __vModel__: key,
