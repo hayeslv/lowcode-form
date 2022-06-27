@@ -59,32 +59,41 @@ const blockHandler = {
     }
     // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
     setDraggingValueAsync(item);
-    console.log("start");
   },
   dragend: () => {
     childDragging = false;
     setDraggingValue(null);
-    console.log("end");
   },
   dragenter: (e: DragEvent, item: ElementComponent, container?: ElementComponent) => {
     e.preventDefault();
     if (!dragging.value) return;
     if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
     if (item.transiting) return; // 如果正在进行动画，则直接return
+    // TODO 待优化：1-容器内部元素也会触发；
+    // console.log(item); // 不要删
 
     if (item.type === "layout") {
       // 查看children中是否已经存在了
       if (item.children.some(v => v.id === dragging.value?.id)) return;
       item.children.push(dragging.value);
       drawingListDelete(dragging.value);
-      dragging.value = null;
       return;
     }
     if (container) {
       // 在容器内交换位置
       const itemIndex = container.children.findIndex(v => v.id === item.id);
       const draggingIndex = container.children.findIndex(v => v.id === dragging.value!.id);
-      [container.children[draggingIndex], container.children[itemIndex]] = [container.children[itemIndex], container.children[draggingIndex]];
+      if (draggingIndex === -1) {
+        // 查看children中是否已经存在了
+        if (!container.children.some(v => v.id === item.id)) {
+          // 从容器外拖进来容器
+          container.children.push(item);
+        }
+      } else {
+        // 容器内交换位置
+        [container.children[draggingIndex], container.children[itemIndex]] = [container.children[itemIndex], container.children[draggingIndex]];
+      }
+
       item.transiting = true;
       setTimeout(() => {
         item.transiting = false;
