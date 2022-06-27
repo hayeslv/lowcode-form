@@ -28,6 +28,7 @@ export interface ElementComponent extends MenuComponent {
   id: number;
   transiting: boolean;      // 是否正在过渡（改变位置）
   __vModel__: string;
+  children: ElementComponent[]; // 这个是容器组件需要用到的； // TODO 待优化：区分容器组件和普通组件的类型
   __config__: {
     span: number;
     labelWidth?: number;
@@ -135,6 +136,7 @@ export const menuComponentInstance = (() => {
       isMenuComponent: true,
       transiting: false,
       __vModel__: key,
+      children: [],
       __config__: {
         span: 24,
       },

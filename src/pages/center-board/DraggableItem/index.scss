@@ -21,14 +21,6 @@
   &.unfocus-bordered:not(.active-from-item) > div:first-child {
     border: 1px dashed #ccc;
   }
-  .el-icon{
-    width: 100%;
-    height: 100%;
-    margin: 0;
-  }
-  // .el-form-item{
-  //   padding: 12px 10px;
-  // }
 }
 
 .drawing-item, .drawing-row-item{
@@ -41,6 +33,11 @@
   }
   > .el-form-item {
     padding: 12px 10px;
+  }
+  .el-icon{
+    width: 100%;
+    height: 100%;
+    margin: 0;
   }
   & > .drawing-item-copy, & > .drawing-item-delete{
     display: none;

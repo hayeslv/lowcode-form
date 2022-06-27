@@ -36,7 +36,6 @@ export default defineComponent({
       if (!dragging.value) return;
       if (!drawingListExistItem(dragging.value)) {
         // 当前拖拽中的元素是否存在于drawingList中，如果不存在则说明是从左侧菜单拖入的（新增）
-        // const item = getRandomData();
         const item = dragging.value;
         setDraggingValue(item);
         drawingListAdd(item);
@@ -141,25 +140,6 @@ export default defineComponent({
                 onDragenter: ($event) => this.containerHandler.dragenter($event),
               }}
             >
-              {/* { this.drawingList.map((component) => (
-                <div class={[
-                  component.isMenuComponent && "menu-component",
-                  this.dragging && (component.id === this.dragging.id) && "sortable-ghost",
-                ]}
-                key={component.id}
-                draggable="true"
-                onDragstart={($event) => this.blockHandler.dragstart($event, component)}
-                onDragenter={($event) => this.blockHandler.dragenter($event, component)}
-                onDragend={() => this.blockHandler.dragend()}
-                >
-                  <DraggableItem
-                    activeId={getActiveId()}
-                    component={component}
-                    activeItem={this.methodsHandler.activeFormItem}
-                    copyItem={this.methodsHandler.drawingItemCopy}
-                    deleteItem={this.methodsHandler.drawingItemDelete}></DraggableItem>
-                </div>
-              )) } */}
               { this.drawingList.map((component) => (
                 <DraggableItem
                   class={[

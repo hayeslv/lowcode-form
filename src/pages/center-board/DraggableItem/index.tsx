@@ -1,9 +1,11 @@
 import { CopyDocument, Delete } from "@element-plus/icons-vue";
 import { ElCol, ElFormItem, ElIcon, ElRow } from "element-plus";
 import type { PropType } from "vue";
-import { defineComponent } from "vue";
+import { TransitionGroup, defineComponent } from "vue";
+
 import type { ElementComponent } from "~/config";
 import { renderComponentMap } from "~/config";
+import { useDragging, useDrawingList } from "~/hooks";
 import "./index.scss";
 
 const itemBtns = ({ curComponent, copyItem, deleteItem }) => {
@@ -34,6 +36,8 @@ interface RowFormItemParams {
   activeId?: number;
   curComponent: ElementComponent;
   activeItem: (...args) => void;
+  copyItem: (...args) => void;
+  deleteItem: (...args) => void;
 }
 
 const layouts = {
@@ -56,17 +60,57 @@ const layouts = {
     </ElCol>;
   },
   // 行容器
-  rowFormItem({ activeId, curComponent, activeItem }: RowFormItemParams) {
+  rowFormItem({ activeId, curComponent, activeItem, copyItem, deleteItem }: RowFormItemParams) {
     return <ElCol span={curComponent.__config__.span}>
       <ElRow class={["drawing-row-item", activeId === curComponent.id && "active-from-item"]}
         {...{
           onClick: $event => { activeItem(curComponent); $event.stopPropagation();  },
         }}>
         <span class="layout-name">{"row" + curComponent.id}</span>
-        <div class="drag-wrapper"></div>
+        {/* <div class="drag-wrapper"></div> */}
+        <TransitionGroup tag="div" name="slide"
+          {...{
+            class: "drag-wrapper",
+            onDragover: ($event) => containerHandler.dragover($event),
+            onDragenter: ($event) => containerHandler.dragenter($event, curComponent),
+          }}
+        >
+          {curComponent.children.map(c => <div key={c.id}>{c.label}</div>)}
+        </TransitionGroup>
+        {itemBtns({ curComponent, copyItem, deleteItem })}
       </ElRow>
     </ElCol>;
   },
+};
+
+const containerHandler = {
+  dragover: (e: DragEvent) => { // 拖拽组件，组件在容器中移动的时候
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = "move";
+    // e.dataTransfer!.effectAllowed = "move";
+  },
+  dragenter: (e: DragEvent, layoutComp: ElementComponent) => {
+    // 拖拽组件，组件刚进入容器的时候
+    // 从另一个组件上出来，进入容器上方的时候，也会触发
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = "move";
+    addNewElement(layoutComp);
+  },
+};
+
+// 容器中添加一个新元素
+const addNewElement = (layoutComp: ElementComponent) => {
+  // 当前正在拖拽的元素
+  const { dragging } = useDragging();
+  const { drawingListDelete } = useDrawingList();
+
+  if (!dragging.value) return;
+
+  // 1-删除drawingList中的“当前元素”
+  drawingListDelete(dragging.value);
+  // 2-将“当前元素”添加进容器
+  layoutComp.children.push(dragging.value);
+  dragging.value = null;
 };
 
 export default defineComponent({
@@ -79,7 +123,6 @@ export default defineComponent({
   },
   setup() {},
   render() {
-    console.log(this.component.layout);
     const layout = layouts[this.component.layout];
     return layout({
       activeId: this.activeId,
