@@ -50,12 +50,14 @@ interface RowFormItemParams {
 }
 
 let childDragging = false;
+let curContainer; // 当前容器
 
 const blockHandler = {
   dragstart: (e: DragEvent, item: ElementComponent, container?: ElementComponent) => {
     if (childDragging) return;
     if (container) {
       childDragging = true;
+      curContainer = container;
     }
     // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
     setDraggingValueAsync(item);
@@ -72,6 +74,8 @@ const blockHandler = {
     // TODO 待优化：1-容器内部元素也会触发；
     // console.log(item); // 不要删
 
+    console.log(item);
+
     if (item.type === "layout") {
       // 查看children中是否已经存在了
       if (item.children.some(v => v.id === dragging.value?.id)) return;
@@ -79,6 +83,16 @@ const blockHandler = {
       drawingListDelete(dragging.value);
       return;
     }
+
+    // 拖拽元素在容器中，目标元素不在容器中的情况
+    if (!container) {
+      if (curContainer.children.includes(dragging.value)) {
+        // 删除容器中的元素
+        const index = curContainer.children.map(v => v.id).findIndex(v => v === dragging.value!.id);
+        curContainer.children.splice(index, 1);
+      }
+    }
+
     if (container) {
       // 在容器内交换位置
       const itemIndex = container.children.findIndex(v => v.id === item.id);
@@ -109,6 +123,50 @@ const blockHandler = {
     setTimeout(() => {
       item.transiting = false;
     }, 200);
+  },
+};
+
+const containerHandler = {
+  dragstart: (e: DragEvent, item: ElementComponent) => {
+    if (childDragging) return;
+    // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
+    setDraggingValueAsync(item);
+  },
+  dragend: () => {
+    childDragging = false;
+    setDraggingValue(null);
+  },
+  dragenter: (e: DragEvent, item: ElementComponent) => {
+    e.preventDefault();
+    if (!dragging.value) return;
+    if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
+    if (item.transiting) return; // 如果正在进行动画，则直接return
+
+    if (item.type === "layout") {
+      // 查看children中是否已经存在了
+      if (item.children.some(v => v.id === dragging.value?.id)) return;
+      item.children.push(dragging.value);
+      drawingListDelete(dragging.value);
+      return;
+    }
+
+    addNewElement();
+    // 交换元素位置
+    drawingListChangePosition(dragging.value!, toRaw(item));
+
+    item.transiting = true;
+    setTimeout(() => {
+      item.transiting = false;
+    }, 200);
+  },
+  dragleave: (e: DragEvent, container: ElementComponent) => {
+    e.preventDefault();
+    // if ((e.target! as any).className.includes("drawing-row-item")) {
+    //   // 从容器中离开
+    //   // 删除容器中的元素
+    //   const index = container.children.map(v => v.id).findIndex(id =>  id === dragging.value!.id);
+    //   container.children.splice(index, 1);
+    // }
   },
 };
 
@@ -167,9 +225,10 @@ const layouts = {
         {...{
           draggable: "true",
           onClick: $event => { activeItem(curComponent); $event.stopPropagation();  },
-          onDragstart: ($event) => blockHandler.dragstart($event, curComponent),
-          onDragenter: ($event) => blockHandler.dragenter($event, curComponent),
-          onDragend: () => blockHandler.dragend(),
+          onDragstart: ($event) => containerHandler.dragstart($event, curComponent),
+          onDragenter: ($event) => containerHandler.dragenter($event, curComponent),
+          onDragleave: ($event) => containerHandler.dragleave($event, curComponent),
+          onDragend: () => containerHandler.dragend(),
         }}>
         <span class="layout-name">{"row" + curComponent.id}</span>
         <TransitionGroup tag="div" name="slide"
