@@ -53,7 +53,12 @@ export const useDrawingList = () => {
   // 判断drawingList中是否存在某元素
   const drawingListExistItem = (element: ElementComponent | null): boolean => {
     if (!element || !element.id) return false;
-    return drawingList.value.some(item => item.id === element.id);
+    // TODO 使用map维护全部组件
+    const childrensItem: ElementComponent[] = [];
+    drawingList.value
+      .map(v => toRaw(v.children))
+      .forEach(v => childrensItem.push(...v));
+    return drawingList.value.some(item => item.id === element.id) || childrensItem.some(v => v.id === element.id);
   };
 
   // 将drawingList中的isMenuComponent归位false

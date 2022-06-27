@@ -46,7 +46,6 @@ export default defineComponent({
       dragover: (e: DragEvent) => { // 拖拽组件，组件在容器中移动的时候
         e.preventDefault();
         e.dataTransfer!.dropEffect = "move";
-        // e.dataTransfer!.effectAllowed = "move";
       },
       dragenter: (e: DragEvent) => {
         // 拖拽组件，组件刚进入容器的时候
@@ -66,10 +65,20 @@ export default defineComponent({
         setDraggingValue(null);
       },
       dragenter: (e: DragEvent, item: ElementComponent) => {
-        if (item.transiting) return;
         e.preventDefault();
-        // e.dataTransfer!.effectAllowed = "move";
-        // e.dataTransfer!.dropEffect = "move";
+        if (!dragging.value) return;
+        if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
+        if (item.transiting) return; // 如果正在进行动画，则直接return
+
+        if (item.type === "layout") {
+          // 查看children中是否已经存在了
+          if (item.children.some(v => v.id === dragging.value?.id)) return;
+          item.children.push(dragging.value);
+          drawingListDelete(dragging.value);
+          dragging.value = null;
+          return;
+        }
+
         addNewElement();
         // 交换元素位置
         drawingListChangePosition(dragging.value!, toRaw(item));
@@ -142,17 +151,7 @@ export default defineComponent({
             >
               { this.drawingList.map((component) => (
                 <DraggableItem
-                  class={[
-                    component.isMenuComponent && "menu-component",
-                    this.dragging && (component.id === this.dragging.id) && "sortable-ghost",
-                  ]}
                   key={component.id}
-                  {...{
-                    draggable: "true",
-                    onDragstart: ($event) => this.blockHandler.dragstart($event, component),
-                    onDragenter: ($event) => this.blockHandler.dragenter($event, component),
-                    onDragend: () => this.blockHandler.dragend(),
-                  }}
                   activeId={getActiveId()}
                   component={component}
                   activeItem={this.methodsHandler.activeFormItem}

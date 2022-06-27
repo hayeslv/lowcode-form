@@ -1,6 +1,6 @@
 @import "~/style/common.scss";
 
-$transitionTime: 0.3s;
+
 
 .center-scrollbar {
   height: calc(100vh - 42px);
@@ -15,7 +15,7 @@ $transitionTime: 0.3s;
   box-sizing: border-box;
   & > .el-form {
     // 69 = 12+15+42
-    height: calc(100vh - 69px);
+    min-height: calc(100vh - 69px);
     width: 100%;
   }
 }
