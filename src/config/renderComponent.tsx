@@ -1,5 +1,6 @@
 import { ElInput, ElInputNumber } from "element-plus";
 import { useDrawingList, useForm } from "~/hooks";
+import { createComponentsConfig } from "~/utils";
 import type { ElementComponent } from "./component";
 
 const { drawingList } = useDrawingList();
@@ -42,26 +43,20 @@ export const renderComponentMap = {
       type="password"
       show-password />,
 };
-// export const renderComponentMap = {
-//   input: (component: ElementComponent) =>
-//     <ElInput modelValue={form[component.__vModel__]}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder} />,
-//   textarea: (component: ElementComponent) =>
-//     <ElInput modelValue={form[component.__vModel__]}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder}
-//       type="textarea" {...{ rows: 2 }}
-//     />,
-//   number: (component: ElementComponent) =>
-//     <ElInputNumber modelValue={parseInt(form[component.__vModel__])}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder}
-//     />,
-//   password: (component: ElementComponent) =>
-//     <ElInput modelValue={form[component.__vModel__]}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder}
-//       type="password"
-//       show-password />,
-// };
+
+// 注册的方式提供组件
+export const ComponentsConfig = createComponentsConfig();
+
+ComponentsConfig.registry("input", {
+  label: "输入框",
+  model: {
+    default: "",
+  },
+  preview: () => <ElInput />,
+  render: ({ model, custom }) => (
+    <ElInput
+      {...custom}
+      {...model.default}
+    />
+  ),
+});

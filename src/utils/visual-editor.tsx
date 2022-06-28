@@ -1,5 +1,6 @@
 // import { inject, provide } from "vue";
 import { createEvent } from "~/plugins";
+import type { IComponent } from "~/types";
 
 // 虚拟拖拽事件
 export interface VisualDragEvent {
@@ -56,3 +57,29 @@ export const VisualComponentClick = (() => {
     emit: (...args) => event.emit(...args),
   };
 })();
+
+// 创建组件配置
+export function createComponentsConfig() {
+  const componentList: IComponent[] = [];
+  const componentMap: Record<string, IComponent> = {};
+
+  return {
+    componentList,
+    componentMap,
+    registry: <
+      Model extends Record<string, string> = {},
+    >(key: string, component: {
+      label: string;
+      model?: Model;
+      preview: () => JSX.Element;
+      render: (data: {
+        model: { [k in keyof Model]: any };
+        custom: Record<string, any>;
+      }) => JSX.Element;
+    }) => {
+      const comp = { ...component, key };
+      componentList.push(comp);
+      componentMap[key] = comp;
+    },
+  };
+}

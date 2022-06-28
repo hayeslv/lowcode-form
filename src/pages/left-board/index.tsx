@@ -1,6 +1,7 @@
 import { ElScrollbar } from "element-plus";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import logo from "~/assets/logo.png";
+import { ComponentsConfig } from "~/config";
 import type { MenuComponent } from "~/config/component";
 import { componentTypeList } from "~/config/component";
 import { VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
@@ -8,6 +9,8 @@ import "./index.scss";
 
 export default defineComponent({
   setup() {
+    const config = ref(ComponentsConfig);
+
     const menuDragger = (() => { // 菜单中的组件拖拽
       // let component = null as null | MenuComponent;
       const componentHandler = {
@@ -33,7 +36,7 @@ export default defineComponent({
       return componentHandler;
     })();
 
-    return { menuDragger };
+    return { config, menuDragger };
   },
   render() {
     return <div class="left-board">
@@ -71,6 +74,13 @@ export default defineComponent({
               ))}
             </div>
           </div>)}
+          {
+            this.config.componentList.map(component => (
+              <div>
+                {component.preview()}
+              </div>
+            ))
+          }
         </div>
       </ElScrollbar>
     </div>;

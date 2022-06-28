@@ -159,14 +159,9 @@ const containerHandler = {
       item.transiting = false;
     }, 200);
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dragleave: (e: DragEvent, container: ElementComponent) => {
     e.preventDefault();
-    // if ((e.target! as any).className.includes("drawing-row-item")) {
-    //   // 从容器中离开
-    //   // 删除容器中的元素
-    //   const index = container.children.map(v => v.id).findIndex(id =>  id === dragging.value!.id);
-    //   container.children.splice(index, 1);
-    // }
   },
 };
 
