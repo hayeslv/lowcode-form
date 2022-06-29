@@ -1,5 +1,5 @@
 import type { FormConfigTotalType, IComponent } from "~/types";
-import { GenerateCodeType  } from "~/types";
+import { ComponentType, GenerateCodeType  } from "~/types";
 
 let globalConfig: FormConfigTotalType; // 全局配置
 
@@ -19,11 +19,22 @@ const layouts = {
       // 当前组件配置的labelWidth存在；并且和全局的labelWidth不一样（如果一样的话也就不需要再配置这里了）
       labelWidth = `label-width="${config.labelWidth}px"`;
     }
-    const tagDom = tags[component.type] ? tags[component.type](component) : null;
+    const tagDom = tags[component.key] ? tags[component.key](component) : null;
 
     let str = `<ElFormItem ${labelWidth} ${label} prop="${component.__vModel__}">
       ${tagDom}
     </ElFormItem>`;
+    if (isRenderCol) {
+      str = colWrapper(component, str);
+    }
+    return str;
+  },
+  rowFormItem(component: IComponent, isRenderCol: boolean) {
+    // TODO 待优化：这里透传isRenderCol，感觉有点奇怪。
+    const children = component.children.map(el => layouts[el.layout](el, isRenderCol));
+    let str = `<ElRow>
+      ${children.join("\n")}
+    </ElRow>`;
     if (isRenderCol) {
       str = colWrapper(component, str);
     }
@@ -183,6 +194,14 @@ export class GenerateCode {
   buildSetup() {
     // 获得formData的字符串键值对形式："key: value, key: value"
     const dataStr = this._formData.fileds
+      .reduce((prev, now) => {
+        if (now.type === ComponentType.LAYOUT) {
+          prev.push(...now.children);
+        } else {
+          prev.push(now);
+        }
+        return prev;
+      }, [] as IComponent[])
       .map(v => ({
         key: v.__vModel__,
         value: v.__config__.defaultValue || "",

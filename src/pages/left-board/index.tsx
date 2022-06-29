@@ -45,27 +45,6 @@ export default defineComponent({
       </div>
       <ElScrollbar class="left-scrollbar">
         <div class="components-list">
-          {/* {componentTypeList.map((item, index) => <div key={index}>
-            <div class="components-title">
-              <svg-icon icon-class="component" />
-              <span>{ item.title }</span>
-            </div>
-            <div class="components-draggable">
-              {item.list.map(component => (
-                <div class="component-item"
-                  key={component.type}
-                  draggable
-                  onDragstart={(e) => this.menuDragger.dragstart(e, component)}
-                  onDragend={() => this.menuDragger.dragend()}
-                  onClick={() => this.menuDragger.click(component)}>
-                  <div class="component-body">
-                    <svg-icon icon-class={component.icon} />
-                    <span>{component.label}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>)} */}
           {
             ComponentTypes.map(v => (
               <div key={v.key}>
