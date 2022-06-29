@@ -24,9 +24,12 @@ export default defineComponent({
       <ElFormItem label="占位提示：">
         <ElInput v-model={component.placeholder} placeholder="请输入占位提示" clearable />
       </ElFormItem>
-      { component.__config__.span !== undefined && <ElFormItem label="表单栅格：">
-        <ElSlider v-model={component.__config__.span} min={1} max={24} marks={{ 12: "" }} />
-      </ElFormItem> }
+      {
+        component.__config__.span !== undefined &&
+        <ElFormItem label="表单栅格：">
+          <ElSlider v-model={component.__config__.span} min={1} max={24} marks={{ 12: "" }} />
+        </ElFormItem>
+      }
       <ElFormItem label="标签宽度：">
         <ElInput v-model={component.__config__.labelWidth} type="number" placeholder="请输入标签宽度" />
       </ElFormItem>

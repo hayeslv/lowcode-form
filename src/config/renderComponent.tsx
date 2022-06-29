@@ -132,3 +132,18 @@ ComponentsConfig.registry("password", {
     {...model.default}
   />
 ));
+
+/* ---------------------------------------- 布局型组件 ---------------------------------------- */
+//* 容器 */
+ComponentsConfig.registry("container", {
+  label: "容器",
+  type: ComponentType.LAYOUT,
+  icon: "row",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "rowFormItem",
+  __config__: {
+    span: 24,
+  },
+  children: [],
+});

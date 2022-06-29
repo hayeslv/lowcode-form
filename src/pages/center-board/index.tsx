@@ -119,7 +119,6 @@ export default defineComponent({
     });
 
     watch(() => drawingList.value, debounce(() => {
-      console.log(drawingList.value);
       saveDrawingList(drawingList.value);
     }, 300), { deep: true });
 

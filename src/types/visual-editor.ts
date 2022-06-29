@@ -25,7 +25,7 @@ export interface IComponent {
   render?: (...args) => JSX.Element;
   __config__: {                   // 配置项
     span: number;                     // 1~24，col宽度
-    defaultValue: string | number;             // 默认值
+    defaultValue?: string | number;             // 默认值
     labelWidth?: number;              // form-item的label宽度
   };
   // render: (data: {                // 渲染函数

@@ -53,10 +53,6 @@ export const inputComponents: MenuComponent[] = [
     label: "单行输入框",
     icon: "input",
     layout: "colFormItem",
-    // render: (component: ElementComponent) =>
-    //   <ElInput modelValue={form[component.__vModel__]}
-    //     onInput={(value) => onDefaultValueInput(value, component)}
-    //     placeholder={component.placeholder} />,
   },
   {
     tag: "el-input",
@@ -134,22 +130,6 @@ export const menuComponentInstance = (() => {
       ...element,
       id: id,
       __vModel__: key,
-      // render: ({ model, custom }) => (
-      //   <ElInput
-      //     modelValue={form[component.__vModel__]}
-      //     onInput={(value) => onDefaultValueInput(value, component)}
-      //     placeholder={component.placeholder}
-      //     {...custom}
-      //     {...model.default}
-      //   />
-      // ),
-      // isMenuComponent: true,
-      // transiting: false,
-      //
-      // children: [],
-      // __config__: {
-      //   span: 24,
-      // },
     };
   };
 })();

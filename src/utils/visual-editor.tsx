@@ -87,11 +87,11 @@ export function createComponentsConfig() {
         layout: "colFormItem" | "rowFormItem";
         __config__: {
           span: number;
-          defaultValue: string | number;
+          defaultValue?: string | number;
         };
         children: IComponent[];
       },
-      render: (data: {
+      render?: (data: {
         model: { [k in keyof Model]: any };
         custom?: Record<string, any>;
         component: IComponent;
@@ -103,7 +103,7 @@ export function createComponentsConfig() {
       componentMap[key] = comp;
       componentTypeMap[component.type].push(comp);
 
-      setComponentRender(key, render);
+      render && setComponentRender(key, render);
     },
   };
 }
