@@ -1,9 +1,9 @@
 import { ref } from "vue";
-import type { ElementComponent } from "~/config";
+import type { IComponent } from "~/types";
 
 // 使用当前激活的组件
 export const useActiveComp = (() => {
-  const activeComp = ref(null as ElementComponent | null);
+  const activeComp = ref(null as IComponent | null);
   return () => {
     // 获取激活组件的id
     const getActiveId = () => {
@@ -14,7 +14,7 @@ export const useActiveComp = (() => {
       return activeComp.value;
     };
     // 设置激活组件
-    const setActiveComp = (component: ElementComponent | null) => {
+    const setActiveComp = (component: IComponent | null) => {
       activeComp.value = component;
     };
 

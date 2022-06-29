@@ -1,14 +1,15 @@
 import { ElInput, ElInputNumber } from "element-plus";
 import { useDrawingList, useForm } from "~/hooks";
+import type { IComponent, IComponentType } from "~/types";
+import { ComponentType } from "~/types";
 import { createComponentsConfig } from "~/utils";
-import type { ElementComponent } from "./component";
 
 const { drawingList } = useDrawingList();
 const { getForm } = useForm();
 const form = getForm();
 
 // 更新默认值
-export const onDefaultValueInput = (value, component: ElementComponent) => {
+export const onDefaultValueInput = (value, component: IComponent) => {
   const vModel = component.__vModel__;
   // 从drawingList中找到绑定值是vModel的对象，将其默认值更新
   drawingList.value.forEach(v => {
@@ -17,46 +18,115 @@ export const onDefaultValueInput = (value, component: ElementComponent) => {
     }
   });
   // 更新form的值
-  form[component.__vModel__] = value;
+  form[component.__vModel__!] = value;
 };
 
-export const renderComponentMap = {
-  input: (component: ElementComponent) =>
-    <ElInput modelValue={form[component.__vModel__]}
-      onInput={(value) => onDefaultValueInput(value, component)}
-      placeholder={component.placeholder} />,
-  textarea: (component: ElementComponent) =>
-    <ElInput modelValue={form[component.__vModel__]}
-      onInput={(value) => onDefaultValueInput(value, component)}
-      placeholder={component.placeholder}
-      type="textarea" {...{ rows: 2 }}
-    />,
-  number: (component: ElementComponent) =>
-    <ElInputNumber modelValue={parseInt(form[component.__vModel__])}
-      onInput={(value) => onDefaultValueInput(value, component)}
-      placeholder={component.placeholder}
-    />,
-  password: (component: ElementComponent) =>
-    <ElInput modelValue={form[component.__vModel__]}
-      onInput={(value) => onDefaultValueInput(value, component)}
-      placeholder={component.placeholder}
-      type="password"
-      show-password />,
-};
+// export const renderComponentMap = {
+//   input: (component: ElementComponent) =>
+//     <ElInput modelValue={form[component.__vModel__]}
+//       onInput={(value) => onDefaultValueInput(value, component)}
+//       placeholder={component.placeholder} />,
+//   textarea: (component: ElementComponent) =>
+//     <ElInput modelValue={form[component.__vModel__]}
+//       onInput={(value) => onDefaultValueInput(value, component)}
+//       placeholder={component.placeholder}
+//       type="textarea" {...{ rows: 2 }}
+//     />,
+//   number: (component: ElementComponent) =>
+//     <ElInputNumber modelValue={parseInt(form[component.__vModel__])}
+//       onInput={(value) => onDefaultValueInput(value, component)}
+//       placeholder={component.placeholder}
+//     />,
+//   password: (component: ElementComponent) =>
+//     <ElInput modelValue={form[component.__vModel__]}
+//       onInput={(value) => onDefaultValueInput(value, component)}
+//       placeholder={component.placeholder}
+//       type="password"
+//       show-password />,
+// };
 
+// 组件类型
+export const ComponentTypes: IComponentType[] = [
+  { key: ComponentType.INPUT, value: "输入型组件" },
+  { key: ComponentType.SELECT, value: "选择型组件" },
+  { key: ComponentType.LAYOUT, value: "布局型组件" },
+];
 // 注册的方式提供组件
 export const ComponentsConfig = createComponentsConfig();
 
+//* 文本输入框 */
 ComponentsConfig.registry("input", {
-  label: "输入框",
+  label: "单行输入框",
+  type: ComponentType.INPUT,
   model: {
     default: "",
   },
-  preview: () => <ElInput />,
-  render: ({ model, custom }) => (
-    <ElInput
-      {...custom}
-      {...model.default}
-    />
-  ),
-});
+  icon: "input",
+  placeholder: "请输入文本内容",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  __config__: {
+    span: 24,
+    defaultValue: "",
+  },
+  children: [],
+}, ({ model, custom, component }) => (
+  <ElInput
+    // modelValue={form[component.__vModel__]}
+    // onInput={(value) => onDefaultValueInput(value, component)}
+    placeholder={component.placeholder}
+    {...custom}
+    {...model.default}
+  />
+));
+//* 多行文本输入框 */
+ComponentsConfig.registry("textarea", {
+  label: "多行输入框",
+  type: ComponentType.INPUT,
+  model: {
+    default: "",
+  },
+  icon: "textarea",
+  placeholder: "请输入多行文本内容",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  __config__: {
+    span: 24,
+    defaultValue: "",
+  },
+  children: [],
+}, ({ model, custom, component }) => (
+  <ElInput
+    type="textarea"
+    placeholder={component.placeholder}
+    {...{ rows: 2 }}
+    {...custom}
+    {...model.default}
+  />
+));
+//* 计数器 */
+ComponentsConfig.registry("number", {
+  label: "计数器",
+  type: ComponentType.INPUT,
+  model: {
+    default: "",
+  },
+  icon: "number",
+  placeholder: "计数器",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  __config__: {
+    span: 24,
+    defaultValue: "",
+  },
+  children: [],
+}, ({ model, custom, component }) => (
+  <ElInputNumber
+    placeholder={component.placeholder}
+    {...custom}
+    {...model.default}
+  />
+));

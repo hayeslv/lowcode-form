@@ -3,9 +3,8 @@ import { ElCol, ElFormItem, ElIcon, ElRow } from "element-plus";
 import type { PropType } from "vue";
 import { toRaw, TransitionGroup, defineComponent } from "vue";
 
-import type { ElementComponent } from "~/config";
-import { renderComponentMap } from "~/config";
-import { useDragging, useDrawingList } from "~/hooks";
+import { useComponentRender, useDragging, useDrawingList, useForm } from "~/hooks";
+import type { IComponent } from "~/types";
 import "./index.scss";
 
 const { dragging, setDraggingValue, setDraggingValueAsync } = useDragging();
@@ -35,15 +34,15 @@ const itemBtns = ({ curComponent, copyItem, deleteItem }) => {
 
 interface ColFormItemParams {
   activeId?: number;
-  curComponent: ElementComponent;
-  container?: ElementComponent;
+  curComponent: IComponent;
+  container?: IComponent;
   activeItem: (...args) => void;
   copyItem: (...args) => void;
   deleteItem: (...args) => void;
 }
 interface RowFormItemParams {
   activeId?: number;
-  curComponent: ElementComponent;
+  curComponent: IComponent;
   activeItem: (...args) => void;
   copyItem: (...args) => void;
   deleteItem: (...args) => void;
@@ -53,7 +52,7 @@ let childDragging = false;
 let curContainer; // 当前容器
 
 const blockHandler = {
-  dragstart: (e: DragEvent, item: ElementComponent, container?: ElementComponent) => {
+  dragstart: (e: DragEvent, item: IComponent, container?: IComponent) => {
     if (childDragging) return;
     if (container) {
       childDragging = true;
@@ -66,15 +65,13 @@ const blockHandler = {
     childDragging = false;
     setDraggingValue(null);
   },
-  dragenter: (e: DragEvent, item: ElementComponent, container?: ElementComponent) => {
+  dragenter: (e: DragEvent, item: IComponent, container?: IComponent) => {
     e.preventDefault();
     if (!dragging.value) return;
     if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
     if (item.transiting) return; // 如果正在进行动画，则直接return
     // TODO 待优化：1-容器内部元素也会触发；
     // console.log(item); // 不要删
-
-    console.log(item);
 
     if (item.type === "layout") {
       // 查看children中是否已经存在了
@@ -85,7 +82,7 @@ const blockHandler = {
     }
 
     // 拖拽元素在容器中，目标元素不在容器中的情况
-    if (!container) {
+    if (!container && curContainer) {
       if (curContainer.children.includes(dragging.value)) {
         // 删除容器中的元素
         const index = curContainer.children.map(v => v.id).findIndex(v => v === dragging.value!.id);
@@ -127,7 +124,7 @@ const blockHandler = {
 };
 
 const containerHandler = {
-  dragstart: (e: DragEvent, item: ElementComponent) => {
+  dragstart: (e: DragEvent, item: IComponent) => {
     if (childDragging) return;
     // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
     setDraggingValueAsync(item);
@@ -136,7 +133,7 @@ const containerHandler = {
     childDragging = false;
     setDraggingValue(null);
   },
-  dragenter: (e: DragEvent, item: ElementComponent) => {
+  dragenter: (e: DragEvent, item: IComponent) => {
     e.preventDefault();
     if (!dragging.value) return;
     if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
@@ -160,7 +157,7 @@ const containerHandler = {
     }, 200);
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  dragleave: (e: DragEvent, container: ElementComponent) => {
+  dragleave: (e: DragEvent, container: IComponent) => {
     e.preventDefault();
   },
 };
@@ -176,10 +173,25 @@ const addNewElement = () => {
   }
 };
 
+const { getComponentRender } = useComponentRender();
+const { getForm } = useForm();
+const form = getForm();
+
 const layouts = {
   colFormItem({ activeId, curComponent, container, activeItem, copyItem, deleteItem }: ColFormItemParams) {
     const config = curComponent.__config__;
     const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
+    const render = getComponentRender(curComponent.key)({
+      model: Object.keys(curComponent.model || {}).reduce((prev, propName) => {
+        const modelName = curComponent.__vModel__;
+        prev[propName] = {
+          [propName === "default" ? "modelValue" : propName]: modelName ? form[modelName] : null,
+          [propName === "default" ? "onUpdate:modelValue" : "onChange"]: (val: any) => !!modelName && (form[modelName] = val),
+        };
+        return prev;
+      }, {} as Record<string, any>),
+      component: curComponent,
+    });
     return <ElCol
       class={[
         "drawing-item",
@@ -200,7 +212,7 @@ const layouts = {
       {
         !curComponent.isMenuComponent &&
         <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
-          {renderComponentMap[curComponent.type] && renderComponentMap[curComponent.type](curComponent)}
+          { render }
         </ElFormItem>
       }
       {itemBtns({ curComponent, copyItem, deleteItem })}
@@ -242,7 +254,7 @@ const layouts = {
 export default defineComponent({
   props: {
     activeId: { type: Number },
-    component: { type: Object as PropType<ElementComponent>, required: true },
+    component: { type: Object as PropType<IComponent>, required: true },
     activeItem: { type: Function as PropType<(...args) => void>, required: true  },
     copyItem: { type: Function as PropType<(...args) => void>, required: true },
     deleteItem: { type: Function as PropType<(...args) => void>, required: true },

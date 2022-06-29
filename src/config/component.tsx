@@ -1,8 +1,6 @@
 
 import { useForm, useGlobalId } from "~/hooks";
-
-// const { getForm } = useForm();
-// const form = getForm();
+import type { IComponent } from "~/types";
 
 interface componentTypeItem {
   key: string;
@@ -123,7 +121,9 @@ export const componentTypeList: componentTypeItem[] = [
 
 // 左侧菜单组件实例化
 export const menuComponentInstance = (() => {
-  return (element: MenuComponent): ElementComponent => {
+  return (element: IComponent): IComponent => {
+    // 已经实例化过了（有id）
+    if (element.id) return element;
     const { getGlobalId } = useGlobalId();
     const { setFormValue } = useForm();
     const id = getGlobalId(); // 组件id
@@ -133,13 +133,23 @@ export const menuComponentInstance = (() => {
     return {
       ...element,
       id: id,
-      isMenuComponent: true,
-      transiting: false,
       __vModel__: key,
-      children: [],
-      __config__: {
-        span: 24,
-      },
+      // render: ({ model, custom }) => (
+      //   <ElInput
+      //     modelValue={form[component.__vModel__]}
+      //     onInput={(value) => onDefaultValueInput(value, component)}
+      //     placeholder={component.placeholder}
+      //     {...custom}
+      //     {...model.default}
+      //   />
+      // ),
+      // isMenuComponent: true,
+      // transiting: false,
+      //
+      // children: [],
+      // __config__: {
+      //   span: 24,
+      // },
     };
   };
 })();

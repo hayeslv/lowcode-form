@@ -1,17 +1,17 @@
 import { ref, toRaw } from "vue";
-import type { ElementComponent } from "~/config";
+import type { IComponent } from "~/types";
 import { getOriginArray } from "~/utils";
 
-const drawingList = ref([] as ElementComponent[]);
+const drawingList = ref([] as IComponent[]);
 
 export const useDrawingList = () => {
   // 初始化drawingList数据
-  const drawingListInit = (list: ElementComponent[]) => {
+  const drawingListInit = (list: IComponent[]) => {
     drawingList.value = list;
   };
 
   // 添加元素
-  const drawingListAdd = (element: ElementComponent, anchor?: ElementComponent) => {
+  const drawingListAdd = (element: IComponent, anchor?: IComponent) => {
     if (!anchor) {
       drawingList.value.push(toRaw(element));
       return;
@@ -24,7 +24,7 @@ export const useDrawingList = () => {
   };
 
   // 删除元素
-  const drawingListDelete = (element: ElementComponent | null) => {
+  const drawingListDelete = (element: IComponent | null) => {
     if (!element) return;
     // 获取入参在drawingList中的位置
     const index = drawingList.value.map(item => item.id).indexOf(element.id);
@@ -33,7 +33,7 @@ export const useDrawingList = () => {
   };
 
   // 交换元素位置
-  const drawingListChangePosition = (dragging: ElementComponent, target: ElementComponent) => {
+  const drawingListChangePosition = (dragging: IComponent, target: IComponent) => {
     // 获取原始数组
     const componentList = getOriginArray(drawingList.value);
     // 目标元素位置
@@ -51,10 +51,10 @@ export const useDrawingList = () => {
   };
 
   // 判断drawingList中是否存在某元素
-  const drawingListExistItem = (element: ElementComponent | null): boolean => {
+  const drawingListExistItem = (element: IComponent | null): boolean => {
     if (!element || !element.id) return false;
     // TODO 使用map维护全部组件
-    const childrensItem: ElementComponent[] = [];
+    const childrensItem: IComponent[] = [];
     drawingList.value
       .map(v => toRaw(v.children))
       .forEach(v => childrensItem.push(...v));

@@ -1,12 +1,12 @@
 import { isProxy, ref, toRaw, watch } from "vue";
-import type { ElementComponent } from "~/config";
+import type { IComponent } from "~/types";
 import { getOriginArray } from "./vue";
 
 // 先使用localStorage存储，之后可能会改为数据库存储
 const DRAWING_LIST = "lowcode_drawing_list"; // 当前绘制组件列表
 const FORM_CONFIG = "lowcode_form_conig"; // 表单配置
 
-export function getDrawingList(): ElementComponent[] {
+export function getDrawingList(): IComponent[] {
   const str = localStorage.getItem(DRAWING_LIST);
   try {
     if (str) return JSON.parse(str);
@@ -17,7 +17,7 @@ export function getDrawingList(): ElementComponent[] {
 }
 
 // 存储drawingList
-export function saveDrawingList(list: ElementComponent[]) {
+export function saveDrawingList(list: IComponent[]) {
   if (isProxy(list)) {
     list = getOriginArray(list);
   }

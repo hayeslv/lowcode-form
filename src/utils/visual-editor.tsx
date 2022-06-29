@@ -1,6 +1,8 @@
 // import { inject, provide } from "vue";
+import { useComponentRender } from "~/hooks";
 import { createEvent } from "~/plugins";
 import type { IComponent } from "~/types";
+import { ComponentType } from "~/types";
 
 // 虚拟拖拽事件
 export interface VisualDragEvent {
@@ -60,26 +62,48 @@ export const VisualComponentClick = (() => {
 
 // 创建组件配置
 export function createComponentsConfig() {
-  const componentList: IComponent[] = [];
+  // 分类
+  const componentTypeMap: Record<ComponentType, IComponent[]> = {
+    [ComponentType.INPUT]: [],
+    [ComponentType.SELECT]: [],
+    [ComponentType.LAYOUT]: [],
+  };
+  // 全部菜单组件的map
   const componentMap: Record<string, IComponent> = {};
 
   return {
-    componentList,
     componentMap,
-    registry: <
-      Model extends Record<string, string> = {},
-    >(key: string, component: {
-      label: string;
-      model?: Model;
-      preview: () => JSX.Element;
+    componentTypeMap,
+    registry: <Model extends Record<string, string> = {}>(
+      key: string,
+      component: {
+        label: string;
+        type: ComponentType;
+        model?: Model;
+        icon: string;
+        transiting: boolean;
+        isMenuComponent: boolean;
+        placeholder?: string;
+        layout: "colFormItem" | "rowFormItem";
+        __config__: {
+          span: number;
+          defaultValue: string;
+        };
+        children: IComponent[];
+      },
       render: (data: {
         model: { [k in keyof Model]: any };
-        custom: Record<string, any>;
-      }) => JSX.Element;
-    }) => {
+        custom?: Record<string, any>;
+        component: IComponent;
+        __vModel__?: string;
+      }) => JSX.Element) => {
+      const { setComponentRender } = useComponentRender();
+      // 函数体
       const comp = { ...component, key };
-      componentList.push(comp);
       componentMap[key] = comp;
+      componentTypeMap[component.type].push(comp);
+
+      setComponentRender(key, render);
     },
   };
 }

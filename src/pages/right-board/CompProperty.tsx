@@ -14,7 +14,7 @@ export default defineComponent({
     const { getActiveComp } = useActiveComp();
     const component = getActiveComp()!;
     return <ElForm label-width="90px">
-      <ElFormItem label="组件类型：">{component.typeName}</ElFormItem>
+      <ElFormItem label="组件类型：">{component.key}</ElFormItem>
       <ElFormItem label="标题：">
         <ElInput v-model={component.label} placeholder="请输入标题" clearable />
       </ElFormItem>
@@ -32,7 +32,7 @@ export default defineComponent({
       </ElFormItem>
       <ElFormItem label="默认值：">
         <ElInput
-          modelValue={this.form[component.__vModel__]}
+          modelValue={this.form[component.__vModel__!]}
           onInput={(value) => onDefaultValueInput(value, component)}
           placeholder="请输入默认值"
           clearable

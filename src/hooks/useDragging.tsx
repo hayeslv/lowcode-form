@@ -1,14 +1,14 @@
 import { ref } from "vue";
-import type { ElementComponent } from "~/config";
+import type { IComponent } from "~/types";
 
-const dragging = ref(null as ElementComponent | null);
+const dragging = ref(null as IComponent | null);
 
 export function useDragging() {
-  const setDraggingValue = (element: ElementComponent | null) => {
+  const setDraggingValue = (element: IComponent | null) => {
     dragging.value = element;
   };
 
-  const setDraggingValueAsync = (element: ElementComponent | null) => {
+  const setDraggingValueAsync = (element: IComponent | null) => {
     setTimeout(() => { // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
       setDraggingValue(element);
     });

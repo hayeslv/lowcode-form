@@ -1,13 +1,13 @@
 import { ElForm, ElRow, ElScrollbar } from "element-plus";
-import { defineComponent, onMounted, toRaw, TransitionGroup, watch } from "vue";
+import { defineComponent, onMounted, TransitionGroup, watch } from "vue";
 import DraggableItem from "./DraggableItem";
-import type { ElementComponent, MenuComponent } from "~/config/component";
 import { menuComponentInstance } from "~/config/component";
 import { VisualComponentClick, VisualDragEnd, VisualDragStart, getDrawingList, saveDrawingList, useFormConfig } from "~/utils";
 import TopBar from "./TopBar";
 import { debounce } from "lodash";
 import { useActiveComp, useDragging, useDrawingList } from "~/hooks";
 import "./index.scss";
+import type { IComponent } from "~/types";
 
 export default defineComponent({
   setup() {
@@ -24,12 +24,11 @@ export default defineComponent({
       drawingListAdd,
       drawingListDelete,
       drawingListExistItem,
-      drawingListChangePosition,
       resetDrawingListState,
     } = useDrawingList();
 
     // 当前正在拖拽的元素
-    const { dragging, setDraggingValue, setDraggingValueAsync } = useDragging();
+    const { dragging, setDraggingValue } = useDragging();
 
     // 添加一个新元素
     const addNewElement = () => {
@@ -56,56 +55,56 @@ export default defineComponent({
       },
     };
 
-    const blockHandler = {
-      dragstart: (e: DragEvent, item) => {
-        // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
-        setDraggingValueAsync(item);
-      },
-      dragend: () => {
-        setDraggingValue(null);
-      },
-      dragenter: (e: DragEvent, item: ElementComponent) => {
-        e.preventDefault();
-        if (!dragging.value) return;
-        if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
-        if (item.transiting) return; // 如果正在进行动画，则直接return
+    // const blockHandler = {
+    //   dragstart: (e: DragEvent, item) => {
+    //     // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
+    //     setDraggingValueAsync(item);
+    //   },
+    //   dragend: () => {
+    //     setDraggingValue(null);
+    //   },
+    //   dragenter: (e: DragEvent, item: ElementComponent) => {
+    //     e.preventDefault();
+    //     if (!dragging.value) return;
+    //     if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
+    //     if (item.transiting) return; // 如果正在进行动画，则直接return
 
-        if (item.type === "layout") {
-          // 查看children中是否已经存在了
-          if (item.children.some(v => v.id === dragging.value?.id)) return;
-          item.children.push(dragging.value);
-          drawingListDelete(dragging.value);
-          dragging.value = null;
-          return;
-        }
+    //     if (item.type === "layout") {
+    //       // 查看children中是否已经存在了
+    //       if (item.children.some(v => v.id === dragging.value?.id)) return;
+    //       item.children.push(dragging.value);
+    //       drawingListDelete(dragging.value);
+    //       dragging.value = null;
+    //       return;
+    //     }
 
-        addNewElement();
-        // 交换元素位置
-        drawingListChangePosition(dragging.value!, toRaw(item));
+    //     addNewElement();
+    //     // 交换元素位置
+    //     drawingListChangePosition(dragging.value!, toRaw(item));
 
-        item.transiting = true;
-        setTimeout(() => {
-          item.transiting = false;
-        }, 200);
-      },
-    };
+    //     item.transiting = true;
+    //     setTimeout(() => {
+    //       item.transiting = false;
+    //     }, 200);
+    //   },
+    // };
 
     const methodsHandler = {
-      activeFormItem(currentItem: ElementComponent) {
+      activeFormItem(currentItem: IComponent) {
         // 设置激活组件
         setActiveComp(currentItem);
       },
-      drawingItemCopy(currentItem: ElementComponent) {
+      drawingItemCopy(currentItem: IComponent) {
         const component = menuComponentInstance(currentItem);
         component.isMenuComponent = false;
         drawingListAdd(component);
       },
-      drawingItemDelete(currentItem: ElementComponent) {
+      drawingItemDelete(currentItem: IComponent) {
         drawingListDelete(currentItem);
       },
     };
 
-    VisualDragStart.on((menuComp: MenuComponent) => {
+    VisualDragStart.on((menuComp: IComponent) => {
       const component = menuComponentInstance(menuComp);
       setDraggingValue(component);
     });
@@ -113,7 +112,7 @@ export default defineComponent({
       resetDrawingListState();
       setDraggingValue(null);
     });
-    VisualComponentClick.on((menuComp: MenuComponent) => {
+    VisualComponentClick.on((menuComp: IComponent) => {
       const component = menuComponentInstance(menuComp);
       drawingListAdd(component);
       resetDrawingListState();
@@ -128,7 +127,7 @@ export default defineComponent({
       drawingListInit(getDrawingList());
     });
 
-    return { dragging, drawingList, formConfig, containerHandler, blockHandler, methodsHandler };
+    return { dragging, drawingList, formConfig, containerHandler, methodsHandler };
   },
   render() {
     const { getActiveId } = useActiveComp();

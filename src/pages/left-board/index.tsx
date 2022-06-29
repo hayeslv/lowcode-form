@@ -1,9 +1,8 @@
 import { ElScrollbar } from "element-plus";
 import { defineComponent, ref } from "vue";
 import logo from "~/assets/logo.png";
-import { ComponentsConfig } from "~/config";
-import type { MenuComponent } from "~/config/component";
-import { componentTypeList } from "~/config/component";
+import { ComponentsConfig, ComponentTypes } from "~/config";
+import type { IComponent } from "~/types";
 import { VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
 
@@ -12,24 +11,19 @@ export default defineComponent({
     const config = ref(ComponentsConfig);
 
     const menuDragger = (() => { // 菜单中的组件拖拽
-      // let component = null as null | MenuComponent;
       const componentHandler = {
-        dragstart: (e: DragEvent, current: MenuComponent) => {
+        dragstart: (e: DragEvent, current: IComponent) => {
           // 处理拖拽菜单组件的开始动作
-          // component = current; // 更新当前组件
           VisualDragStart.emit(current);
         },
         dragover: () => {
           VisualDragOver.emit();
         },
         dragend: () => {
-          VisualDragEnd.emit();
           // 处理拖拽菜单组件的结束动作
-          // component = null;
-
-          // console.log("enenend");
+          VisualDragEnd.emit();
         },
-        click: (component: MenuComponent) => {
+        click: (component: IComponent) => {
           VisualComponentClick.emit(component);
         },
       };
@@ -50,7 +44,7 @@ export default defineComponent({
       </div>
       <ElScrollbar class="left-scrollbar">
         <div class="components-list">
-          {componentTypeList.map((item, index) => <div key={index}>
+          {/* {componentTypeList.map((item, index) => <div key={index}>
             <div class="components-title">
               <svg-icon icon-class="component" />
               <span>{ item.title }</span>
@@ -63,9 +57,6 @@ export default defineComponent({
                   onDragstart={(e) => this.menuDragger.dragstart(e, component)}
                   onDragend={() => this.menuDragger.dragend()}
                   onClick={() => this.menuDragger.click(component)}>
-                  {/*
-                  onDragend={this.menuDragger.dragend}
-                  onDragover={this.menuDragger.dragover}> */}
                   <div class="component-body">
                     <svg-icon icon-class={component.icon} />
                     <span>{component.label}</span>
@@ -73,11 +64,29 @@ export default defineComponent({
                 </div>
               ))}
             </div>
-          </div>)}
+          </div>)} */}
           {
-            this.config.componentList.map(component => (
-              <div>
-                {component.preview()}
+            ComponentTypes.map(v => (
+              <div key={v.key}>
+                <div class="components-title">
+                  <svg-icon icon-class="component" />
+                  <span>{ v.value }</span>
+                </div>
+                <div class="components-draggable">
+                  {this.config.componentTypeMap[v.key].map(component => (
+                    <div class="component-item"
+                      key={component.type}
+                      draggable
+                      onDragstart={(e) => this.menuDragger.dragstart(e, component)}
+                      onDragend={() => this.menuDragger.dragend()}
+                      onClick={() => this.menuDragger.click(component)}>
+                      <div class="component-body">
+                        <svg-icon icon-class={component.icon} />
+                        <span>{component.label}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))
           }
