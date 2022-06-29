@@ -1,6 +1,7 @@
 import { ElScrollbar } from "element-plus";
 import { defineComponent, ref } from "vue";
 import logo from "~/assets/logo.png";
+import github from "~/icons/github.svg";
 import { ComponentsConfig, ComponentTypes } from "~/config";
 import type { IComponent } from "~/types";
 import { VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
@@ -38,7 +39,7 @@ export default defineComponent({
         <div class="logo">
           <img src={logo} alt="logo" /> Lowcode Form
           <a class="github" href="https://github.com/hayeslv/lowcode-form" target="_blank">
-            <img src="https://github.githubassets.com/pinned-octocat.svg" alt="github" />
+            <img src={github} alt="github" />
           </a>
         </div>
       </div>
