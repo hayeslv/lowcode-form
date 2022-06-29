@@ -75,8 +75,8 @@ const blockHandler = {
 
     if (item.type === "layout") {
       // 查看children中是否已经存在了
-      if (item.children.some(v => v.id === dragging.value?.id)) return;
-      item.children.push(dragging.value);
+      if (item.children!.some(v => v.id === dragging.value?.id)) return;
+      item.children!.push(dragging.value);
       drawingListDelete(dragging.value);
       return;
     }
@@ -92,17 +92,17 @@ const blockHandler = {
 
     if (container) {
       // 在容器内交换位置
-      const itemIndex = container.children.findIndex(v => v.id === item.id);
-      const draggingIndex = container.children.findIndex(v => v.id === dragging.value!.id);
+      const itemIndex = container.children!.findIndex(v => v.id === item.id);
+      const draggingIndex = container.children!.findIndex(v => v.id === dragging.value!.id);
       if (draggingIndex === -1) {
         // 查看children中是否已经存在了
-        if (!container.children.some(v => v.id === item.id)) {
+        if (!container.children!.some(v => v.id === item.id)) {
           // 从容器外拖进来容器
-          container.children.push(item);
+          container.children!.push(item);
         }
       } else {
         // 容器内交换位置
-        [container.children[draggingIndex], container.children[itemIndex]] = [container.children[itemIndex], container.children[draggingIndex]];
+        [container.children![draggingIndex], container.children![itemIndex]] = [container.children![itemIndex], container.children![draggingIndex]];
       }
 
       item.transiting = true;
@@ -141,8 +141,8 @@ const containerHandler = {
 
     if (item.type === "layout") {
       // 查看children中是否已经存在了
-      if (item.children.some(v => v.id === dragging.value?.id)) return;
-      item.children.push(dragging.value);
+      if (item.children!.some(v => v.id === dragging.value?.id)) return;
+      item.children!.push(dragging.value);
       drawingListDelete(dragging.value);
       return;
     }
@@ -246,7 +246,7 @@ const layouts = {
             class: "drag-wrapper",
           }}
         >
-          {curComponent.children.map(c => layouts[c.layout]({ activeId, curComponent: c, container: curComponent, activeItem, copyItem, deleteItem }))}
+          {curComponent.children!.map(c => layouts[c.layout]({ activeId, curComponent: c, container: curComponent, activeItem, copyItem, deleteItem }))}
         </TransitionGroup>
         {itemBtns({ curComponent, copyItem, deleteItem })}
       </ElRow>

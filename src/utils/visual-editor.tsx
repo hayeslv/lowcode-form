@@ -90,6 +90,9 @@ export function createComponentsConfig() {
           defaultValue?: string | number;
         };
         children?: IComponent[];
+        __slot__?: {
+          options: { label: string; value: string | number }[];
+        };
       },
       render?: (data: {
         model: { [k in keyof Model]: any };

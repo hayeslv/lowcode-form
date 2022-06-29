@@ -28,6 +28,9 @@ export interface IComponent {
     defaultValue?: string | number;             // 默认值
     labelWidth?: number;              // form-item的label宽度
   };
+  __slot__?: {
+    options: { label: string; value: string | number }[];
+  };
   // render: (data: {                // 渲染函数
   //   model: any;                       // 绑定字段
   //   custom?: Record<string, any>;      // 用户自定义字段

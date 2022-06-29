@@ -61,7 +61,7 @@ export default defineComponent({
         setActiveComp(currentItem);
       },
       drawingItemCopy(currentItem: IComponent) {
-        const component = menuComponentInstance(currentItem);
+        const component = menuComponentInstance(currentItem, true);
         component.isMenuComponent = false;
         drawingListAdd(component);
       },

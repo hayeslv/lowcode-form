@@ -57,7 +57,7 @@ export const useDrawingList = () => {
     const childrensItem: IComponent[] = [];
     drawingList.value
       .map(v => toRaw(v.children))
-      .forEach(v => childrensItem.push(...v));
+      .forEach(v => v && childrensItem.push(...v));
     return drawingList.value.some(item => item.id === element.id) || childrensItem.some(v => v.id === element.id);
   };
 

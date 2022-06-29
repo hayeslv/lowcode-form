@@ -1,4 +1,4 @@
-import { ElInput, ElInputNumber } from "element-plus";
+import { ElInput, ElInputNumber, ElOption, ElSelect } from "element-plus";
 import { useDrawingList, useForm } from "~/hooks";
 import type { IComponent, IComponentType } from "~/types";
 import { ComponentType } from "~/types";
@@ -130,6 +130,34 @@ ComponentsConfig.registry("password", {
     {...custom}
     {...model.default}
   />
+));
+
+/* ---------------------------------------- 选择型组件 ---------------------------------------- */
+ComponentsConfig.registry("select", {
+  label: "下拉选择",
+  type: ComponentType.SELECT,
+  model: {
+    default: "",
+  },
+  icon: "select",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  placeholder: "请选择",
+  __config__: {
+    span: 24,
+    defaultValue: "",
+  },
+  __slot__: {
+    options: [
+      { label: "选项一", value: "1" },
+      { label: "选项二", value: "2" },
+    ],
+  },
+}, ({ model, custom, component }) => (
+  <ElSelect placeholder={component.placeholder} {...custom} {...model.default}>
+    {component.__slot__!.options.map(v => <ElOption label={v.label} value={v.value}></ElOption>)}
+  </ElSelect>
 ));
 
 /* ---------------------------------------- 布局型组件 ---------------------------------------- */
