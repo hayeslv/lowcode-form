@@ -18,7 +18,7 @@ export interface IComponent {
   icon: string;
   placeholder?: string;
   transiting: boolean;            // 是否正在进行动画
-  children: IComponent[];         // 子项：目前只有容器中使用 // TODO 容器考虑和该接口分开
+  children?: IComponent[];         // 子项：目前只有容器中使用 // TODO 容器考虑和该接口分开
   isMenuComponent: boolean;       // 是否是菜单项 // TODO 应该不需要此项，直接使用id来判断是否是菜单项（菜单项没有id）
   __vModel__?: string;            // 绑定值 // TODO 需要修改为“使用model”
   layout: "colFormItem" | "rowFormItem";

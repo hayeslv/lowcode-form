@@ -46,7 +46,6 @@ ComponentsConfig.registry("input", {
     span: 24,
     defaultValue: "",
   },
-  children: [],
 }, ({ model, custom, component }) => (
   <ElInput
     // modelValue={form[component.__vModel__]}

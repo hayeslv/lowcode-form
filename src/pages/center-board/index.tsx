@@ -55,40 +55,6 @@ export default defineComponent({
       },
     };
 
-    // const blockHandler = {
-    //   dragstart: (e: DragEvent, item) => {
-    //     // 异步对当前元素进行激活，可以让浏览器复制出来的ghost不带横线
-    //     setDraggingValueAsync(item);
-    //   },
-    //   dragend: () => {
-    //     setDraggingValue(null);
-    //   },
-    //   dragenter: (e: DragEvent, item: ElementComponent) => {
-    //     e.preventDefault();
-    //     if (!dragging.value) return;
-    //     if (item.id === dragging.value?.id) return; // 如果目标是“当前拖动元素”，则直接return
-    //     if (item.transiting) return; // 如果正在进行动画，则直接return
-
-    //     if (item.type === "layout") {
-    //       // 查看children中是否已经存在了
-    //       if (item.children.some(v => v.id === dragging.value?.id)) return;
-    //       item.children.push(dragging.value);
-    //       drawingListDelete(dragging.value);
-    //       dragging.value = null;
-    //       return;
-    //     }
-
-    //     addNewElement();
-    //     // 交换元素位置
-    //     drawingListChangePosition(dragging.value!, toRaw(item));
-
-    //     item.transiting = true;
-    //     setTimeout(() => {
-    //       item.transiting = false;
-    //     }, 200);
-    //   },
-    // };
-
     const methodsHandler = {
       activeFormItem(currentItem: IComponent) {
         // 设置激活组件

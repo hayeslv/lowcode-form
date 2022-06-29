@@ -31,7 +31,7 @@ const layouts = {
   },
   rowFormItem(component: IComponent, isRenderCol: boolean) {
     // TODO 待优化：这里透传isRenderCol，感觉有点奇怪。
-    const children = component.children.map(el => layouts[el.layout](el, isRenderCol));
+    const children = component.children!.map(el => layouts[el.layout](el, isRenderCol));
     let str = `<ElRow>
       ${children.join("\n")}
     </ElRow>`;
@@ -196,7 +196,7 @@ export class GenerateCode {
     const dataStr = this._formData.fileds
       .reduce((prev, now) => {
         if (now.type === ComponentType.LAYOUT) {
-          prev.push(...now.children);
+          prev.push(...now.children!);
         } else {
           prev.push(now);
         }

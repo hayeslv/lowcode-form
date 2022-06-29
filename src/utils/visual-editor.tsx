@@ -89,7 +89,7 @@ export function createComponentsConfig() {
           span: number;
           defaultValue?: string | number;
         };
-        children: IComponent[];
+        children?: IComponent[];
       },
       render?: (data: {
         model: { [k in keyof Model]: any };
