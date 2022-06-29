@@ -87,7 +87,7 @@ export function createComponentsConfig() {
         layout: "colFormItem" | "rowFormItem";
         __config__: {
           span: number;
-          defaultValue: string;
+          defaultValue: string | number;
         };
         children: IComponent[];
       },

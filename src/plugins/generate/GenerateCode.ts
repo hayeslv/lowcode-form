@@ -1,17 +1,16 @@
-import type { ElementComponent } from "~/config";
-import type { FormConfigTotalType } from "~/types";
+import type { FormConfigTotalType, IComponent } from "~/types";
 import { GenerateCodeType  } from "~/types";
 
 let globalConfig: FormConfigTotalType; // 全局配置
 
 // 是否有span不是24的Col
-const hasNot24Col = (components: ElementComponent[]) => {
+const hasNot24Col = (components: IComponent[]) => {
   return components.some(v => v.__config__.span !== 24);
 };
 
 // 布局
 const layouts = {
-  colFormItem(component: ElementComponent, isRenderCol: boolean) {
+  colFormItem(component: IComponent, isRenderCol: boolean) {
     const config = component.__config__;
     let labelWidth = "";
     const label = `label="${component.label}"`;
@@ -33,7 +32,7 @@ const layouts = {
 };
 
 // span不为24的用el-col包裹
-const colWrapper = (component: ElementComponent, str: string) => {
+const colWrapper = (component: IComponent, str: string) => {
   return `<ElCol span={${component.__config__.span}} style="width: 100%;">
     ${str}
   </ElCol>`;
@@ -47,27 +46,26 @@ const rowWrapper = (code: string) => {
 // 组装相对应的tag
 // TODO 改为注册的方式
 const tags = {
-  input: (el: ElementComponent) => {
+  input: (el: IComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
     return `<ElInput ${vModel} ${placeholder} />`;
   },
-  textarea: (el: ElementComponent) => {
+  textarea: (el: IComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
     return `<ElInput type="textarea" ${vModel} ${placeholder} />`;
   },
-  number: (el: ElementComponent) => {
+  number: (el: IComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
     return `<ElInputNumber ${vModel} ${placeholder} />`;
   },
-  password: (el: ElementComponent) => {
+  password: (el: IComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
     return `<ElInput type="password" showPassword ${vModel} ${placeholder} />`;
   },
 };
 
-const attrBuilder = (el: ElementComponent) => {
+const attrBuilder = (el: IComponent) => {
   return {
-    tag: el.tag,
     vModel: `v-model={${globalConfig.formModel}.${el.__vModel__}}`,
     placeholder: el.placeholder ? `placeholder="${el.placeholder}"` : "",
   };

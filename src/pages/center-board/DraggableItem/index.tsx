@@ -186,7 +186,10 @@ const layouts = {
         const modelName = curComponent.__vModel__;
         prev[propName] = {
           [propName === "default" ? "modelValue" : propName]: modelName ? form[modelName] : null,
-          [propName === "default" ? "onUpdate:modelValue" : "onChange"]: (val: any) => !!modelName && (form[modelName] = val),
+          [propName === "default" ? "onUpdate:modelValue" : "onChange"]: (val: any) => {
+            !!modelName && (form[modelName] = val);
+            curComponent.__config__.defaultValue = val;
+          },
         };
         return prev;
       }, {} as Record<string, any>),

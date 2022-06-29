@@ -21,30 +21,6 @@ export const onDefaultValueInput = (value, component: IComponent) => {
   form[component.__vModel__!] = value;
 };
 
-// export const renderComponentMap = {
-//   input: (component: ElementComponent) =>
-//     <ElInput modelValue={form[component.__vModel__]}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder} />,
-//   textarea: (component: ElementComponent) =>
-//     <ElInput modelValue={form[component.__vModel__]}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder}
-//       type="textarea" {...{ rows: 2 }}
-//     />,
-//   number: (component: ElementComponent) =>
-//     <ElInputNumber modelValue={parseInt(form[component.__vModel__])}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder}
-//     />,
-//   password: (component: ElementComponent) =>
-//     <ElInput modelValue={form[component.__vModel__]}
-//       onInput={(value) => onDefaultValueInput(value, component)}
-//       placeholder={component.placeholder}
-//       type="password"
-//       show-password />,
-// };
-
 // 组件类型
 export const ComponentTypes: IComponentType[] = [
   { key: ComponentType.INPUT, value: "输入型组件" },
@@ -120,12 +96,38 @@ ComponentsConfig.registry("number", {
   layout: "colFormItem",
   __config__: {
     span: 24,
-    defaultValue: "",
+    defaultValue: 0,
   },
   children: [],
 }, ({ model, custom, component }) => (
   <ElInputNumber
     placeholder={component.placeholder}
+    {...custom}
+    {...model.default}
+  />
+));
+//* 密码框 */
+ComponentsConfig.registry("password", {
+  label: "密码框",
+  type: ComponentType.INPUT,
+  model: {
+    default: "",
+  },
+  icon: "password",
+  placeholder: "请输入密码",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  __config__: {
+    span: 24,
+    defaultValue: "",
+  },
+  children: [],
+}, ({ model, custom, component }) => (
+  <ElInput
+    placeholder={component.placeholder}
+    type="password"
+    show-password
     {...custom}
     {...model.default}
   />

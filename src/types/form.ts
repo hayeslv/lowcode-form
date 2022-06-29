@@ -1,9 +1,8 @@
-import type { ElementComponent } from "~/config";
 import type { FormConfigType } from "~/utils";
-import type { GenerateCodeType, TopOperateType } from ".";
+import type { GenerateCodeType, IComponent, TopOperateType } from ".";
 
 /** Form总类型，包含组件列表 */
-export type FormConfigTotalType = FormConfigType & { fileds: ElementComponent[] };
+export type FormConfigTotalType = FormConfigType & { fileds: IComponent[] };
 
 // 下载vue文件弹窗的Form类型
 export interface DialogFormType {

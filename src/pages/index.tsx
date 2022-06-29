@@ -34,7 +34,7 @@ export default defineComponent({
       const { drawingList } = useDrawingList();
       const form = getForm();
       drawingList.value.forEach(v => {
-        form[v.__vModel__] = v.__config__.defaultValue;
+        form[v.__vModel__!] = v.__config__.defaultValue;
       });
 
       loadBeautifier(btf => {
