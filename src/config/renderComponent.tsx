@@ -155,7 +155,7 @@ ComponentsConfig.registry("select", {
     ],
   },
 }, ({ model, custom, component }) => (
-  <ElSelect placeholder={component.placeholder} {...custom} {...model.default}>
+  <ElSelect placeholder={component.placeholder} {...custom} {...model.default} style="width: 100%;">
     {component.__slot__!.options.map(v => <ElOption label={v.label} value={v.value}></ElOption>)}
   </ElSelect>
 ));
