@@ -1,5 +1,5 @@
 import { ElButton, ElMessageBox } from "element-plus";
-import { Delete, Download } from "@element-plus/icons-vue";
+import { Delete, DocumentCopy, Download } from "@element-plus/icons-vue";
 import { defineComponent } from "vue";
 import { EventName, useDrawingList, useGlobalEvent } from "~/hooks";
 import "./index.scss";
@@ -22,6 +22,10 @@ export default defineComponent({
         const event = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
         event.emit(true, TopOperateType.Download);
       },
+      copy() {
+        const event = useGlobalEvent(EventName.DOWNLOAD_VUE_FILE_SHOW_DIALOG);
+        event.emit(true, TopOperateType.Copy);
+      },
     };
 
     return { handler };
@@ -30,6 +34,7 @@ export default defineComponent({
     return <div class="action-bar">
       {/* <ElButton icon={VideoPlay} type="primary" text>运行</ElButton> */}
       <ElButton icon={Download} type="primary" text onClick={this.handler.download}>导出vue文件</ElButton>
+      <ElButton icon={DocumentCopy} type="primary" text onClick={this.handler.copy}>复制代码</ElButton>
       <ElButton icon={Delete} type="danger" text onClick={this.handler.empty}>清空</ElButton>
     </div>;
   },

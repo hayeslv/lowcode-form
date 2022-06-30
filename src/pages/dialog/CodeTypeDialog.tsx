@@ -1,8 +1,8 @@
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElRadioButton, ElRadioGroup } from "element-plus";
 import type { PropType } from "vue";
 import { defineComponent, reactive, ref } from "vue";
-import type { DialogFormType, TopOperateType } from "~/types";
-import { GenerateCodeType } from "~/types";
+import type { DialogFormType } from "~/types";
+import { GenerateCodeType, TopOperateType } from "~/types";
 
 const rules = {
   fileName: [
@@ -67,9 +67,13 @@ export default defineComponent({
               }
             </ElRadioGroup>
           </ElFormItem>
-          <ElFormItem label="文件名" prop="fileName">
-            <ElInput v-model={formData.fileName} placeholder="请输入文件名" clearable />
-          </ElFormItem>
+          {
+            props.operateType === TopOperateType.Download &&
+            <ElFormItem label="文件名" prop="fileName">
+              <ElInput v-model={formData.fileName} placeholder="请输入文件名" clearable />
+            </ElFormItem>
+          }
+
         </ElForm>
       </ElDialog>;
     };
