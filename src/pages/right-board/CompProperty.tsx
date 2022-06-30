@@ -48,9 +48,12 @@ export default defineComponent({
       <ElFormItem label="绑定值：">
         <ElInput v-model={component.__vModel__} placeholder="请输入绑定值" clearable />
       </ElFormItem>
-      <ElFormItem label="占位提示：">
-        <ElInput v-model={component.placeholder} placeholder="请输入占位提示" clearable />
-      </ElFormItem>
+      {
+        component.placeholder !== undefined &&
+        <ElFormItem label="占位提示：">
+          <ElInput v-model={component.placeholder} placeholder="请输入占位提示" clearable />
+        </ElFormItem>
+      }
       {
         component.__config__.span !== undefined &&
         <ElFormItem label="表单栅格：">

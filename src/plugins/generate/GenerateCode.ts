@@ -73,6 +73,26 @@ const tags = {
     const { vModel, placeholder } = attrBuilder(el);
     return `<ElInput type="password" showPassword ${vModel} ${placeholder} />`;
   },
+  // TODO 生成的options列表，转换为 v-for 的形式
+  select: (el: IComponent) => {
+    const { vModel, placeholder } = attrBuilder(el);
+    const optionStr = el.__slot__!.options
+      .map(v => `<ElOption label="${v.label}" value="${v.value}" />`)
+      .join("\n");
+
+    return `<ElSelect ${vModel} ${placeholder} style="width: 100%;">
+      ${optionStr}
+    </ElSelect>`;
+  },
+  radio: (el: IComponent) => {
+    const { vModel } = attrBuilder(el);
+    const optionStr = el.__slot__!.options
+      .map(v => `<ElRadio label="${v.value}">${v.label}</ElRadio>`)
+      .join("\n");
+    return `<ElRadioGroup ${vModel}>
+      ${optionStr}
+    </ElRadioGroup>`;
+  },
 };
 
 const attrBuilder = (el: IComponent) => {

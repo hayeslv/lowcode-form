@@ -1,4 +1,4 @@
-import { ElInput, ElInputNumber, ElOption, ElSelect } from "element-plus";
+import { ElInput, ElInputNumber, ElOption, ElRadio, ElRadioGroup, ElSelect } from "element-plus";
 import { useDrawingList, useForm } from "~/hooks";
 import type { IComponent, IComponentType } from "~/types";
 import { ComponentType } from "~/types";
@@ -158,6 +158,32 @@ ComponentsConfig.registry("select", {
   <ElSelect placeholder={component.placeholder} {...custom} {...model.default} style="width: 100%;">
     {component.__slot__!.options.map(v => <ElOption label={v.label} value={v.value}></ElOption>)}
   </ElSelect>
+));
+
+ComponentsConfig.registry("radio", {
+  label: "单选框",
+  type: ComponentType.SELECT,
+  model: {
+    default: "",
+  },
+  icon: "radio",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  __config__: {
+    span: 24,
+    defaultValue: "",
+  },
+  __slot__: {
+    options: [
+      { label: "选项一", value: "1" },
+      { label: "选项二", value: "2" },
+    ],
+  },
+}, ({ model, custom, component }) => (
+  <ElRadioGroup  {...custom} {...model.default} style="width: 100%;">
+    {component.__slot__!.options.map(v => <ElRadio label={v.value}>{v.label}</ElRadio>)}
+  </ElRadioGroup>
 ));
 
 /* ---------------------------------------- 布局型组件 ---------------------------------------- */
