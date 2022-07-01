@@ -21,9 +21,13 @@ const layouts = {
     }
     const tagDom = tags[component.key] ? tags[component.key](component) : null;
 
-    let str = `<ElFormItem ${labelWidth} ${label} prop="${component.__vModel__}">
-      ${tagDom}
-    </ElFormItem>`;
+    let str = tagDom;
+    if (component.type !== ComponentType.BASIC) {
+      // 非基础组件才会包裹form-item
+      str = `<ElFormItem ${labelWidth} ${label} prop="${component.__vModel__}">
+        ${tagDom}
+      </ElFormItem>`;
+    }
     if (isRenderCol) {
       str = colWrapper(component, str);
     }
@@ -57,6 +61,9 @@ const rowWrapper = (code: string) => {
 // 组装相对应的tag
 // TODO 改为注册的方式
 const tags = {
+  button: (el: IComponent) => {
+    return `<ElButton>${el.label}</ElButton>`;
+  },
   input: (el: IComponent) => {
     const { vModel, placeholder } = attrBuilder(el);
     return `<ElInput ${vModel} ${placeholder} />`;
@@ -222,6 +229,7 @@ export class GenerateCode {
         }
         return prev;
       }, [] as IComponent[])
+      .filter(v => !["button"].includes(v.key)) // button组件不需要加入reactive
       .map(v => ({
         key: v.__vModel__,
         value: v.__config__.defaultValue || "",

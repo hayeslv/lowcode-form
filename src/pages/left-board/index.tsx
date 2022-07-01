@@ -24,7 +24,8 @@ export default defineComponent({
           // 处理拖拽菜单组件的结束动作
           VisualDragEnd.emit();
         },
-        click: (component: IComponent) => {
+        click: (e: MouseEvent, component: IComponent) => {
+          e.stopPropagation();
           VisualComponentClick.emit(component);
         },
       };
@@ -59,7 +60,7 @@ export default defineComponent({
                       draggable
                       onDragstart={(e) => this.menuDragger.dragstart(e, component)}
                       onDragend={() => this.menuDragger.dragend()}
-                      onClick={() => this.menuDragger.click(component)}>
+                      onClick={(e) => this.menuDragger.click(e, component)}>
                       <div class="component-body">
                         <svg-icon icon-class={component.icon} />
                         <span>{component.label}</span>

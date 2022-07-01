@@ -9,6 +9,7 @@ import "~/style/element-reset.scss";
 import { generateMethods, loadBeautifier } from "~/plugins";
 import type { DialogFormType } from "~/types";
 import { TopOperateType } from "~/types";
+import Test from "./Test";
 
 export default defineComponent({
   setup() {
@@ -50,6 +51,8 @@ export default defineComponent({
       <CenterBoard />
       <RightBoard />
       <CodeTypeDialog v-model:visible={this.codeTypeVisible} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
+      {/* 测试导出的代码是否可用 */}
+      {false && <Test />}
     </div>;
   },
 });
