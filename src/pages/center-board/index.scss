@@ -33,8 +33,6 @@
 
 
 .drawing-board {
-  // display: flex;
-  // flex-direction: column;
   height: 100%;
   position: relative;
   > * {
@@ -62,3 +60,11 @@
   }
 }
 
+
+// TransitionGroup移入移出动画
+.myslide-enter-active , .myslide-leave-active {
+  transition: all 0s ease;
+}
+.myslide-enter-from , .myslide-leave-to {
+  opacity: 0;
+}

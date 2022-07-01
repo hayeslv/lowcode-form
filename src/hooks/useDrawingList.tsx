@@ -42,10 +42,8 @@ export const useDrawingList = () => {
     const draggingIndex = componentList.map(item => item.id).indexOf(dragging.id);
     if (targetIndex === -1 || draggingIndex === -1) return;
 
-    // 删除drawingList中的“拖拽中”元素
-    componentList.splice(draggingIndex, 1);
-    // 在新位置（目标元素前面）添加数据“拖拽中”元素
-    componentList.splice(targetIndex, 0, dragging);
+    // 交换“目标元素”和“当前拖拽元素”的位置
+    [componentList[targetIndex], componentList[draggingIndex]] = [componentList[draggingIndex], componentList[targetIndex]];
 
     drawingList.value = componentList;
   };

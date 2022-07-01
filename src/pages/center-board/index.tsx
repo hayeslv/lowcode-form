@@ -107,7 +107,7 @@ export default defineComponent({
             disabled={this.formConfig.disabled}
             labelWidth={this.formConfig.labelWidth + "px"}
           >
-            <TransitionGroup tag="div" name="slide"
+            <TransitionGroup tag="div" name="myslide"
               {...{
                 class: "drawing-board",
                 onDragover: ($event) => this.containerHandler.dragover($event),

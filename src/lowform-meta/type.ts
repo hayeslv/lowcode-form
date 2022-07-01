@@ -1,10 +1,26 @@
-export interface BasicNodeData {
-  group: string;  // 类型分组
-  id?: number;    // 唯一值（实例化后得到）
-  transiting: boolean; // 过渡中（过渡中的元素禁止触发“交换位置”的事件）
-
+// 组件类型
+export const enum EComponentType {
+  BASIC = "basic",          // 基础组件
+  FORM = "form",            // form表单组件
+  LAYOUT = "layout",        // 布局组件
 }
 
-export interface NodeData extends BasicNodeData {
+// 项目、页面、组件
+// export interface BasicData {
+//   id?: number;    // 唯一值（实例化后得到）
 
+// }
+
+// 节点（组件）数据
+export interface IBaseNode {
+  group: EComponentType;   // 组件分组
+  key: string;            // 组件key，例如：text、input、button等
+  label: string;          // 中文释义
+}
+
+// form表单组件
+export interface IFormNodeInstance extends IBaseNode {
+  id: number;             // 唯一值（实例化后得到）
+  model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
+  placeholder?: string;   // 默认用“请输入”
 }
