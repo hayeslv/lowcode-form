@@ -64,6 +64,7 @@ export const VisualComponentClick = (() => {
 export function createComponentsConfig() {
   // 分类
   const componentTypeMap: Record<ComponentType, IComponent[]> = {
+    [ComponentType.BASIC]: [],
     [ComponentType.INPUT]: [],
     [ComponentType.SELECT]: [],
     [ComponentType.LAYOUT]: [],
@@ -87,6 +88,7 @@ export function createComponentsConfig() {
         layout: "colFormItem" | "rowFormItem";
         __config__: {
           span: number;
+          labelWidth?: number;
           defaultValue?: string | number;
         };
         children?: IComponent[];

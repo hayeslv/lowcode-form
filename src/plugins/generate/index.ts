@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { GlobelItem, useDrawingList, useGlobalObject } from "~/hooks";
 import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { TopOperateType } from "~/types";
-import { useFormConfig } from "~/utils";
+import { copyText, useFormConfig } from "~/utils";
 import { saveAs } from "file-saver";
 import { GenerateCode } from "./GenerateCode";
 import { ElNotification } from "element-plus";
@@ -51,7 +51,7 @@ export const generateMethods = {
   [TopOperateType.Copy](data: DialogFormType) {
     // 生成代码字符串
     const codeStr = generateCode(data);
-    navigator.clipboard.writeText(codeStr).then(() => {
+    copyText(codeStr).then(() => {
       ElNotification({
         title: "成功",
         message: "代码已复制到剪切板，可粘贴。",

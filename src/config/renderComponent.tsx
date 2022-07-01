@@ -1,4 +1,4 @@
-import { ElInput, ElInputNumber, ElOption, ElRadio, ElRadioGroup, ElSelect } from "element-plus";
+import { ElButton, ElInput, ElInputNumber, ElOption, ElRadio, ElRadioGroup, ElSelect } from "element-plus";
 import { useDrawingList, useForm } from "~/hooks";
 import type { IComponent, IComponentType } from "~/types";
 import { ComponentType } from "~/types";
@@ -23,6 +23,7 @@ export const onDefaultValueInput = (value, component: IComponent) => {
 
 // 组件类型
 export const ComponentTypes: IComponentType[] = [
+  { key: ComponentType.BASIC, value: "基础组件" },
   { key: ComponentType.INPUT, value: "输入型组件" },
   { key: ComponentType.SELECT, value: "选择型组件" },
   { key: ComponentType.LAYOUT, value: "布局型组件" },
@@ -30,6 +31,23 @@ export const ComponentTypes: IComponentType[] = [
 // 注册的方式提供组件
 export const ComponentsConfig = createComponentsConfig();
 
+/* ---------------------------------------- 基础组件 ---------------------------------------- */
+ComponentsConfig.registry("button", {
+  label: "按钮",
+  type: ComponentType.BASIC,
+  icon: "button",
+  transiting: false,
+  isMenuComponent: false,
+  layout: "colFormItem",
+  __config__: {
+    span: 24,
+    labelWidth: 0,
+  },
+}, ({ custom, component }) => (
+  <ElButton {...custom}>{component.label}</ElButton>
+));
+
+/* ---------------------------------------- 输入型组件 ---------------------------------------- */
 //* 文本输入框 */
 ComponentsConfig.registry("input", {
   label: "单行输入框",

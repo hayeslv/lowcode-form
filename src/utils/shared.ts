@@ -24,3 +24,8 @@ export function isNumber(value): boolean {
 export function isArray(value): boolean {
   return Array.isArray(value);
 }
+
+// 复制文本至剪切板
+export function copyText(text: string) {
+  return navigator.clipboard.writeText(text);
+}

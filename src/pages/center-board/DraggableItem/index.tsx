@@ -5,6 +5,7 @@ import { toRaw, TransitionGroup, defineComponent } from "vue";
 
 import { useComponentRender, useDragging, useDrawingList, useForm } from "~/hooks";
 import type { IComponent } from "~/types";
+import { ComponentType } from "~/types";
 import "./index.scss";
 
 const { dragging, setDraggingValue, setDraggingValueAsync } = useDragging();
@@ -180,7 +181,7 @@ const form = getForm();
 const layouts = {
   colFormItem({ activeId, curComponent, container, activeItem, copyItem, deleteItem }: ColFormItemParams) {
     const config = curComponent.__config__;
-    const labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
+    const labelWidth = (config.labelWidth !== undefined) ? `${config.labelWidth}px` : null;
     const render = getComponentRender(curComponent.key)({
       model: Object.keys(curComponent.model || {}).reduce((prev, propName) => {
         const modelName = curComponent.__vModel__;
@@ -195,6 +196,20 @@ const layouts = {
       }, {} as Record<string, any>),
       component: curComponent,
     });
+
+    // 是否包裹FormItem
+    let renderWrap: JSX.Element = render;
+    if (!curComponent.isMenuComponent && curComponent.type !== ComponentType.BASIC) {
+      renderWrap = <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
+        { render }
+      </ElFormItem>;
+    }
+    //  else {
+    //   renderWrap = <ElFormItem label-width={labelWidth}>
+    //     { render }
+    //   </ElFormItem>;
+    // }
+
     return <ElCol
       class={[
         "drawing-item",
@@ -213,10 +228,11 @@ const layouts = {
       }}>
       { curComponent.isMenuComponent && <svg-icon icon-class={curComponent.icon} /> }
       {
-        !curComponent.isMenuComponent &&
-        <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
-          { render }
-        </ElFormItem>
+        renderWrap
+        // !curComponent.isMenuComponent &&
+        // <ElFormItem label-width={labelWidth} label={curComponent.label || ""}>
+        //   { render }
+        // </ElFormItem>
       }
       {itemBtns({ curComponent, copyItem, deleteItem })}
     </ElCol>;

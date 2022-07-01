@@ -1,4 +1,5 @@
 export const enum ComponentType {
+  BASIC = "basic",          // 基础组件
   INPUT = "input",          // 输入型组件
   SELECT = "select",        // 选择型组件
   LAYOUT = "layout",        // 布局型组件
