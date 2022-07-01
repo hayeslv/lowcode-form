@@ -27,5 +27,29 @@ export function isArray(value): boolean {
 
 // 复制文本至剪切板
 export function copyText(text: string) {
-  return navigator.clipboard.writeText(text);
+  // return navigator.clipboard.writeText(text);
+
+  // navigator clipboard 需要https等安全上下文
+  if (navigator.clipboard && window.isSecureContext) {
+    // navigator clipboard 向剪贴板写文本
+    return navigator.clipboard.writeText(text);
+  } else {
+    // TODO 后退方式，还没解决
+    // 创建text area
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // 使text area不在viewport，同时设置不可见
+    textArea.style.position = "absolute";
+    textArea.style.opacity = "0";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    return new Promise((resolve, reject) => {
+      // 执行复制命令并移除文本框
+      document.execCommand("copy") ? resolve(true) : reject(new Error());
+      textArea.remove();
+    });
+  }
 }

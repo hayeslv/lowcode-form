@@ -6,6 +6,8 @@ import { ComponentsConfig, ComponentTypes } from "~/config";
 import type { IComponent } from "~/types";
 import { VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
+import { registerComponent } from "~/config/registerComponent";
+import type { IBaseNode } from "~/lowform-meta/type";
 
 export default defineComponent({
   setup() {
@@ -31,6 +33,24 @@ export default defineComponent({
       };
       return componentHandler;
     })();
+
+    // test：将组件改为class模式
+    // const aa = registerComponent().then(files => {
+    //   const models = {} as Record<string, IBaseNode>;
+    //   for (const key in files) {
+    //     files[key]().then(res => {
+    //       models[key.replace(/(\.\/data\/|\.ts)/g, "")] = res.default;
+    //     });
+    //   }
+    //   console.log(models);
+    //   const groupList = Object.entries(models);
+    //   // .reduce((prev, now) => {
+    //   //   console.log(now);
+    //   //   prev.push(now);
+    //   //   return prev;
+    //   // }, [] as any[]);
+    //   console.log(groupList);
+    // });
 
     return { config, menuDragger };
   },
@@ -70,6 +90,9 @@ export default defineComponent({
                 </div>
               </div>
             ))
+          }
+          {
+            // this.data.
           }
         </div>
       </ElScrollbar>

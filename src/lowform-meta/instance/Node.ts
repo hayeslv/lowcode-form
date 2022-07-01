@@ -7,12 +7,13 @@ import type { IBaseNode, IFormNodeInstance } from "../type";
  * 表单节点
  */
 export class FormNode extends Emiter<Topic> {
-  protected _instance: IFormNodeInstance;
+  protected _data: IFormNodeInstance;
 
   constructor(data: IBaseNode) {
     super();
+
     const id = useGlobalId().getGlobalId();
-    this._instance = {
+    this._data = {
       ...data,
       id,
       model: `field${id}`,
@@ -20,6 +21,6 @@ export class FormNode extends Emiter<Topic> {
   }
 
   get instance() {
-    return this._instance;
+    return this._data;
   }
 }
