@@ -26,16 +26,20 @@ export function isArray(value): boolean {
 }
 
 // 复制文本至剪切板
-export function copyText(text: string) {
-  // return navigator.clipboard.writeText(text);
-
+export async function copyText(text: string) {
+  // for ie
+  if ((window as any).clipboardData) {
+    (window as any).clipboardData.clearData();
+    (window as any).clipboardData.setData("text", text);
+    return new Promise((resolve) => resolve(true));
+  }
   // navigator clipboard 需要https等安全上下文
   if (navigator.clipboard && window.isSecureContext) {
-    // navigator clipboard 向剪贴板写文本
+    // 向剪贴板写文本
     return navigator.clipboard.writeText(text);
-  } else {
-    // TODO 后退方式，还没解决
-    // 创建text area
+  }
+  // 其他现代浏览器
+  if (window.getSelection) {
     const textArea = document.createElement("textarea");
     textArea.value = text;
     // 使text area不在viewport，同时设置不可见
@@ -44,12 +48,13 @@ export function copyText(text: string) {
     textArea.style.left = "-999999px";
     textArea.style.top = "-999999px";
     document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    return new Promise((resolve, reject) => {
-      // 执行复制命令并移除文本框
-      document.execCommand("copy") ? resolve(true) : reject(new Error());
-      textArea.remove();
-    });
+    const range = document.createRange();
+    range.selectNode(textArea);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+    document.execCommand("copy");
+    return new Promise((resolve) => resolve(true));
   }
+
+  return new Promise((resolve, reject) => reject(new Error("复制失败")));
 }

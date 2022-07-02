@@ -11,6 +11,7 @@
 
 - nprogress：进度条
 - file-saver：下载文件
+- clipboard: 复制
 
 
 
