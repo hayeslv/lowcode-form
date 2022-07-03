@@ -7,11 +7,16 @@ import type { IComponent } from "~/types";
 import { getGroupNameByKey, getMenuClassify, VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
 import type { IBaseNode } from "~/lowform-meta/type";
+import { FormNode } from "~/lowform-meta/instance/Node";
+import { emiter, GlobalTopic } from "~/lowform-utils";
+import { useDragging } from "~/hooks/useDraggingNew";
 
 export default defineComponent({
   setup() {
     const config = ref(ComponentsConfig);
     const menuGroup = ref({} as Record<string, IBaseNode[]>);
+
+    const { setDraggingValue } = useDragging();
 
     const menuDragger = (() => { // 菜单中的组件拖拽
       const componentHandler = {
@@ -34,9 +39,24 @@ export default defineComponent({
       return componentHandler;
     })();
 
+    const menuMethods = {
+      dragstart(e: DragEvent, node: IBaseNode) {
+        e.stopPropagation();
+        // 菜单组件，刚拖拽时，即创建实例
+        const instance = new FormNode(node);
+        setDraggingValue(instance);
+        emiter.emit(GlobalTopic.MenuCompDragStart, instance);
+      },
+      dragend(e: DragEvent) {
+        e.stopPropagation();
+        setDraggingValue(null);
+        emiter.emit(GlobalTopic.MenuCompDragEnd);
+      },
+    };
+
     getMenuClassify().then(group => (menuGroup.value = group));
 
-    return { config, menuGroup, menuDragger };
+    return { config, menuGroup, menuDragger, menuMethods };
   },
   render() {
     return <div class="left-board">
@@ -84,17 +104,17 @@ export default defineComponent({
                   <span>{ getGroupNameByKey(key) }</span>
                 </div>
                 <div class="components-draggable">
-                  {value.map(component => (
+                  {value.map(node => (
                     <div class="component-item"
-                      key={component.key}
+                      key={node.key}
                       draggable
-                      // onDragstart={(e) => this.menuDragger.dragstart(e, component)}
-                      // onDragend={() => this.menuDragger.dragend()}
+                      onDragstart={(e) => this.menuMethods.dragstart(e, node)}
+                      onDragend={(e) => this.menuMethods.dragend(e)}
                       // onClick={(e) => this.menuDragger.click(e, component)}
                     >
                       <div class="component-body">
-                        <svg-icon icon-class={component.key} />
-                        <span>{component.label}</span>
+                        <svg-icon icon-class={node.key} />
+                        <span>{node.label}</span>
                       </div>
                     </div>
                   ))}

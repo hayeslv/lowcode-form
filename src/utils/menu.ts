@@ -17,7 +17,6 @@ export const getMenuClassify = async() => {
       return prev;
     }, {} as Record<string, IBaseNode[]>);
 
-  console.log(models);
   return models;
 };
 
