@@ -4,14 +4,14 @@ import logo from "~/assets/logo.png";
 import github from "~/icons/github.svg";
 import { ComponentsConfig, ComponentTypes } from "~/config";
 import type { IComponent } from "~/types";
-import { VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
+import { getGroupNameByKey, getMenuClassify, VisualComponentClick, VisualDragEnd, VisualDragOver, VisualDragStart } from "~/utils";
 import "./index.scss";
-import { registerComponent } from "~/config/registerComponent";
 import type { IBaseNode } from "~/lowform-meta/type";
 
 export default defineComponent({
   setup() {
     const config = ref(ComponentsConfig);
+    const menuGroup = ref({} as Record<string, IBaseNode[]>);
 
     const menuDragger = (() => { // 菜单中的组件拖拽
       const componentHandler = {
@@ -34,25 +34,9 @@ export default defineComponent({
       return componentHandler;
     })();
 
-    // test：将组件改为class模式
-    // const aa = registerComponent().then(files => {
-    //   const models = {} as Record<string, IBaseNode>;
-    //   for (const key in files) {
-    //     files[key]().then(res => {
-    //       models[key.replace(/(\.\/data\/|\.ts)/g, "")] = res.default;
-    //     });
-    //   }
-    //   console.log(models);
-    //   const groupList = Object.entries(models);
-    //   // .reduce((prev, now) => {
-    //   //   console.log(now);
-    //   //   prev.push(now);
-    //   //   return prev;
-    //   // }, [] as any[]);
-    //   console.log(groupList);
-    // });
+    getMenuClassify().then(group => (menuGroup.value = group));
 
-    return { config, menuDragger };
+    return { config, menuGroup, menuDragger };
   },
   render() {
     return <div class="left-board">
@@ -91,8 +75,32 @@ export default defineComponent({
               </div>
             ))
           }
+          <div>---------- 下方为测试用 ----------</div>
           {
-            // this.data.
+            Object.entries(this.menuGroup).map(([key, value]) => (
+              <div key={key}>
+                <div class="components-title">
+                  <svg-icon icon-class="component" />
+                  <span>{ getGroupNameByKey(key) }</span>
+                </div>
+                <div class="components-draggable">
+                  {value.map(component => (
+                    <div class="component-item"
+                      key={component.key}
+                      draggable
+                      // onDragstart={(e) => this.menuDragger.dragstart(e, component)}
+                      // onDragend={() => this.menuDragger.dragend()}
+                      // onClick={(e) => this.menuDragger.click(e, component)}
+                    >
+                      <div class="component-body">
+                        <svg-icon icon-class={component.key} />
+                        <span>{component.label}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
           }
         </div>
       </ElScrollbar>

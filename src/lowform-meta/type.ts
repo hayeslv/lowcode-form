@@ -4,6 +4,12 @@ export const enum EComponentType {
   FORM = "form",            // form表单组件
   LAYOUT = "layout",        // 布局组件
 }
+// 组件类型对应中文名
+export enum EComponentTypeName {
+  "basic" = "基础组件",
+  "form" = "表单组件",
+  "layout" = "布局组件",
+}
 
 // 项目、页面、组件
 // export interface BasicData {
