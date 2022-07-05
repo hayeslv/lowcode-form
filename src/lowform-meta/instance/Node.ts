@@ -23,4 +23,5 @@ export class FormNode extends Emiter<Topic> {
   get instance() {
     return this._data;
   }
+  // TODO 实例化之后挂载render
 }

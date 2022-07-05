@@ -1,16 +1,35 @@
 import { ElScrollbar } from "element-plus";
-import { defineComponent, inject, ref, watch } from "vue";
+import { defineComponent, inject } from "vue";
 import logo from "~/assets/logo.png";
-import { configKey } from "~/config";
 import github from "~/icons/github.svg";
+import { configKey } from "~/config";
+import { useDragging, useNodeList } from "~/hooks";
+import { FormNode } from "~/lowform-meta/instance/Node";
+import type { IBaseNode } from "~/lowform-meta/type";
 import { getGroupNameByKey, getMenuClassify } from "~/utils";
-// import { getMenuClassify } from "~/utils";
 import "./index.scss";
 
 export default defineComponent({
   setup() {
     const config = inject(configKey);
     const menuGroup = getMenuClassify(config);
+    const { setDragging } = useDragging();
+    const { addNode } = useNodeList();
+
+    const menuMethods = {
+      click(e: MouseEvent, node: IBaseNode) {
+        e.stopPropagation();
+        const instance = new FormNode(node);
+        addNode(instance);
+      },
+      dragstart(e: DragEvent, node: IBaseNode) {
+        const instance = new FormNode(node);
+        setDragging(instance);
+      },
+      dragend() {
+        setDragging(null);
+      },
+    };
 
     return () => <div class="left-board">
       <div class="logo-wrapper">
@@ -35,9 +54,9 @@ export default defineComponent({
                     <div class="component-item"
                       key={node.key}
                       draggable
-                      // onDragstart={(e) => menuMethods.dragstart(e, node)}
-                      // onDragend={(e) => menuMethods.dragend(e)}
-                    // onClick={(e) => this.menuDragger.click(e, component)}
+                      onDragstart={(e) => menuMethods.dragstart(e, node)}
+                      onDragend={() => menuMethods.dragend()}
+                      onClick={(e) => menuMethods.click(e, node)}
                     >
                       <div class="component-body">
                         <svg-icon icon-class={node.key} />
