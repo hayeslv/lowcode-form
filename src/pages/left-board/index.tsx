@@ -23,6 +23,7 @@ export default defineComponent({
         addNode(instance);
       },
       dragstart(e: DragEvent, node: IBaseNode) {
+        e.dataTransfer!.effectAllowed = "move";
         const instance = new FormNode(node);
         setDragging(instance);
       },

@@ -10,14 +10,12 @@
   box-sizing: border-box;
 }
 
-.center-board-row {
+.form-board {
   padding: 12px 12px 15px 12px;
   box-sizing: border-box;
-  & > .el-form {
-    // 69 = 12+15+42
-    min-height: calc(100vh - 69px);
-    width: 100%;
-  }
+  // 69 = 12+15+42
+  min-height: calc(100vh - 69px);
+  width: 100%;
 }
 // 编辑器为空提示
 .empty-info{
