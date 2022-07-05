@@ -5,7 +5,6 @@ import RightBoard from "~/pages/right-board";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
 import { TopOperateType } from "~/types";
-import Test from "./Test";
 
 export default defineComponent({
   setup() {
