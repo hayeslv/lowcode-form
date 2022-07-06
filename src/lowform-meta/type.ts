@@ -22,11 +22,12 @@ export interface IBaseNode {
   group: EComponentType;   // 组件分组
   key: string;            // 组件key，例如：text、input、button等
   label: string;          // 中文释义
+  placeholder?: string;   // 默认用“请输入”
+  render: (...args: any[]) => JSX.Element;       // 渲染函数
 }
 
 // form表单组件
 export interface IFormNodeInstance extends IBaseNode {
   id: number;             // 唯一值（实例化后得到）
   model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
-  placeholder?: string;   // 默认用“请输入”
 }

@@ -6,12 +6,14 @@ import { useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
+import { useNodeDragger } from "./hooks/useNodeDragger";
 
 export default defineComponent({
   setup() {
     const { getNodeList } = useNodeList();
     const nodeList = getNodeList();
     const { dragenter: containerDragEnter, dragover: containerDragOver, drop: containerDrop } = useContainerDragger();
+    const { dragstart: nodeDragStart } = useNodeDragger();
 
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
@@ -36,6 +38,7 @@ export default defineComponent({
                   node={v as FormNode}
                   {...{
                     draggable: true,
+                    onDragstart: (e: DragEvent) => nodeDragStart(e, v as FormNode),
                   }}
                 ></NodeItem>
               ))
