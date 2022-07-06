@@ -20,11 +20,10 @@ export default defineComponent({
       click(e: MouseEvent, node: IBaseNode) {
         e.stopPropagation();
         const instance = new FormNode(node);
-        console.log(instance);
         addNode(instance);
       },
       dragstart(e: DragEvent, node: IBaseNode) {
-        e.dataTransfer!.effectAllowed = "move";
+        e.dataTransfer!.effectAllowed = "copyMove";
         const instance = new FormNode(node);
         setDragging(instance);
       },

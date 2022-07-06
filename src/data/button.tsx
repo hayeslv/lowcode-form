@@ -1,8 +1,8 @@
 import { ElButton } from "element-plus";
-import type { IBaseNode } from "~/lowform-meta/type";
+import type { IBasePlatformNode } from "~/lowform-meta/type";
 import { EComponentType } from "~/lowform-meta/type";
 
-const data: IBaseNode & { show: boolean } = {
+const data: IBasePlatformNode = {
   show: false,
   group: EComponentType.BASIC,
   key: "button",

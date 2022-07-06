@@ -30,5 +30,5 @@ export function useNodeList() {
     return nodeList.value.findIndex(v => v.instance.id === node.instance.id) >= 0;
   };
 
-  return { addNode, getNodeList };
+  return { addNode, getNodeList, includeNode };
 }

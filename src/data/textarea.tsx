@@ -5,10 +5,10 @@ import { EComponentType } from "~/lowform-meta/type";
 const data: IBasePlatformNode = {
   show: true,
   group: EComponentType.FORM,
-  key: "input",
-  label: "输入框",
+  key: "textarea",
+  label: "多行输入框",
   placeholder: "请输入",
-  render: () => <ElInput placeholder={data.placeholder} />,
+  render: () => <ElInput type="textarea" placeholder={data.placeholder} />,
 };
 
 export default data;

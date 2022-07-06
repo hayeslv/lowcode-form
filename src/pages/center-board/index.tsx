@@ -13,7 +13,7 @@ export default defineComponent({
     const { getNodeList } = useNodeList();
     const nodeList = getNodeList();
     const { dragenter: containerDragEnter, dragover: containerDragOver, drop: containerDrop } = useContainerDragger();
-    const { dragstart: nodeDragStart } = useNodeDragger();
+    const { dragstart: nodeDragStart, dragend: nodeDragEnd } = useNodeDragger();
 
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
@@ -39,6 +39,7 @@ export default defineComponent({
                   {...{
                     draggable: true,
                     onDragstart: (e: DragEvent) => nodeDragStart(e, v as FormNode),
+                    onDragend: nodeDragEnd,
                   }}
                 ></NodeItem>
               ))

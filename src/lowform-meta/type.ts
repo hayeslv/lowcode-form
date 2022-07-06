@@ -31,3 +31,8 @@ export interface IFormNodeInstance extends IBaseNode {
   id: number;             // 唯一值（实例化后得到）
   model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
 }
+
+// 平台层面组件
+export interface IBasePlatformNode extends IBaseNode {
+  show: boolean;
+}
