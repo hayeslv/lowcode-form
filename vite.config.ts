@@ -7,6 +7,9 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons"; // icon图标
 export default defineConfig({
   base: "/", // 项目部署的基础路径
   publicDir: "public", // 静态资源服务文件夹
+  define: {
+    __DEV__: process.env.NODE_ENV === "development",
+  },
   resolve: {
     alias: {
       "~": `${path.resolve(__dirname, "src")}/`,
