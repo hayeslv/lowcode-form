@@ -20,6 +20,7 @@ export default defineComponent({
       click(e: MouseEvent, node: IBaseNode) {
         e.stopPropagation();
         const instance = new FormNode(node);
+        console.log(instance);
         addNode(instance);
       },
       dragstart(e: DragEvent, node: IBaseNode) {

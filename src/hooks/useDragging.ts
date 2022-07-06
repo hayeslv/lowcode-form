@@ -1,11 +1,11 @@
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 
 const dragging = ref(null as FormNode | null);
 
 export function useDragging() {
   const getDragging = () => {
-    return dragging.value;
+    return toRaw(dragging.value);
   };
 
   const setDragging = (element: FormNode | null) => {

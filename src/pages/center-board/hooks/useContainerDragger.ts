@@ -1,7 +1,12 @@
+import type { FormNode } from "~/lowform-meta/instance/Node";
+import { useDragging, useNodeList } from "~/hooks";
+
+const { addNode } = useNodeList();
+const { getDragging } = useDragging();
+
 export function useContainerDragger() {
   // dragenter：进入元素，添加一个移动的标识
   const dragenter = (e: DragEvent) => {
-    console.log("enter");
     e.preventDefault();
     e.dataTransfer!.dropEffect = "move";
   };
@@ -18,8 +23,9 @@ export function useContainerDragger() {
 
   // drop：松手的时候
   const drop = (e: DragEvent) => {
-    console.log("drop");
     e.dataTransfer!.dropEffect = "move";
+    const dragging = getDragging()!;
+    addNode(dragging as FormNode);
   };
 
   return { dragenter, dragover, dragleave, drop };
