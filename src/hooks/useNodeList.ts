@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { Global } from "~/config";
 /**
  * @Descripttion: 编辑器中的节点（组件）
  */
@@ -12,6 +13,7 @@ export function useNodeList() {
   const getNodeList = () => {
     return nodeList.value;
   };
+
   // 添加节点
   const addNode = (node: FormNode, anchor?: FormNode) => {
     if (includeNode(node)) return; // 如果已经存在了，则不添加
@@ -25,10 +27,26 @@ export function useNodeList() {
     // 在此位置前添加元素
     nodeList.value.splice(index, 0, node);
   };
+
   // 判断当前节点是否在列表中
   const includeNode = (node: FormNode) => {
     return nodeList.value.findIndex(v => v.instance.id === node.instance.id) >= 0;
   };
 
-  return { addNode, getNodeList, includeNode };
+  // 节点交换位置
+  const swapNodes = (dragging: FormNode, target: FormNode) => {
+    if (target.transiting) return; // 目标元素正在进行动画
+    if (dragging.instance.id === target.instance.id) return; // 不会和自己发生交换
+
+    const index1 = nodeList.value.findIndex(v => v.instance.id === dragging.instance.id);
+    const index2 = nodeList.value.findIndex(v => v.instance.id === target.instance.id);
+    [nodeList.value[index1], nodeList.value[index2]] = [nodeList.value[index2], nodeList.value[index1]];
+
+    target.transiting = true;
+    setTimeout(() => {
+      target.transiting = false;
+    }, Global.TransitionTime);
+  };
+
+  return { addNode, getNodeList, includeNode, swapNodes };
 }

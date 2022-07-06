@@ -8,6 +8,7 @@ import type { IBaseNode, IFormNodeInstance } from "../type";
  */
 export class FormNode extends Emiter<Topic> {
   protected _data: IFormNodeInstance;
+  public transiting: boolean;
 
   constructor(data: IBaseNode) {
     super();

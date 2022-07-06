@@ -12,8 +12,8 @@ export default defineComponent({
   setup() {
     const { getNodeList } = useNodeList();
     const nodeList = getNodeList();
-    const { dragenter: containerDragEnter, dragover: containerDragOver, drop: containerDrop } = useContainerDragger();
-    const { dragstart: nodeDragStart, dragend: nodeDragEnd } = useNodeDragger();
+    const { dragenter: containerDragenter, dragover: containerDragover, drop: containerDrop } = useContainerDragger();
+    const { dragstart: nodeDragstart, dragend: nodeDragend, dragenter: nodeDragenter } = useNodeDragger();
 
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
@@ -22,8 +22,8 @@ export default defineComponent({
         <ElForm
           class="form-board"
           {...{
-            onDragenter: (e: DragEvent) => containerDragEnter(e),
-            onDragover: (e: DragEvent) => containerDragOver(e),
+            onDragenter: (e: DragEvent) => containerDragenter(e),
+            onDragover: (e: DragEvent) => containerDragover(e),
             onDrop: (e: DragEvent) => containerDrop(e),
           }}
           // labelPosition={this.formConfig.labelPosition}
@@ -38,8 +38,9 @@ export default defineComponent({
                   node={v as FormNode}
                   {...{
                     draggable: true,
-                    onDragstart: (e: DragEvent) => nodeDragStart(e, v as FormNode),
-                    onDragend: nodeDragEnd,
+                    onDragstart: (e: DragEvent) => nodeDragstart(e, v as FormNode),
+                    onDragend: nodeDragend,
+                    onDragenter: (e: DragEvent) => nodeDragenter(e, v as FormNode),
                   }}
                 ></NodeItem>
               ))
