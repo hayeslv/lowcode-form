@@ -1,6 +1,7 @@
 import { Link } from "@element-plus/icons-vue";
 import { ElIcon, ElScrollbar, ElTabPane, ElTabs } from "element-plus";
 import { defineComponent, ref } from "vue";
+import FormProperty from "./FormProperty";
 import "./index.scss";
 
 const enum TabItem {
@@ -10,7 +11,7 @@ const enum TabItem {
 
 export default defineComponent({
   setup() {
-    const currentTab = ref(TabItem.Field);
+    const currentTab = ref(TabItem.Form);
 
     return {  currentTab };
   },
@@ -33,7 +34,7 @@ export default defineComponent({
           {/* 组件属性 */}
           {this.currentTab === TabItem.Field  && <div>component</div>}
           {/* 表单属性 */}
-          {this.currentTab === TabItem.Form && <div>form</div>}
+          {this.currentTab === TabItem.Form && <FormProperty />}
         </ElScrollbar>
       </div>
     </div>;
