@@ -1,3 +1,5 @@
+import { CopyDocument, Delete } from "@element-plus/icons-vue";
+import { ElIcon } from "element-plus";
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
 import { useActiveNode, useDragging } from "~/hooks";
@@ -17,6 +19,16 @@ export default defineComponent({
     const instance = props.node.instance;
     const nodeRender = instance.render();
     const render = wrapFormItem(nodeRender, { label: instance.label });
+    const btnRender = () => {
+      return [
+        <span class="drawing-item-copy" title="复制" onClick={($event) => console.log("复制")}>
+          <ElIcon size={14}><CopyDocument /></ElIcon>
+        </span>,
+        <span class="drawing-item-delete" title="删除" onClick={($event) => console.log("删除")}>
+          <ElIcon size={14}><Delete /></ElIcon>
+        </span>,
+      ];
+    };
 
     return () => <div
       draggable={true}
@@ -31,6 +43,7 @@ export default defineComponent({
       onDragenter={(e: DragEvent) => dragenter(e, props.node)}
     >
       { render }
+      {btnRender()}
     </div>;
   },
 });
