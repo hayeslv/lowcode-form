@@ -1,9 +1,9 @@
 import type { IBaseNode } from "../lowform-meta/type";
 
-export const componentMap: Record<string, IBaseNode> = {};
-
 // 加载全部组件
-(async function() {
+export async function loadComponentMap() {
+  const componentMap: Record<string, IBaseNode> = {};
+
   // 同步加载全部数据文件（路径函数）
   const files = import.meta.glob("./*.tsx");
 
@@ -20,4 +20,6 @@ export const componentMap: Record<string, IBaseNode> = {};
     const config: IBaseNode = model.default;
     componentMap[config.key] = config;
   });
-})();
+
+  return componentMap;
+}

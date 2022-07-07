@@ -1,5 +1,5 @@
 import { ElScrollbar } from "element-plus";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, unref } from "vue";
 import logo from "~/assets/logo.png";
 import github from "~/icons/github.svg";
 import { configKey } from "~/config";
@@ -12,7 +12,7 @@ import "./index.scss";
 export default defineComponent({
   setup() {
     const config = inject(configKey);
-    const menuGroup = getMenuClassify(config);
+    const menuGroup = getMenuClassify(unref(config));
     const { setDragging } = useDragging();
     const { addNode } = useNodeList();
 

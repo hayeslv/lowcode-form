@@ -1,4 +1,4 @@
-import type { InjectionKey } from "vue";
+import type { ComputedRef, InjectionKey } from "vue";
 import type { IComponentMap } from "~/types";
 
-export const configKey: InjectionKey<IComponentMap> = Symbol("config");
+export const configKey: InjectionKey<ComputedRef<IComponentMap>> = Symbol("config");

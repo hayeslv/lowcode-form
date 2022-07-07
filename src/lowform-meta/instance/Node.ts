@@ -10,15 +10,19 @@ export class FormNode extends Emiter<Topic> {
   protected _data: IFormNodeInstance;
   public transiting: boolean;
 
-  constructor(data: IBaseNode) {
+  constructor(data: IBaseNode | IFormNodeInstance) {
     super();
-
-    const id = useGlobalId().getGlobalId();
-    this._data = {
-      ...data,
-      id,
-      model: `field${id}`,
-    };
+    if (typeof (data as IFormNodeInstance).id === "undefined") {
+      // id为undefined，说明是IBaseNode类型
+      const id = useGlobalId().getGlobalId();
+      this._data = {
+        ...data,
+        id,
+        model: `field${id}`,
+      };
+    } else {
+      this._data = data as IFormNodeInstance;
+    }
   }
 
   get instance() {
@@ -27,5 +31,11 @@ export class FormNode extends Emiter<Topic> {
 
   renter() {
     return this._data.render();
+  }
+
+  getJson() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { render, ...json } = this._data;
+    return json;
   }
 }

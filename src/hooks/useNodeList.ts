@@ -1,17 +1,31 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { debounce } from "lodash";
 import { Global } from "~/config";
 /**
  * @Descripttion: 编辑器中的节点（组件）
  */
 
 import type { FormNode } from "~/lowform-meta/instance/Node";
+import { useLocalStorage } from "./useLocalStorage";
 
+const { setItem } = useLocalStorage();
 const nodeList = ref([] as FormNode[]);
+
+// 实时保存nodelist
+watch(() => nodeList.value, debounce(() => {
+  const list = nodeList.value.map(v => v.getJson());
+  setItem(Global.NameNodeList, list);
+}, 300), { deep: true });
 
 export function useNodeList() {
   // 获取节点列表
   const getNodeList = () => {
     return nodeList.value;
+  };
+
+  // 覆盖nodeList
+  const coverNodeList = (list: FormNode[]) => {
+    nodeList.value = list;
   };
 
   // 添加节点
@@ -48,5 +62,17 @@ export function useNodeList() {
     }, Global.TransitionTime);
   };
 
-  return { addNode, getNodeList, includeNode, swapNodes };
+  // 获取nodeList的最大id
+  const getMaxId = () => {
+    return Math.max(...nodeList.value.map(v => v.instance.id));
+  };
+
+  return {
+    addNode,
+    getNodeList,
+    includeNode,
+    swapNodes,
+    coverNodeList,
+    getMaxId,
+  };
 }
