@@ -6,14 +6,12 @@ import { useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
-import { useNodeDragger } from "./hooks/useNodeDragger";
 
 export default defineComponent({
   setup() {
     const { getNodeList } = useNodeList();
     const nodeList = getNodeList();
-    const { dragenter: containerDragenter, dragover: containerDragover, drop: containerDrop } = useContainerDragger();
-    const { dragstart: nodeDragstart, dragend: nodeDragend, dragenter: nodeDragenter } = useNodeDragger();
+    const { dragenter, dragover, drop } = useContainerDragger();
 
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
@@ -22,9 +20,9 @@ export default defineComponent({
         <ElForm
           class="form-board"
           {...{
-            onDragenter: (e: DragEvent) => containerDragenter(e),
-            onDragover: (e: DragEvent) => containerDragover(e),
-            onDrop: (e: DragEvent) => containerDrop(e),
+            onDragenter: (e: DragEvent) => dragenter(e),
+            onDragover: (e: DragEvent) => dragover(e),
+            onDrop: (e: DragEvent) => drop(e),
           }}
           // labelPosition={this.formConfig.labelPosition}
           // disabled={this.formConfig.disabled}
@@ -36,12 +34,6 @@ export default defineComponent({
                 <NodeItem
                   key={v.instance.id}
                   node={v as FormNode}
-                  {...{
-                    draggable: true,
-                    onDragstart: (e: DragEvent) => nodeDragstart(e, v as FormNode),
-                    onDragend: nodeDragend,
-                    onDragenter: (e: DragEvent) => nodeDragenter(e, v as FormNode),
-                  }}
                 ></NodeItem>
               ))
             }

@@ -56,6 +56,18 @@
     height: 60px;
     background-color: $selectedColor;
   }
+  .active-from-item {
+    & > .el-form-item{
+      background: $selectedColor;
+      border-radius: 6px;
+    }
+    & > .drawing-item-copy, & > .drawing-item-delete{
+      display: initial;
+    }
+    & > .component-name{
+      color: $primary-light;
+    }
+  }
 }
 
 
