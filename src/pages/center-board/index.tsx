@@ -1,17 +1,25 @@
 import { ElForm, ElScrollbar } from "element-plus";
-import { defineComponent, TransitionGroup } from "vue";
+import { defineComponent, ref, TransitionGroup } from "vue";
 import TopBar from "~/pages/top-bar";
 import "./index.scss";
-import { useNodeList } from "~/hooks";
+import { useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
+import { EventNodeListUpdate } from "~/plugins/GlobalEvent";
 
 export default defineComponent({
   setup() {
     const { getNodeList } = useNodeList();
-    const nodeList = getNodeList();
     const { dragenter, dragover, drop } = useContainerDragger();
+    const { getFormConfig } = useFormConfig();
+
+    const nodeList = ref(getNodeList());
+    const formConfig = getFormConfig();
+
+    EventNodeListUpdate.on(() => {
+      nodeList.value = getNodeList();
+    });
 
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
@@ -24,30 +32,20 @@ export default defineComponent({
             onDragover: (e: DragEvent) => dragover(e),
             onDrop: (e: DragEvent) => drop(e),
           }}
-          // labelPosition={this.formConfig.labelPosition}
-          // disabled={this.formConfig.disabled}
-          // labelWidth={this.formConfig.labelWidth + "px"}
+          labelPosition={formConfig.labelPosition}
+          labelWidth={formConfig.labelWidth + "px"}
         >
           <TransitionGroup tag="div" name="myslide" {...{ class: "drawing-board" }}>
             {
-              nodeList.map(v => (
+              nodeList.value.map(v => (
                 <NodeItem
                   key={v.instance.id}
                   node={v as FormNode}
                 ></NodeItem>
               ))
             }
-            {/* { this.drawingList.map((component) => (
-                <DraggableItem
-                  key={component.id}
-                  activeId={getActiveId()}
-                  component={component}
-                  activeItem={this.methodsHandler.activeFormItem}
-                  copyItem={this.methodsHandler.drawingItemCopy}
-                  deleteItem={this.methodsHandler.drawingItemDelete}></DraggableItem>
-              )) } */}
           </TransitionGroup>
-          {!nodeList.length && <div class="empty-info">
+          {!nodeList.value.length && <div class="empty-info">
             从左侧拖入或点选组件进行表单设计
           </div>}
         </ElForm>

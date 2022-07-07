@@ -17,6 +17,7 @@ export default defineComponent({
     const instance = props.node.instance;
     const nodeRender = instance.render();
     const render = wrapFormItem(nodeRender, { label: instance.label });
+
     return () => <div
       draggable={true}
       class={[

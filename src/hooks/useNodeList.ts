@@ -7,14 +7,18 @@ import { Global } from "~/config";
 
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import { useLocalStorage } from "./useLocalStorage";
+import { EventNodeListUpdate } from "~/plugins/GlobalEvent";
 
 const { setItem } = useLocalStorage();
 const nodeList = ref([] as FormNode[]);
 
-// 实时保存nodelist
+// 节点列表发生更新
 watch(() => nodeList.value, debounce(() => {
+  // 更新缓存中的值
   const list = nodeList.value.map(v => v.getJson());
   setItem(Global.NameNodeList, list);
+  // 发送通知
+  EventNodeListUpdate.emit();
 }, 300), { deep: true });
 
 export function useNodeList() {
@@ -26,6 +30,11 @@ export function useNodeList() {
   // 覆盖nodeList
   const coverNodeList = (list: FormNode[]) => {
     nodeList.value = list;
+  };
+
+  const clearNodeList = () => {
+    nodeList.value = [];
+    console.log(nodeList.value);
   };
 
   // 添加节点
@@ -64,6 +73,7 @@ export function useNodeList() {
 
   // 获取nodeList的最大id
   const getMaxId = () => {
+    if (nodeList.value.length === 0) return null;
     return Math.max(...nodeList.value.map(v => v.instance.id));
   };
 
@@ -74,5 +84,6 @@ export function useNodeList() {
     swapNodes,
     coverNodeList,
     getMaxId,
+    clearNodeList,
   };
 }
