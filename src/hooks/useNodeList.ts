@@ -44,11 +44,19 @@ export function useNodeList() {
       nodeList.value.push(node);
       return;
     }
+
     // 获取anchor在 nodeList 中的位置
     const index = nodeList.value.findIndex(v => v.instance.id === anchor.instance.id);
     if (index === -1) return;
     // 在此位置前添加元素
     nodeList.value.splice(index, 0, node);
+  };
+
+  // 删除节点
+  const deleteNode = (node: FormNode) => {
+    if (!includeNode(node)) return; // 节点不存在列表中
+    const index = nodeList.value.findIndex(v => v.instance.id === node.instance.id);
+    nodeList.value.splice(index, 1);
   };
 
   // 判断当前节点是否在列表中
@@ -79,6 +87,7 @@ export function useNodeList() {
 
   return {
     addNode,
+    deleteNode,
     getNodeList,
     includeNode,
     swapNodes,

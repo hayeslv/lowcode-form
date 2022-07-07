@@ -1,9 +1,10 @@
 import { CopyDocument, Delete } from "@element-plus/icons-vue";
 import { ElIcon } from "element-plus";
+import { cloneDeep } from "lodash";
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
-import { useActiveNode, useDragging } from "~/hooks";
-import type { FormNode } from "~/lowform-meta/instance/Node";
+import { useActiveNode, useDragging, useNodeList } from "~/hooks";
+import { FormNode } from "~/lowform-meta/instance/Node";
 import { wrapFormItem } from "~/utils";
 import { useNodeDragger } from "./hooks/useNodeDragger";
 
@@ -13,18 +14,32 @@ export default defineComponent({
   },
   setup(props) {
     const { getDragging } = useDragging();
+    const { addNode, deleteNode } = useNodeList();
     const { getActiveNode } = useActiveNode();
     const { click, dragstart, dragend, dragenter } = useNodeDragger();
+
+    const nodeMethods = {
+      copy(e: MouseEvent) {
+        e.stopPropagation();
+        const form = new FormNode(cloneDeep(props.node.instance));
+        form.updateId();
+        addNode(form);
+      },
+      delete(e: MouseEvent) {
+        e.stopPropagation();
+        deleteNode(props.node);
+      },
+    };
 
     const instance = props.node.instance;
     const nodeRender = instance.render();
     const render = wrapFormItem(nodeRender, { label: instance.label });
     const btnRender = () => {
       return [
-        <span class="drawing-item-copy" title="复制" onClick={($event) => console.log("复制")}>
+        <span class="drawing-item-copy" title="复制" onClick={(e: MouseEvent) => nodeMethods.copy(e)}>
           <ElIcon size={14}><CopyDocument /></ElIcon>
         </span>,
-        <span class="drawing-item-delete" title="删除" onClick={($event) => console.log("删除")}>
+        <span class="drawing-item-delete" title="删除" onClick={(e: MouseEvent) => nodeMethods.delete(e)}>
           <ElIcon size={14}><Delete /></ElIcon>
         </span>,
       ];

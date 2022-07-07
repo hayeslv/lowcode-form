@@ -3,6 +3,8 @@ import { Emiter } from "~/lowform-utils/Emiter";
 import type { Topic } from "../Topic";
 import type { IBaseNode, IFormNodeInstance } from "../type";
 
+const { getGlobalId } = useGlobalId();
+
 /**
  * 表单节点
  */
@@ -37,5 +39,9 @@ export class FormNode extends Emiter<Topic> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { render, ...json } = this._data;
     return json;
+  }
+
+  updateId() {
+    this._data.id = getGlobalId();
   }
 }
