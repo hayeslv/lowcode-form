@@ -1,6 +1,7 @@
+import { events } from "./../plugins/globalEvent";
 import { ref, toRaw, unref, watch } from "vue";
 import { debounce } from "lodash";
-import { Global } from "~/config";
+import { EventName, Global } from "~/config";
 import { useLocalStorage } from "./useLocalStorage";
 
 export interface FormConfigType {
@@ -26,6 +27,10 @@ const { getItemJson, setItem } = useLocalStorage();
 watch(() => formConfig.value, debounce(() => {
   setItem(Global.NameFormConfig, toRaw(unref(formConfig)));
 }, 300), { deep: true });
+
+watch(() => formConfig.value, () => {
+  events.emit(EventName.FormConfigUpdate);
+}, { deep: true });
 
 export function useFormConfig() {
   let inited = false; // 是否初始化过了

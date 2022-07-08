@@ -18,6 +18,7 @@ specifiers:
   husky: ^7.0.4
   lint-staged: ^12.3.7
   lodash: ^4.17.21
+  mitt: ^3.0.0
   nprogress: ^0.2.0
   sass: ^1.49.9
   typescript: ^4.5.4
@@ -32,6 +33,7 @@ dependencies:
   element-plus: 2.2.2_vue@3.2.31
   file-saver: 2.0.5
   lodash: 4.17.21
+  mitt: 3.0.0
   nprogress: 0.2.0
   vue: 3.2.31
   vue-router: 4.0.14_vue@3.2.31
@@ -3927,6 +3929,10 @@ packages:
   /minimist/1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}
     dev: true
+
+  /mitt/3.0.0:
+    resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
+    dev: false
 
   /mixin-deep/1.3.2:
     resolution: {integrity: sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==}

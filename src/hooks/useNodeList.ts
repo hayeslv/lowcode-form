@@ -1,9 +1,9 @@
+import { events } from "./../plugins/globalEvent";
 import { ref, watch } from "vue";
 import { debounce } from "lodash";
-import { Global } from "~/config";
+import { EventName, Global } from "~/config";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import { useLocalStorage } from "./useLocalStorage";
-import { EventNodeListUpdate } from "~/plugins/globalEvent";
 
 /**
  * @Descripttion: 编辑器中的节点（组件）
@@ -18,7 +18,7 @@ watch(() => nodeList.value, debounce(() => {
   const list = nodeList.value.map(v => v.getJson());
   setItem(Global.NameNodeList, list);
   // 发送通知
-  EventNodeListUpdate.emit();
+  events.emit(EventName.NodeListUpdate);
 }, 300), { deep: true });
 
 export function useNodeList() {

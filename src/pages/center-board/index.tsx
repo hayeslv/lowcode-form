@@ -6,7 +6,8 @@ import { useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
-import { EventNodeListUpdate } from "~/plugins/globalEvent";
+import { events } from "~/plugins/globalEvent";
+import { EventName } from "~/config";
 
 export default defineComponent({
   setup() {
@@ -15,10 +16,14 @@ export default defineComponent({
     const { getFormConfig } = useFormConfig();
 
     const nodeList = ref(getNodeList());
-    const formConfig = getFormConfig();
+    const formConfig = ref(getFormConfig());
 
-    EventNodeListUpdate.on(() => {
+    events.on(EventName.NodeListUpdate, () => {
       nodeList.value = getNodeList();
+    });
+    events.on(EventName.FormConfigUpdate, () => {
+      formConfig.value = getFormConfig();
+      console.log(formConfig);
     });
 
     return () => <div class="center-board">
@@ -32,8 +37,8 @@ export default defineComponent({
             onDragover: (e: DragEvent) => dragover(e),
             onDrop: (e: DragEvent) => drop(e),
           }}
-          labelPosition={formConfig.labelPosition}
-          labelWidth={formConfig.labelWidth + "px"}
+          labelPosition={formConfig.value.labelPosition}
+          labelWidth={formConfig.value.labelWidth + "px"}
         >
           <TransitionGroup tag="div" name="myslide" {...{ class: "drawing-board" }}>
             {
