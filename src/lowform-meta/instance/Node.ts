@@ -1,9 +1,10 @@
-import { useGlobalId } from "~/hooks";
+import { useGlobalId, useNodeList } from "~/hooks";
 import { Emiter } from "~/lowform-utils/Emiter";
 import type { Topic } from "../Topic";
 import type { IBaseNode, IFormNodeInstance } from "../type";
 
 const { getGlobalId } = useGlobalId();
+const { deleteNode } = useNodeList();
 
 /**
  * 表单节点
@@ -43,5 +44,10 @@ export class FormNode extends Emiter<Topic> {
 
   updateId() {
     this._data.id = getGlobalId();
+  }
+
+  // 从nodelist中删除自身
+  remove() {
+    deleteNode(this);
   }
 }
