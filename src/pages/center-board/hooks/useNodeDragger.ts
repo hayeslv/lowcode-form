@@ -2,7 +2,7 @@ import { useActiveNode, useDragging, useNodeList } from "~/hooks";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 
 const { getDragging, setDragging, setDraggingAsync } = useDragging();
-const { swapNodes } = useNodeList();
+const { swapNodes, includeNode } = useNodeList();
 const { setActiveNode } = useActiveNode();
 
 export function useNodeDragger() {
@@ -25,7 +25,9 @@ export function useNodeDragger() {
     e.preventDefault();
 
     const dragging = getDragging();
-    swapNodes(dragging as FormNode, target);
+    if (includeNode(dragging as FormNode)) {
+      swapNodes(dragging as FormNode, target);
+    }
   };
 
   return { click, dragstart, dragend, dragenter };

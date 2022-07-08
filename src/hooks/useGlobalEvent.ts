@@ -1,15 +1,16 @@
 import { useNodeList, useActiveNode } from "~/hooks";
+import type { FormNode } from "~/lowform-meta/instance/Node";
 
 const { getActiveNode } = useActiveNode();
 const { deleteNode } = useNodeList();
 
 export function useGlobalEvent() {
-  const keyboard = {
+  const keydown = {
     delete() {
       const node = getActiveNode();
-      node && deleteNode(node);
+      node && deleteNode(node as FormNode);
     },
   };
 
-  return { keyboard };
+  return { keydown };
 }

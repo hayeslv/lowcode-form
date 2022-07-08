@@ -9,14 +9,14 @@ import { useGlobalEvent } from "~/hooks";
 
 export default defineComponent({
   setup() {
-    const { keyboard } = useGlobalEvent();
+    const { keydown } = useGlobalEvent();
     const codeTypeVisible = ref(false);
     const operateType = ref<TopOperateType>(TopOperateType.Download);
 
     const keyboardMethods = {
       keydown(e: KeyboardEvent) {
         const { key } = e;
-        keyboard[key.toLowerCase()] && keyboard[key.toLowerCase()]();
+        keydown[key.toLowerCase()] && keydown[key.toLowerCase()]();
       },
     };
 

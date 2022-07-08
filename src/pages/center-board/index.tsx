@@ -6,7 +6,7 @@ import { useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
-import { EventNodeListUpdate } from "~/plugins/GlobalEvent";
+import { EventNodeListUpdate } from "~/plugins/globalEvent";
 
 export default defineComponent({
   setup() {

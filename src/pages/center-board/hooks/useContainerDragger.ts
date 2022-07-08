@@ -9,7 +9,10 @@ export function useContainerDragger() {
   // dragenter：进入元素，添加一个移动的标识
   const dragenter = (e: DragEvent) => {
     e.preventDefault();
+
     const dragging = getDragging()!;
+    addNode(dragging as FormNode);
+
     if (includeNode(dragging as FormNode)) {
       e.dataTransfer!.dropEffect = "move";
     } else {
@@ -22,6 +25,7 @@ export function useContainerDragger() {
     e.preventDefault();
 
     const dragging = getDragging()!;
+
     if (includeNode(dragging as FormNode)) {
       e.dataTransfer!.dropEffect = "move";
     } else {
@@ -37,8 +41,8 @@ export function useContainerDragger() {
   // drop：松手的时候
   const drop = (e: DragEvent) => {
     e.preventDefault();
-    const dragging = getDragging()!;
-    addNode(dragging as FormNode);
+    // const dragging = getDragging()!;
+    // addNode(dragging as FormNode);
   };
 
   return { dragenter, dragover, dragleave, drop };

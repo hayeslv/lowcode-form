@@ -1,13 +1,13 @@
 import { ref, watch } from "vue";
 import { debounce } from "lodash";
 import { Global } from "~/config";
+import type { FormNode } from "~/lowform-meta/instance/Node";
+import { useLocalStorage } from "./useLocalStorage";
+import { EventNodeListUpdate } from "~/plugins/globalEvent";
+
 /**
  * @Descripttion: 编辑器中的节点（组件）
  */
-
-import type { FormNode } from "~/lowform-meta/instance/Node";
-import { useLocalStorage } from "./useLocalStorage";
-import { EventNodeListUpdate } from "~/plugins/GlobalEvent";
 
 const { setItem } = useLocalStorage();
 const nodeList = ref([] as FormNode[]);
