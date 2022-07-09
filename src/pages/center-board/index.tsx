@@ -6,7 +6,7 @@ import { useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
-import { events } from "~/plugins/globalEvent";
+import { events } from "~/plugins/events";
 import { EventName } from "~/config";
 
 export default defineComponent({
@@ -21,9 +21,11 @@ export default defineComponent({
     events.on(EventName.NodeListUpdate, () => {
       nodeList.value = getNodeList();
     });
+    events.on(EventName.ActiveNodeUpdate, () => {
+      nodeList.value = getNodeList(); // TODO 这里是全部重新获取了，可以做成只更新activeNode的对应参数内容
+    });
     events.on(EventName.FormConfigUpdate, () => {
       formConfig.value = getFormConfig();
-      console.log(formConfig);
     });
 
     return () => <div class="center-board">

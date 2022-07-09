@@ -1,4 +1,4 @@
-import { events } from "./../plugins/globalEvent";
+import { events } from "~/plugins/events";
 import { ref, toRaw, unref, watch } from "vue";
 import { debounce } from "lodash";
 import { EventName, Global } from "~/config";

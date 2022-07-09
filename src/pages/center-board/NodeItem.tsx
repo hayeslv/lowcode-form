@@ -2,7 +2,7 @@ import { CopyDocument, Delete } from "@element-plus/icons-vue";
 import { ElIcon } from "element-plus";
 import { cloneDeep } from "lodash";
 import type { PropType } from "vue";
-import { defineComponent } from "vue";
+import { watch, defineComponent } from "vue";
 import { useActiveNode, useDragging, useNodeList } from "~/hooks";
 import { FormNode } from "~/lowform-meta/instance/Node";
 import { wrapFormItem } from "~/utils";
@@ -33,7 +33,7 @@ export default defineComponent({
 
     const instance = props.node.instance;
     const nodeRender = instance.render();
-    const render = wrapFormItem(nodeRender, { label: instance.label });
+    const render = () => wrapFormItem(nodeRender, { label: instance.label });
     const btnRender = () => {
       return [
         <span class="drawing-item-copy" title="复制" onClick={(e: MouseEvent) => nodeMethods.copy(e)}>
@@ -57,8 +57,8 @@ export default defineComponent({
       onDragend={dragend}
       onDragenter={(e: DragEvent) => dragenter(e, props.node)}
     >
-      { render }
-      {btnRender()}
+      { render() }
+      { btnRender() }
     </div>;
   },
 });
