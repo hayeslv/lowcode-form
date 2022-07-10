@@ -24,6 +24,12 @@ export default defineComponent({
         <ElFormItem label="标题：">
           <ElInput v-model={instance.label} placeholder="请输入标题(label)" clearable />
         </ElFormItem>
+        {
+          instance.placeholder !== undefined &&
+          <ElFormItem label="占位提示：">
+            <ElInput v-model={instance.placeholder} placeholder="请输入占位提示" clearable />
+          </ElFormItem>
+        }
       </>;
     };
 
