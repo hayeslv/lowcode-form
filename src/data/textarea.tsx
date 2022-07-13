@@ -13,10 +13,9 @@ const data: IBasePlatformNode = {
     <ElInput
       type="textarea"
       placeholder={node.instance.placeholder ?? data.placeholder}
+      v-model={node.instance.defaultValue}
     />
-  )
-
-  ,
+  ),
 };
 
 export default data;

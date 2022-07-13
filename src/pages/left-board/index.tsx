@@ -12,6 +12,7 @@ import "./index.scss";
 export default defineComponent({
   setup() {
     const config = inject(configKey);
+    console.log(config);
     const menuGroup = getMenuClassify(unref(config));
     const { setDragging } = useDragging();
     const { addNode } = useNodeList();

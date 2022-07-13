@@ -3,7 +3,7 @@ import { computed, defineComponent, provide, ref } from "vue";
 import { RouterView } from "vue-router";
 import { loadComponentMap } from "~/data";
 import { configKey, Global } from "./config";
-import { useGlobalId, useLocalStorage, useNodeList } from "./hooks";
+import { useForm, useGlobalId, useLocalStorage, useNodeList } from "./hooks";
 import { FormNode } from "./lowform-meta/instance/Node";
 import type { IBaseNode, IFormNodeInstance } from "./lowform-meta/type";
 import "./style/common.scss";
@@ -12,6 +12,7 @@ export default defineComponent({
   setup() {
     const { getMaxId } = useNodeList();
     const { setGlobalId } = useGlobalId();
+    const { initForm } = useForm();
 
     const config = ref({} as Record<string, IBaseNode>);
     provide(configKey, computed(() => config.value));
@@ -39,6 +40,8 @@ export default defineComponent({
         }))
         .map((node: IFormNodeInstance) => new FormNode(node));
       coverNodeList(FormNodeList);
+      // 初始化NodeList后，再初始化Form
+      initForm();
     };
 
     return () => <RouterView></RouterView>;

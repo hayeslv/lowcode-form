@@ -23,6 +23,7 @@ export interface IBaseNode {
   key: string;            // 组件key，例如：text、input、button等
   label: string;          // 中文释义
   placeholder?: string;   // 默认用“请输入”
+  defaultValue?: string;  // 默认值
   render: (...args: any[]) => JSX.Element;       // 渲染函数
 }
 

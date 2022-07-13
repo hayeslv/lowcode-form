@@ -12,6 +12,7 @@ const data: IBasePlatformNode = {
   render: (node: FormNode) => (
     <ElInput
       placeholder={node.instance.placeholder ?? data.placeholder}
+      v-model={node.instance.defaultValue}
     />
   ),
 };
