@@ -1,9 +1,8 @@
 import { ElScrollbar } from "element-plus";
-import { defineComponent, inject, unref } from "vue";
+import { computed, defineComponent, unref } from "vue";
 import logo from "~/assets/logo.png";
 import github from "~/icons/github.svg";
-import { configKey } from "~/config";
-import { useDragging, useNodeList } from "~/hooks";
+import { useComponentMap, useDragging, useNodeList } from "~/hooks";
 import { FormNode } from "~/lowform-meta/instance/Node";
 import type { IBaseNode } from "~/lowform-meta/type";
 import { getGroupNameByKey, getMenuClassify } from "~/utils";
@@ -11,11 +10,11 @@ import "./index.scss";
 
 export default defineComponent({
   setup() {
-    const config = inject(configKey);
-    console.log(config);
-    const menuGroup = getMenuClassify(unref(config));
+    const { config } = useComponentMap();
     const { setDragging } = useDragging();
     const { addNode } = useNodeList();
+
+    const menuGroup = computed(() => getMenuClassify(unref(config)));
 
     const menuMethods = {
       click(e: MouseEvent, node: IBaseNode) {
@@ -45,7 +44,7 @@ export default defineComponent({
       <ElScrollbar class="left-scrollbar">
         <div class="components-list">
           {
-            Object.entries(menuGroup).map(([key, value]) => (
+            Object.entries(menuGroup.value).map(([key, value]) => (
               <div key={key}>
                 <div class="components-title">
                   <svg-icon icon-class="component" />

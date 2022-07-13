@@ -7,3 +7,4 @@ export * from "./useLocalStorage";
 export * from "./useFormConfig";
 export * from "./useGlobalEvent";
 export * from "./useForm";
+export * from "./useComponentMap";
