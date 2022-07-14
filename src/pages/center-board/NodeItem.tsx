@@ -33,7 +33,13 @@ export default defineComponent({
 
     const instance = props.node.instance;
     const nodeRender = () => instance.render(props.node);
-    const render = () => wrapFormItem(nodeRender(), { label: instance.label });
+    const render = () => wrapFormItem(
+      nodeRender(),
+      {
+        label: instance.label,
+        labelWidth: instance.labelWidth ? instance.labelWidth + "px" : null,
+      },
+    );
     const btnRender = () => {
       return [
         <span class="drawing-item-copy" title="复制" onClick={(e: MouseEvent) => nodeMethods.copy(e)}>

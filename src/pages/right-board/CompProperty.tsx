@@ -49,6 +49,9 @@ export default defineComponent({
             <ElInput v-model={instance.placeholder} placeholder="请输入占位提示" clearable />
           </ElFormItem>
         }
+        <ElFormItem label="标签宽度：">
+          <ElInput v-model={instance.labelWidth} type="number" placeholder="请输入标签宽度" />
+        </ElFormItem>
         <ElFormItem label="默认值：">
           <ElInput
             modelValue={this.form[instance.model]}

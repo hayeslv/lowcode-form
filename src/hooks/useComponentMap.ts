@@ -1,6 +1,6 @@
+import { computed, ref } from "vue";
 // 使用组件配置（data中的json）
 
-import { ref } from "vue";
 import { Global } from "~/config";
 import { loadComponentMap } from "~/data";
 import { FormNode } from "~/lowform-meta/instance/Node";
@@ -33,9 +33,9 @@ const loadNodeList = () => {
 };
 
 export function useComponentMap() {
+  const configComputed = computed(() => config.value);
   const initComponentMap = () => {
     loadComponentMap().then(componentMap => {
-      console.log(componentMap);
       config.value = componentMap;
       loadNodeList();
       // 更新最大节点id
@@ -43,5 +43,5 @@ export function useComponentMap() {
     });
   };
 
-  return { config, initComponentMap };
+  return { config: configComputed, initComponentMap };
 }
