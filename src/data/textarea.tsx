@@ -5,6 +5,7 @@ import { EComponentType } from "~/lowform-meta/type";
 
 const data: IBasePlatformNode = {
   show: true,
+  order: 2,
   group: EComponentType.FORM,
   key: "textarea",
   label: "多行输入框",

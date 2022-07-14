@@ -43,4 +43,5 @@ export interface IFormNodeInstance extends IBaseNode {
 // 平台层面组件
 export interface IBasePlatformNode extends IBaseNode {
   show: boolean;
+  order?: number;
 }

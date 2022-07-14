@@ -12,8 +12,11 @@ export async function loadComponentMap() {
   for (const key in files) {
     promises.push(files[key]());
   }
+
+  const defaultOrder = 999999;
   const promiseAllRes = (await Promise.all(promises)) // 获取全部文件内容
-    .filter(v => v.default.show); // 拿出show为true的内容
+    .filter(v => v.default.show) // 拿出show为true的内容
+    .sort((a, b) => (a.default.order ?? defaultOrder) - (b.default.order ?? defaultOrder)); // 排序
 
   // 保存全部组件的配置信息
   promiseAllRes.forEach(model => {

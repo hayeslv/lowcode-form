@@ -5,6 +5,7 @@ import { EComponentType } from "~/lowform-meta/type";
 
 const data: IBasePlatformNode = {
   show: true,
+  order: 1,
   group: EComponentType.FORM,
   key: "input",
   label: "输入框",
