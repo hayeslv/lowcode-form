@@ -7,4 +7,5 @@ export const enum EventName {
   NodeListUpdate = "NodeListUpdate",
   FormConfigUpdate = "FormConfigUpdate",
   ActiveNodeUpdate = "ActiveNodeUpdate",
+  DownloadDialog = "DownloadDialog",
 }

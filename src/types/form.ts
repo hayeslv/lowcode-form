@@ -1,8 +1,9 @@
-import type { FormConfigType } from "~/utils";
-import type { GenerateCodeType, IComponent, TopOperateType } from ".";
+import type { FormConfigType } from "~/hooks";
+import type { FormNode } from "~/lowform-meta/instance/Node";
+import type { GenerateCodeType, TopOperateType } from ".";
 
 /** Form总类型，包含组件列表 */
-export type FormConfigTotalType = FormConfigType & { fileds: IComponent[] };
+export type FormConfigTotalType = FormConfigType & { fileds: FormNode[] };
 
 // 下载vue文件弹窗的Form类型
 export interface DialogFormType {

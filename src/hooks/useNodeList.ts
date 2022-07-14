@@ -34,7 +34,6 @@ export function useNodeList() {
 
   const clearNodeList = () => {
     nodeList.value = [];
-    console.log(nodeList.value);
   };
 
   // 添加节点

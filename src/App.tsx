@@ -7,7 +7,6 @@ import "./style/common.scss";
 export default defineComponent({
   setup() {
     const { initComponentMap } = useComponentMap();
-
     // 初始化组件配置map
     initComponentMap();
 
