@@ -25,7 +25,7 @@ const generateCode = (data: DialogFormType): string => {
 
   const generateCode = new GenerateCode(formData, data.type);
 
-  return generateCode.code;
+  return generateCode.setup;
 };
 
 export const generateMethods = {
