@@ -10,8 +10,8 @@ const data: IBasePlatformNode = {
   label: "下拉选择",
   placeholder: "请选择",
   options: [
-    { lable: "选项一", value: "1" },
-    { lable: "选项二", value: "2" },
+    { label: "选项一", value: "1" },
+    { label: "选项二", value: "2" },
   ],
   render: (node: FormNode) => {
     const placeholder = node.instance.placeholder ?? data.placeholder;
@@ -22,7 +22,7 @@ const data: IBasePlatformNode = {
       v-model={node.instance.defaultValue}
     >
       {options.map(v => (
-        <ElOption label={v.lable} value={v.value}></ElOption>
+        <ElOption label={v.label} value={v.value}></ElOption>
       ))}
     </ElSelect>;
   },

@@ -11,6 +11,11 @@ export enum EComponentTypeName {
   "layout" = "布局组件",
 }
 
+export interface IOptionType {
+  label: string;
+  value: string | number;
+}
+
 // 项目、页面、组件
 // export interface BasicData {
 //   id?: number;    // 唯一值（实例化后得到）
@@ -25,7 +30,7 @@ export interface IBaseNode {
   placeholder?: string;   // 默认用“请输入”
   defaultValue?: string;  // 默认值
   labelWidth?: number;    // 标签宽度
-  options?: { lable: string; value: string | number }[];
+  options?: IOptionType[];
   render: (...args: any[]) => JSX.Element;       // 渲染函数
 }
 

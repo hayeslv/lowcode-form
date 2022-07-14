@@ -1,8 +1,10 @@
-import { ElForm, ElFormItem, ElInput } from "element-plus";
+import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
+import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput } from "element-plus";
 import { defineComponent, ref } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useNodeList } from "~/hooks";
 import type { FormNode } from "~/lowform-meta/instance/Node";
+import type { IOptionType } from "~/lowform-meta/type";
 import { events } from "~/plugins/events";
 
 export default defineComponent({
@@ -30,9 +32,39 @@ export default defineComponent({
       setFormValue(node.instance.model, value);
     };
 
-    return { form, activeNode, onDefaultValueInput };
+    const selectMethods = {
+      removeSelectOptions(node: FormNode, value: any) {
+        const index = node.instance.options!.findIndex(v => v.value === value);
+        node.instance.options?.splice(index, 1);
+      },
+      addSelectOption(node: FormNode) {
+        node.instance.options?.push({ label: "", value: "" });
+      },
+    };
+
+    return { form, activeNode, onDefaultValueInput, selectMethods };
   },
   render() {
+    const optionsRender = (node: FormNode, options: IOptionType[]) => {
+      const ItemRender = (item: IOptionType) => {
+        return <div key={item.value} class="select-item">
+          <ElIcon class="operation-btn" size={22}><Operation /></ElIcon>
+          <ElInput v-model={item.label} placeholder="选项名" />
+          <ElInput v-model={item.value} placeholder="选项值" />
+          <ElIcon class="close-btn" size={22} {...{
+            onClick: () => this.selectMethods.removeSelectOptions(node, item.value),
+          }}><Remove /></ElIcon>
+        </div>;
+      };
+      return <>
+        <ElDivider>选项</ElDivider>
+        { options.map(v => ItemRender(v)) }
+        <div style="margin-left: 20px;">
+          <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
+        </div>
+      </>;
+    };
+
     const FormItemsRender = (node: FormNode) => {
       const instance = node.instance;
       return <>
@@ -60,6 +92,7 @@ export default defineComponent({
             clearable
           />
         </ElFormItem>
+        { instance.options && optionsRender(node, instance.options) }
       </>;
     };
 
