@@ -25,6 +25,7 @@ export interface IBaseNode {
   placeholder?: string;   // 默认用“请输入”
   defaultValue?: string;  // 默认值
   labelWidth?: number;    // 标签宽度
+  options?: { lable: string; value: string | number }[];
   render: (...args: any[]) => JSX.Element;       // 渲染函数
 }
 
