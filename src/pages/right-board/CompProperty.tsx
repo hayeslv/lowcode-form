@@ -62,6 +62,7 @@ export default defineComponent({
         <div style="margin-left: 20px;">
           <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
         </div>
+        <ElDivider />
       </>;
     };
 

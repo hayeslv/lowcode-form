@@ -8,7 +8,7 @@ const { setActiveNode } = useActiveNode();
 export function useNodeDragger() {
   const click = (e: MouseEvent, target: FormNode) => {
     e.stopPropagation();
-    e.preventDefault();
+    // e.preventDefault();
     setActiveNode(target);
   };
 

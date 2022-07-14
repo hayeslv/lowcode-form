@@ -39,7 +39,7 @@
   .drawing-item{
     position: relative;
     cursor: move;
-    ::after{
+    > ::after{
       content: "";
       position: absolute;
       width: 100%;
