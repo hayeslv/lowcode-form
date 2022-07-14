@@ -1,4 +1,5 @@
 import type { FormConfigTotalType, GenerateCodeType } from "~/types";
+import { tagMap } from "./tagMap";
 
 export class GenerateCode {
   //* 表单配置 */
@@ -7,6 +8,8 @@ export class GenerateCode {
   private _pageType: GenerateCodeType;
   //* 最终生成的代码 */
   private _code: string = "";
+  //* 元素生成的代码列表 */
+  private _htmlList: string[];
 
   constructor(formData: FormConfigTotalType, type: GenerateCodeType) {
     this._formData = formData;
@@ -14,6 +17,16 @@ export class GenerateCode {
   }
 
   get code() {
+    this.makeUpHtml();
+
     return this._code;
+  }
+
+  // 组装html代码（setup的返回部分）
+  makeUpHtml() {
+    const elements = this._formData.fileds; // 当前画布中的元素
+    const htmlList: string[] = elements.map(node => tagMap[node.instance.key](node));
+
+    this._htmlList = htmlList;
   }
 }

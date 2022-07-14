@@ -32,8 +32,8 @@ export class FormNode extends Emiter<Topic> {
     return this._data;
   }
 
-  renter() {
-    return this._data.render();
+  render(...args: any[]) {
+    return this._data.render(...args);
   }
 
   getJson() {
