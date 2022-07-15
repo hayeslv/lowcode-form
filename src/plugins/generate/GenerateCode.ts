@@ -65,7 +65,8 @@ export class GenerateCode {
   }
 
   get code() {
-    return `export default defineComponent({
+    return `${this.import}
+    export default defineComponent({
       ${this.props ? this.props + ",\n" : ""}${this.setup}
     })`;
   }
@@ -86,13 +87,14 @@ export class GenerateCode {
   }
 
   get setup() {
-    const formDataStr = this._formData.fileds
-      .map(v => ({
-        key: v.instance.model,
-        value: v.instance.defaultValue || "",
-      }))
-      .map(v => `${v.key}: "${v.value}"`)
-      .join(",\n");
+    const formDataStr = [...new Set(
+      this._formData.fileds
+        .map(v => ({
+          key: v.instance.model,
+          value: v.instance.defaultValue || "",
+        }))
+        .map(v => `${v.key}: "${v.value}"`),
+    )].join(",\n");
 
     const formRef = `const ${this._formData.formRef} = ref()`;
     const formModel = `const ${this._formData.formModel} = reactive({
@@ -115,6 +117,14 @@ export class GenerateCode {
       }`;
     }
     return propsCode;
+  }
+
+  get import() {
+    const elTags = this._html.match(/El\w*/g);
+    const shouldImportStr = [...new Set(elTags)].join(", ");
+
+    return `import { defineComponent, reactive, ref } from "vue";
+    import { ${shouldImportStr} } from "element-plus";`;
   }
 
   // 获取全部node节点的code字符串（包裹了form-item）
