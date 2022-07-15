@@ -33,7 +33,15 @@
 .drawing-board {
   height: 100%;
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  &.half {
+    > * {
+      width: 50%;
+    }
+  }
   > * {
+    width: 100%;
     transition: all $transitionTime;
   }
   .drawing-item{

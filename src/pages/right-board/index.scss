@@ -63,3 +63,16 @@
     margin-left: 4px;
   }
 }
+
+
+// 修改element-ui样式
+.form-column-radio-group{
+  width: 100%;
+  display: flex;
+  > .el-radio-button {
+    flex: 1;
+    > .el-radio-button__inner {
+      width: 100%;
+    }
+  }
+}

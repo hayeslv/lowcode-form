@@ -10,6 +10,8 @@ export interface FormConfigType {
   formRules?: string;
   labelWidth: number;
   labelPosition: string;
+  //* 列数 */
+  column?: number;
 }
 
 const defaultFormConfig: FormConfigType = {

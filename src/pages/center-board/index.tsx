@@ -42,7 +42,7 @@ export default defineComponent({
           labelPosition={formConfig.value.labelPosition}
           labelWidth={formConfig.value.labelWidth + "px"}
         >
-          <TransitionGroup tag="div" name="myslide" {...{ class: "drawing-board" }}>
+          <TransitionGroup tag="div" name="myslide" {...{ class: ["drawing-board", formConfig.value.column === 2 && "half"] }}>
             {
               nodeList.value.map(v => (
                 <NodeItem
