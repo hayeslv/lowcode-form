@@ -99,6 +99,9 @@
     height: 100%;
     margin: 0;
   }
+  &.full {
+    width: 100%;
+  }
   & > .drawing-item-copy, & > .drawing-item-delete{
     display: none;
     position: absolute;

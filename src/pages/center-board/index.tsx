@@ -46,6 +46,7 @@ export default defineComponent({
             {
               nodeList.value.map(v => (
                 <NodeItem
+                  class={v.instance.column === 2 && "full"}
                   key={v.instance.id}
                   node={v as FormNode}
                 ></NodeItem>

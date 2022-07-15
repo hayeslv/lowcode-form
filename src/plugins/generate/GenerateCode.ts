@@ -7,13 +7,18 @@ import { tagMap } from "./tagMap";
 const { getFormConfig } = useFormConfig();
 
 const wrapFormItem = (node: FormNode, tagDom: string) => {
+  const formConfig = getFormConfig();
+
   let labelWidth = "";
-  if (node.instance.labelWidth) labelWidth = `label-width="${node.instance.labelWidth}px"`;
+  if (node.instance.labelWidth) labelWidth = ` label-width="${node.instance.labelWidth}px"`;
 
   const label = `label="${node.instance.label}"`;
   const prop = `prop="${node.instance.model}"`;
 
-  return `<ElFormItem ${labelWidth} ${label} ${prop}>
+  const className = (formConfig.column === 2) && (node.instance.column === 2) ? "full" : null;
+  const classStr = className ? ` class="${className}"` : "";
+
+  return `<ElFormItem${classStr}${labelWidth} ${label} ${prop}>
     ${tagDom}
   </ElFormItem>`;
 };
@@ -147,6 +152,9 @@ export class GenerateCode {
     //     display: flex;
     //     align-items: flex-start;
     //     width: 100%;
+    //     &.full {
+    //       width: 100%;
+    //     }
     //   }
     // }
     `;

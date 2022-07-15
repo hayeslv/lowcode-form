@@ -1,8 +1,8 @@
 import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
-import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput } from "element-plus";
+import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput, ElRadioButton, ElRadioGroup } from "element-plus";
 import { defineComponent, ref } from "vue";
 import { EventName } from "~/config";
-import { useActiveNode, useForm, useNodeList } from "~/hooks";
+import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import type { IOptionType } from "~/lowform-meta/type";
 import { events } from "~/plugins/events";
@@ -12,9 +12,11 @@ export default defineComponent({
     const { getNodeList } = useNodeList();
     const { getActiveNode } = useActiveNode();
     const { getForm, setFormValue } = useForm();
+    const { getFormConfig } = useFormConfig();
 
     const activeNode = ref(getActiveNode());
     const form = getForm();
+    const formConfig = getFormConfig();
 
     events.on(EventName.ActiveNodeUpdate, () => {
       activeNode.value = getActiveNode();
@@ -42,7 +44,7 @@ export default defineComponent({
       },
     };
 
-    return { form, activeNode, onDefaultValueInput, selectMethods };
+    return { form, formConfig, activeNode, onDefaultValueInput, selectMethods };
   },
   render() {
     const optionsRender = (node: FormNode, options: IOptionType[]) => {
@@ -68,8 +70,22 @@ export default defineComponent({
 
     const FormItemsRender = (node: FormNode) => {
       const instance = node.instance;
+
+      const columnRender = () => {
+        // 组件默认占据一列
+        !instance.column && (instance.column = 1);
+
+        return <ElFormItem label="列数：">
+          <ElRadioGroup class="form-column-radio-group" v-model={instance.column}>
+            <ElRadioButton label={1}>1列</ElRadioButton>
+            <ElRadioButton label={2}>2列</ElRadioButton>
+          </ElRadioGroup>
+        </ElFormItem>;
+      };
+
       return <>
         <ElFormItem label="组件类型：">{instance.key}</ElFormItem>
+        { this.formConfig.column === 2 &&  columnRender() }
         <ElFormItem label="标题：">
           <ElInput v-model={instance.label} placeholder="请输入标题(label)" clearable />
         </ElFormItem>
