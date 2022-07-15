@@ -58,8 +58,6 @@ export class GenerateCode {
   private _formData: FormConfigTotalType;
   //* 页面类型：表单、弹窗 */
   private _pageType: GenerateCodeType;
-  //* 最终生成的代码 */
-  private _code: string = "";
 
   constructor(formData: FormConfigTotalType, type: GenerateCodeType) {
     this._formData = formData;
@@ -67,10 +65,12 @@ export class GenerateCode {
   }
 
   get code() {
-    return this._code;
+    return `export default defineComponent({
+      ${this.props ? this.props + ",\n" : ""}${this.setup}
+    })`;
   }
 
-  get html() {
+  get _html() {
     // 每个node的html
     const codeList = this.getNodesCode();
     // 转为字符串
@@ -102,8 +102,19 @@ export class GenerateCode {
     return `setup(props, { emit }) {
       ${formRef}
       ${formModel}
-      return () => ${this.html}
+      return () => ${this._html}
     }`;
+  }
+
+  get props() {
+    let propsCode: string | null = null;
+    // TODO 目前只有dialog需要用到props.visible，这里先写死，以后再考虑动态化
+    if (this._pageType === GenerateCodeType.Dialog) {
+      propsCode = `props: {
+        visible: { type: Boolean, default: false },
+      }`;
+    }
+    return propsCode;
   }
 
   // 获取全部node节点的code字符串（包裹了form-item）
