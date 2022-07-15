@@ -4,6 +4,7 @@ import type { DialogFormType, FormConfigTotalType } from "~/types";
 import { TopOperateType } from "~/types";
 import { copyText } from "~/utils";
 import { cloneDeep } from "lodash";
+import { saveAs } from "file-saver";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import { GenerateCode } from "./GenerateCode";
 
@@ -39,5 +40,11 @@ export const generateMethods = {
         type: "success",
       });
     });
+  },
+  [TopOperateType.Download](data: DialogFormType) {
+    // 生成代码字符串
+    const codeStr = generateCode(data);
+    const blob = new Blob([codeStr], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, data.fileName);
   },
 };
