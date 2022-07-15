@@ -60,6 +60,7 @@ export function useNodeList() {
 
   // 判断当前节点是否在列表中
   const includeNode = (node: FormNode) => {
+    if (!node) return false;
     return nodeList.value.findIndex(v => v.instance.id === node.instance.id) >= 0;
   };
 
