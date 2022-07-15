@@ -1,30 +1,27 @@
-import { ElOption, ElSelect } from "element-plus";
+import { ElCheckbox, ElCheckboxGroup } from "element-plus";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import type { IBasePlatformNode } from "~/lowform-meta/type";
 import { EComponentType } from "~/lowform-meta/type";
 
 const data: IBasePlatformNode = {
   show: true,
+  order: 6,
   group: EComponentType.SELECT,
-  key: "select",
-  label: "下拉选择",
-  placeholder: "请选择",
+  key: "checkbox",
+  label: "多选框",
   options: [
     { label: "选项一", value: "1" },
     { label: "选项二", value: "2" },
   ],
   render: (node: FormNode) => {
-    const placeholder = node.instance.placeholder ?? data.placeholder;
     const options = node.instance.options ?? data.options ?? [];
-    return <ElSelect
-      style="width: 100%"
-      placeholder={placeholder}
-      v-model={node.instance.defaultValue}
-    >
+    // 初始化defaultValue
+    !node.instance.defaultValue && (node.instance.defaultValue = []);
+    return <ElCheckboxGroup style="width: 100%;" v-model={node.instance.defaultValue}>
       {options.map(v => (
-        <ElOption label={v.label} value={v.value}></ElOption>
+        <ElCheckbox label={v.value}>{v.label}</ElCheckbox>
       ))}
-    </ElSelect>;
+    </ElCheckboxGroup>;
   },
 };
 

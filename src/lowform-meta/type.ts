@@ -2,12 +2,14 @@
 export const enum EComponentType {
   BASIC = "basic",          // 基础组件
   FORM = "form",            // form表单组件
+  SELECT = "select",        // 选择型组件
   LAYOUT = "layout",        // 布局组件
 }
 // 组件类型对应中文名
 export enum EComponentTypeName {
   "basic" = "基础组件",
   "form" = "表单组件",
+  "select" = "选择组件",
   "layout" = "布局组件",
 }
 
@@ -28,7 +30,7 @@ export interface IBaseNode {
   key: string;            // 组件key，例如：text、input、button等
   label: string;          // 中文释义
   placeholder?: string;   // 默认用“请输入”
-  defaultValue?: string;  // 默认值
+  defaultValue?: string | string[];  // 默认值
   labelWidth?: number;    // 标签宽度
   column?: number;        // 列数
   options?: IOptionType[];

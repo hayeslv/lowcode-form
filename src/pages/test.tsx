@@ -1,5 +1,5 @@
 import { defineComponent, reactive, ref } from "vue";
-import { ElForm, ElFormItem, ElInput, ElRadioGroup, ElRadio, ElSelect, ElOption } from "element-plus";
+import { ElForm, ElFormItem, ElInput, ElRadioGroup, ElRadio, ElSelect, ElOption, ElCheckboxGroup, ElCheckbox } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
@@ -17,7 +17,14 @@ export default defineComponent({
       field185: "2",
       field187: "33",
       field188: "2",
+      field200: [],
     });
+
+    const options = [
+      { label: "选项一", value: "1" },
+      { label: "选项二", value: "2" },
+    ];
+
     return () => <ElForm class="half" ref={elForm} model={formData} label-width="100px">
       <ElFormItem class="full" label="输入框" prop="field179">
         <ElInput v-model={formData.field179} placeholder="请输入" />
@@ -70,6 +77,14 @@ export default defineComponent({
           <ElOption label="选项二" value="2" />
         </ElSelect>
       </ElFormItem>
+      <ElFormItem label="测试多选" prop="field200">
+        <ElCheckboxGroup style="width: 100%;" v-model={formData.field200}>
+          {options.map(v => (
+            <ElCheckbox label={v.value}>{v.label}</ElCheckbox>
+          ))}
+        </ElCheckboxGroup>
+      </ElFormItem>
+
     </ElForm>;
   },
 });

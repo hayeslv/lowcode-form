@@ -5,7 +5,8 @@ import { EComponentType } from "~/lowform-meta/type";
 
 const data: IBasePlatformNode = {
   show: true,
-  group: EComponentType.FORM,
+  order: 5,
+  group: EComponentType.SELECT,
   key: "radio",
   label: "单选框",
   options: [

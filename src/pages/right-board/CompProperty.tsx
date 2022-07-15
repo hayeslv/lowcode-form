@@ -27,7 +27,11 @@ export default defineComponent({
       // 从nodeList中找到绑定值是vModel的对象（可能有多个），将其更新
       getNodeList().forEach(v => {
         if (v.instance.model === vModel) {
-          v.instance.defaultValue = value;
+          if (Array.isArray(node.instance.defaultValue)) { // 如果是数组，则将value依据逗号拆成数组
+            node.instance.defaultValue = value.split(",");
+          } else {
+            v.instance.defaultValue = value;
+          }
         }
       });
       // 更新form的值
