@@ -20,7 +20,10 @@ const wrapFormItem = (node: FormNode, tagDom: string) => {
 
 const wrapForm = (codeStr: string) => {
   const formConfig = getFormConfig();
-  return `<ElForm ref={${formConfig.formRef}} model={${formConfig.formModel}} label-width="${formConfig.labelWidth}px">
+  const className = formConfig.column === 2 ? "half" : null;
+  const classStr = className ? ` class="${className}"` : "";
+
+  return `<ElForm${classStr} ref={${formConfig.formRef}} model={${formConfig.formModel}} label-width="${formConfig.labelWidth}px">
   ${codeStr}
 </ElForm>`;
 };
@@ -68,7 +71,9 @@ export class GenerateCode {
     return `${this.import}
     export default defineComponent({
       ${this.props ? this.props + ",\n" : ""}${this.setup}
-    })`;
+    })
+    ${this.css}
+    `;
   }
 
   get _html() {
@@ -124,7 +129,27 @@ export class GenerateCode {
     const shouldImportStr = [...new Set(elTags)].join(", ");
 
     return `import { defineComponent, reactive, ref } from "vue";
-    import { ${shouldImportStr} } from "element-plus";`;
+    import { ${shouldImportStr} } from "element-plus";
+    import "./test.scss"`;
+  }
+
+  get css() {
+    return `
+    // .el-form {
+    //   display: flex;
+    //   flex-wrap: wrap;
+    //   &.half {
+    //     > .el-form-item {
+    //       width: 50%;
+    //     }
+    //   }
+    //   > .el-form-item {
+    //     display: flex;
+    //     align-items: flex-start;
+    //     width: 100%;
+    //   }
+    // }
+    `;
   }
 
   // 获取全部node节点的code字符串（包裹了form-item）

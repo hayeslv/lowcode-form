@@ -11,6 +11,7 @@ import CodeTypeDialog from "./dialog/CodeTypeDialog";
 import { events } from "~/plugins/events";
 import { EventName } from "~/config";
 import { generateMethods } from "~/plugins/generate";
+import Test from "./test";
 
 export default defineComponent({
   setup() {
@@ -48,6 +49,7 @@ export default defineComponent({
       <CenterBoard />
       <RightBoard />
       <CodeTypeDialog v-model:visible={this.codeTypeVisible} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
+      {true && <Test />}
     </div>;
   },
 });
