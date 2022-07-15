@@ -28,7 +28,7 @@ export default defineComponent({
       getNodeList().forEach(v => {
         if (v.instance.model === vModel) {
           if (Array.isArray(node.instance.defaultValue)) { // 如果是数组，则将value依据逗号拆成数组
-            node.instance.defaultValue = value.split(",");
+            node.instance.defaultValue = value.length > 0 ? value.split(",") : [];
           } else {
             v.instance.defaultValue = value;
           }

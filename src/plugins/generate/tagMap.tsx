@@ -38,4 +38,13 @@ export const tagMap = {
       ${optionStr}
     </ElRadioGroup>`;
   },
+  checkbox: (node: FormNode) => {
+    const { vModel } = attrBuilder(node);
+    const optionStr = (node.instance.options || [])
+      .map(v => `<ElCheckbox label="${v.value}">${v.label}</ElCheckbox>`)
+      .join("\n");
+    return `<ElCheckboxGroup ${vModel}>
+      ${optionStr}
+    </ElCheckboxGroup>`;
+  },
 };

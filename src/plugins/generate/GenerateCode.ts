@@ -97,13 +97,28 @@ export class GenerateCode {
   }
 
   get setup() {
+    const valueChange = (value: string | string[]) => {
+      if (Array.isArray(value)) {
+        console.log(value.length);
+        if (value.length === 0) return "[]";
+
+        const valueStr = value.reduce((str, now) => {
+          str += `,"${now}"`;
+          return str;
+        }, "").slice(1);
+        return `[${valueStr}]`;
+      } else {
+        return `"${value}"`;
+      }
+    };
+
     const formDataStr = [...new Set(
       this._formData.fileds
         .map(v => ({
           key: v.instance.model,
           value: v.instance.defaultValue || "",
         }))
-        .map(v => `${v.key}: "${v.value}"`),
+        .map(v => `${v.key}: ${valueChange(v.value)}`),
     )].join(",\n");
 
     const formRef = `const ${this._formData.formRef} = ref()`;
