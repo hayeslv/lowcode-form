@@ -1,5 +1,7 @@
+import { capitalize } from "./../../utils/shared";
 import { useFormConfig } from "~/hooks";
 import type { FormNode } from "~/lowform-meta/instance/Node";
+import { EOptionsDataType } from "~/lowform-meta/type";
 import type { FormConfigTotalType } from "~/types";
 import { GenerateCodeType } from "~/types";
 import { tagMap } from "./tagMap";
@@ -96,6 +98,7 @@ export class GenerateCode {
     return codeStr;
   }
 
+  // TODO 使用this._setup，做缓存
   get setup() {
     const valueChange = (value: string | string[]) => {
       if (Array.isArray(value)) {
@@ -125,11 +128,42 @@ export class GenerateCode {
       ${formDataStr}
     })`;
 
+    const options = this._formData.fileds
+      .filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC)
+      .map(v => `${v.instance.model}Options: []`)
+      .join(",\n");
+
+    // options配置
+    const formOptions = `const formOptions = reactive({
+      ${options}
+    })`;
+
     return `setup(props, { emit }) {
       ${formRef}
       ${formModel}
+      ${formOptions}
+      ${this.methods}
+      ${this.mounted}\n
       return () => ${this._html}
     }`;
+  }
+
+  get mounted() {
+    const dynamicOptionsNodes = this._formData.fileds.filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC);
+    if (dynamicOptionsNodes.length === 0) return "";
+
+    const funcList = dynamicOptionsNodes.map(v => `get${capitalize(v.instance.model)}Options();`);
+
+    return `onMounted(() => {
+      ${funcList.join(",\n")}
+    })`;
+  }
+
+  get methods() {
+    const dynamicOptionsNodes = this._formData.fileds.filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC);
+    return dynamicOptionsNodes.map(v => `const get${capitalize(v.instance.model)}Options = async () => {
+
+    }`);
   }
 
   get props() {
@@ -147,7 +181,10 @@ export class GenerateCode {
     const elTags = this._html.match(/El\w*/g);
     const shouldImportStr = [...new Set(elTags)].join(", ");
 
-    return `import { defineComponent, reactive, ref } from "vue";
+    const vueImportList = ["reactive", "ref", "onMounted"];
+    const vueImportStr = vueImportList.filter(v => this.setup.includes(v)).join(", ");
+
+    return `import { defineComponent, ${vueImportStr} } from "vue";
     import { ${shouldImportStr} } from "element-plus";
     import "./test.scss"`;
   }

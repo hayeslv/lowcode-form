@@ -31,3 +31,6 @@ export async function copyText(text: string) {
 
   return new Promise((resolve, reject) => reject(new Error("复制失败")));
 }
+
+// 首字母大写
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

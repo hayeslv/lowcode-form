@@ -91,7 +91,7 @@ export default defineComponent({
             <ElFormItem label="接口地址：">
               <ElInput v-model={node.instance.optionsUrl}
                 v-slots= {{
-                  prepend: <ElSelect style="width: 80px;" v-model={node.instance.optionsUrlMethod}>
+                  prepend: () => <ElSelect style="width: 80px;" v-model={node.instance.optionsUrlMethod}>
                     <ElOption label="get" value="get"></ElOption>
                   </ElSelect>,
                 }}
