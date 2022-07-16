@@ -1,10 +1,11 @@
 import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
-import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput, ElRadioButton, ElRadioGroup } from "element-plus";
+import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
 import { defineComponent, ref } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import type { IOptionType } from "~/lowform-meta/type";
+import { EOptionsDataType } from "~/lowform-meta/type";
 import { events } from "~/plugins/events";
 
 export default defineComponent({
@@ -62,12 +63,45 @@ export default defineComponent({
           }}><Remove /></ElIcon>
         </div>;
       };
+      // “数据类型”初始化为“静态”
+      !node.instance.optionsDataType && (node.instance.optionsDataType = EOptionsDataType.STATIC);
+      // 请求方式默认为“get”
+      !node.instance.optionsUrlMethod && (node.instance.optionsUrlMethod = "get");
       return <>
         <ElDivider>选项</ElDivider>
-        { options.map(v => ItemRender(v)) }
-        <div style="margin-left: 20px;">
-          <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
-        </div>
+        <ElFormItem label="数据类型：">
+          <ElRadioGroup class="form-column-radio-group" v-model={node.instance.optionsDataType}>
+            <ElRadioButton label={EOptionsDataType.STATIC}>静态</ElRadioButton>
+            <ElRadioButton label={EOptionsDataType.DYNAMIC}>动态</ElRadioButton>
+          </ElRadioGroup>
+        </ElFormItem>
+
+        {/* 静态数据 */}
+        {
+          node.instance.optionsDataType === EOptionsDataType.STATIC && <>
+            {options.map(v => ItemRender(v))}
+            <div style="margin-left: 20px;">
+              <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
+            </div>
+          </>
+        }
+        {/* 动态数据 */}
+        {
+          node.instance.optionsDataType === EOptionsDataType.DYNAMIC && <>
+            <ElFormItem label="接口地址：">
+              <ElInput v-model={node.instance.optionsUrl}
+                v-slots= {{
+                  prepend: <ElSelect style="width: 80px;" v-model={node.instance.optionsUrlMethod}>
+                    <ElOption label="get" value="get"></ElOption>
+                  </ElSelect>,
+                }}
+                {...{
+                  title: node.instance.optionsUrl,
+                }}
+              ></ElInput>
+            </ElFormItem>
+          </>
+        }
         <ElDivider />
       </>;
     };

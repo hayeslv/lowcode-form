@@ -18,6 +18,12 @@ export interface IOptionType {
   value: string | number;
 }
 
+// options数据类型
+export const enum EOptionsDataType {
+  DYNAMIC = "dynamic",  // 动态
+  STATIC = "static",    // 静态
+}
+
 // 项目、页面、组件
 // export interface BasicData {
 //   id?: number;    // 唯一值（实例化后得到）
@@ -34,6 +40,9 @@ export interface IBaseNode {
   labelWidth?: number;    // 标签宽度
   column?: number;        // 列数
   options?: IOptionType[];
+  optionsDataType?: EOptionsDataType;
+  optionsUrl?: string;    // 获取options的接口地址
+  optionsUrlMethod?: string;
   render: (...args: any[]) => JSX.Element;       // 渲染函数
 }
 

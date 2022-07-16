@@ -99,7 +99,6 @@ export class GenerateCode {
   get setup() {
     const valueChange = (value: string | string[]) => {
       if (Array.isArray(value)) {
-        console.log(value.length);
         if (value.length === 0) return "[]";
 
         const valueStr = value.reduce((str, now) => {
