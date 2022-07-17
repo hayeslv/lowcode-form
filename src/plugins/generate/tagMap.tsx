@@ -30,16 +30,19 @@ export const tagMap = {
 
     const dynamicRender = `{ formOptions.${instance.model}Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }`;
     return `<ElSelect ${vModel} ${placeholder} style="width: 100%;">
-      ${node.instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
+      ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElSelect>`;
   },
   radio: (node: FormNode) => {
+    const instance = node.instance;
     const { vModel } = attrBuilder(node);
     const optionStr = (node.instance.options || [])
       .map(v => `<ElRadio label="${v.value}">${v.label}</ElRadio>`)
       .join("\n");
+
+    const dynamicRender = `{ formOptions.${instance.model}Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }`;
     return `<ElRadioGroup ${vModel}>
-      ${optionStr}
+      ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElRadioGroup>`;
   },
   checkbox: (node: FormNode) => {

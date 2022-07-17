@@ -157,7 +157,7 @@ export class GenerateCode {
     const funcList = dynamicOptionsNodes.map(v => `get${capitalize(v.instance.model)}Options();`);
 
     return `onMounted(() => {
-      ${funcList.join(",\n")}
+      ${funcList.join("\n")}
     })`;
   }
 
@@ -167,7 +167,7 @@ export class GenerateCode {
       const response = await fetch("${v.instance.optionsUrl}", { method: "${v.instance.optionsUrlMethod?.toUpperCase()}" });
       const list = await response.json();
       formOptions.${v.instance.model}Options = list;
-    }`);
+    }`).join("\n");
   }
 
   get props() {
