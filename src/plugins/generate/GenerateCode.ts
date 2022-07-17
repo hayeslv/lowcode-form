@@ -134,9 +134,11 @@ export class GenerateCode {
       .join(",\n");
 
     // options配置
-    const formOptions = `const formOptions = reactive({
-      ${options}
-    })`;
+    const formOptions = options !== ""
+      ? `const formOptions = reactive({
+        ${options}
+      })`
+      : "";
 
     return `setup(props, { emit }) {
       ${formRef}
@@ -162,7 +164,9 @@ export class GenerateCode {
   get methods() {
     const dynamicOptionsNodes = this._formData.fileds.filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC);
     return dynamicOptionsNodes.map(v => `const get${capitalize(v.instance.model)}Options = async () => {
-
+      const response = await fetch("${v.instance.optionsUrl}", { method: "${v.instance.optionsUrlMethod?.toUpperCase()}" });
+      const list = await response.json();
+      formOptions.${v.instance.model}Options = list;
     }`);
   }
 

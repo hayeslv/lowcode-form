@@ -1,4 +1,4 @@
-import { defineComponent, reactive, ref, onMounted } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { ElForm, ElFormItem, ElSelect, ElOption, ElInput, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox } from "element-plus";
 import "./test.scss";
 export default defineComponent({
@@ -10,15 +10,6 @@ export default defineComponent({
       field101: "",
       field103: "2",
       field104: [],
-    });
-    const formOptions = reactive({
-      field105Options: [],
-    });
-    const getField105Options = async() => {
-
-    };
-    onMounted(() => {
-      getField105Options();
     });
 
     return () => <ElForm class="half" ref={elForm} model={formData} label-width="100px">
