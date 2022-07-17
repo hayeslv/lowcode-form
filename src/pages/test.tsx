@@ -14,6 +14,7 @@ export default defineComponent({
     const formOptions = reactive({
       field105Options: [],
       field103Options: [],
+      field104Options: [],
     });
     const getField105Options = async() => {
       const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
@@ -25,9 +26,15 @@ export default defineComponent({
       const list = await response.json();
       formOptions.field103Options = list;
     };
+    const getField104Options = async() => {
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
+      const list = await response.json();
+      formOptions.field104Options = list;
+    };
     onMounted(() => {
       getField105Options();
       getField103Options();
+      getField104Options();
     });
 
     return () => <ElForm class="half" ref={elForm} model={formData} label-width="100px">
@@ -49,8 +56,7 @@ export default defineComponent({
       </ElFormItem>
       <ElFormItem class="full" label="多选框" prop="field104">
         <ElCheckboxGroup v-model={formData.field104}>
-          <ElCheckbox label="1">选项一</ElCheckbox>
-          <ElCheckbox label="2">选项二</ElCheckbox>
+          { formOptions.field104Options.map((v: Record<string, number | string>) => <ElCheckbox label={v.value}>{v.label}</ElCheckbox>) }
         </ElCheckboxGroup>
       </ElFormItem>
     </ElForm>;

@@ -24,7 +24,7 @@ export const tagMap = {
   select: (node: FormNode) => {
     const instance = node.instance;
     const { vModel, placeholder } = attrBuilder(node);
-    const optionStr = (node.instance.options || [])
+    const optionStr = (instance.options || [])
       .map(v => `<ElOption label="${v.label}" value="${v.value}" />`)
       .join("\n");
 
@@ -36,7 +36,7 @@ export const tagMap = {
   radio: (node: FormNode) => {
     const instance = node.instance;
     const { vModel } = attrBuilder(node);
-    const optionStr = (node.instance.options || [])
+    const optionStr = (instance.options || [])
       .map(v => `<ElRadio label="${v.value}">${v.label}</ElRadio>`)
       .join("\n");
 
@@ -46,12 +46,14 @@ export const tagMap = {
     </ElRadioGroup>`;
   },
   checkbox: (node: FormNode) => {
+    const instance = node.instance;
     const { vModel } = attrBuilder(node);
-    const optionStr = (node.instance.options || [])
+    const optionStr = (instance.options || [])
       .map(v => `<ElCheckbox label="${v.value}">${v.label}</ElCheckbox>`)
       .join("\n");
+    const dynamicRender = `{ formOptions.${instance.model}Options.map((v: Record<string, number | string>) => <ElCheckbox label={v.value}>{v.label}</ElCheckbox>) }`;
     return `<ElCheckboxGroup ${vModel}>
-      ${optionStr}
+      ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElCheckboxGroup>`;
   },
 };
