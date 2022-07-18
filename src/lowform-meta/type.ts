@@ -36,7 +36,7 @@ export interface IBaseNode {
   key: string;            // 组件key，例如：text、input、button等
   label: string;          // 中文释义
   placeholder?: string;   // 默认用“请输入”
-  defaultValue?: string | string[];  // 默认值
+  defaultValue?: number | string | string[] | boolean;  // 默认值
   labelWidth?: number;    // 标签宽度
   column?: number;        // 列数
   options?: IOptionType[];

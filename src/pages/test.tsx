@@ -1,15 +1,17 @@
 import { defineComponent, reactive, ref, onMounted } from "vue";
-import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElInput, ElCheckboxGroup, ElCheckbox } from "element-plus";
+import { ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElInputNumber, ElSwitch } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
     const elForm = ref();
     const formData = reactive({
+      field102: "",
       field105: "",
       field103: "2",
-      field102: "",
       field101: "",
       field104: [],
+      field109: 0,
+      field108: false,
     });
     const formOptions = reactive({
       field105Options: [],
@@ -38,8 +40,11 @@ export default defineComponent({
       getField104Options();
     });
 
-    return () => <ElForm class="half" ref={elForm} model={formData} label-width="100px">
-      <ElFormItem class="full" label="下拉选择" prop="field105">
+    return () => <ElForm ref={elForm} model={formData} label-width="100px">
+      <ElFormItem label="多行输入框" prop="field102">
+        <ElInput type="textarea" v-model={formData.field102} placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="下拉选择" prop="field105">
         <ElSelect v-model={formData.field105} placeholder="请选择" style="width: 100%;">
           { formOptions.field105Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }
         </ElSelect>
@@ -49,16 +54,19 @@ export default defineComponent({
           { formOptions.field103Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }
         </ElRadioGroup>
       </ElFormItem>
-      <ElFormItem label="多行输入框" prop="field102">
-        <ElInput type="textarea" v-model={formData.field102} placeholder="请输入" />
-      </ElFormItem>
       <ElFormItem label="输入框" prop="field101">
         <ElInput v-model={formData.field101} placeholder="请输入" />
       </ElFormItem>
-      <ElFormItem class="full" label="多选框" prop="field104">
+      <ElFormItem label="多选框" prop="field104">
         <ElCheckboxGroup v-model={formData.field104}>
           { formOptions.field104Options.map((v: Record<string, number | string>) => <ElCheckbox label={v.value}>{v.label}</ElCheckbox>) }
         </ElCheckboxGroup>
+      </ElFormItem>
+      <ElFormItem label="计数器" prop="field109">
+        <ElInputNumber v-model={formData.field109} />
+      </ElFormItem>
+      <ElFormItem label="开关" prop="field108">
+        <ElSwitch v-model={formData.field108} />
       </ElFormItem>
     </ElForm>;
   },

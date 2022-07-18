@@ -10,6 +10,7 @@ const data: IBasePlatformNode = {
   key: "number",
   label: "计数器",
   placeholder: "",
+  defaultValue: 0,
   render: (node: FormNode) => (
     <ElInputNumber
       placeholder={node.instance.placeholder ?? data.placeholder}

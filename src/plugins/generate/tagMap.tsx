@@ -25,6 +25,10 @@ export const tagMap = {
     const { vModel, placeholder } = attrBuilder(node);
     return `<ElInput type="textarea" ${vModel} ${placeholder} />`;
   },
+  number: (node: FormNode) => {
+    const { vModel } = attrBuilder(node);
+    return `<ElInputNumber ${vModel} />`;
+  },
   select: (node: FormNode) => {
     const instance = node.instance;
     const { vModel, placeholder } = attrBuilder(node);
@@ -59,5 +63,9 @@ export const tagMap = {
     return `<ElCheckboxGroup ${vModel}>
       ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElCheckboxGroup>`;
+  },
+  switch: (node: FormNode) => {
+    const { vModel } = attrBuilder(node);
+    return `<ElSwitch ${vModel} />`;
   },
 };

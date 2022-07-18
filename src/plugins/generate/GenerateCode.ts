@@ -101,7 +101,9 @@ export class GenerateCode {
 
   // TODO 使用this._setup，做缓存
   get setup() {
-    const valueChange = (value: string | string[]) => {
+    const valueChange = (value: number | string | string[] | boolean) => {
+      if (typeof value === "boolean") return Boolean(value);
+      if (typeof value === "number") return Number(value);
       if (Array.isArray(value)) {
         if (value.length === 0) return "[]";
 
@@ -119,7 +121,7 @@ export class GenerateCode {
       this._formData.fileds
         .map(v => ({
           key: v.instance.model,
-          value: v.instance.defaultValue || "",
+          value: v.instance.defaultValue === undefined ? "" : v.instance.defaultValue,
         }))
         .map(v => `${v.key}: ${valueChange(v.value)}`),
     )].join(",\n");
