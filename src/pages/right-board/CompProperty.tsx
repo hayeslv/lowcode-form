@@ -86,6 +86,7 @@ export default defineComponent({
               v-slots= {{
                 prepend: () => <ElSelect style="width: 80px;" v-model={instance.optionsUrlMethod}>
                   <ElOption label="get" value="get"></ElOption>
+                  <ElOption label="post" value="post"></ElOption>
                 </ElSelect>,
               }}
               {...{
