@@ -1,7 +1,7 @@
 import { useGlobalId, useNodeList } from "~/hooks";
 import { Emiter } from "~/lowform-utils/Emiter";
 import type { Topic } from "../Topic";
-import type { IBaseNode, IFormNodeInstance, IFormSelectNodeInstance, ISelectNode, ISelectPlatformNode } from "../type";
+import type { IBaseNode, IFormNodeInstance, IFormSelectNodeInstance, ISelectNode } from "../type";
 
 const { getGlobalId } = useGlobalId();
 const { deleteNode } = useNodeList();

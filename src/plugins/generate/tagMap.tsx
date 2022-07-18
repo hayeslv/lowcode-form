@@ -12,6 +12,10 @@ const attrBuilder = (node: FormNode) => {
   };
 };
 
+const formOptionsMapRender = (node: FormNode, code: string) => {
+  return `{ formOptions.${node.instance.model}Options.map((v: Record<string, number | string>) => ${code}) }`;
+};
+
 export const tagMap = {
   input: (node: FormNode) => {
     const { vModel, placeholder } = attrBuilder(node);
@@ -28,7 +32,7 @@ export const tagMap = {
       .map(v => `<ElOption label="${v.label}" value="${v.value}" />`)
       .join("\n");
 
-    const dynamicRender = `{ formOptions.${instance.model}Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }`;
+    const dynamicRender = formOptionsMapRender(node, "<ElOption label={v.label} value={v.value} />");
     return `<ElSelect ${vModel} ${placeholder} style="width: 100%;">
       ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElSelect>`;
@@ -40,7 +44,7 @@ export const tagMap = {
       .map(v => `<ElRadio label="${v.value}">${v.label}</ElRadio>`)
       .join("\n");
 
-    const dynamicRender = `{ formOptions.${instance.model}Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }`;
+    const dynamicRender = formOptionsMapRender(node, "<ElRadio label={v.value}>{v.label}</ElRadio>");
     return `<ElRadioGroup ${vModel}>
       ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElRadioGroup>`;
@@ -51,7 +55,7 @@ export const tagMap = {
     const optionStr = (instance.options || [])
       .map(v => `<ElCheckbox label="${v.value}">${v.label}</ElCheckbox>`)
       .join("\n");
-    const dynamicRender = `{ formOptions.${instance.model}Options.map((v: Record<string, number | string>) => <ElCheckbox label={v.value}>{v.label}</ElCheckbox>) }`;
+    const dynamicRender = formOptionsMapRender(node, "<ElCheckbox label={v.value}>{v.label}</ElCheckbox>");
     return `<ElCheckboxGroup ${vModel}>
       ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElCheckboxGroup>`;

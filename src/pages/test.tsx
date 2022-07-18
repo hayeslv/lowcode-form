@@ -23,10 +23,9 @@ export default defineComponent({
       formOptions.field105Options = list;
     };
     const getField103Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/getPersonList", { method: "GET" });
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
       const json = await response.json();
-      const list = (json.list || []).map(v => ({ label: v.name, value: v.id }));
-      formOptions.field103Options = list;
+      formOptions.field103Options = json;
     };
     const getField104Options = async() => {
       const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/getPersonList", { method: "GET" });

@@ -4,7 +4,7 @@ import { defineComponent, ref } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
-import type { IFormSelectNodeInstance, IOptionType } from "~/lowform-meta/type";
+import type { IOptionType } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
 import { events } from "~/plugins/events";
 

@@ -1,6 +1,7 @@
 import { capitalize } from "./../../utils/shared";
 import { useFormConfig } from "~/hooks";
 import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
+import type { IFormSelectNodeInstance } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
 import type { FormConfigTotalType } from "~/types";
 import { GenerateCodeType } from "~/types";
@@ -163,13 +164,15 @@ export class GenerateCode {
 
   get methods() {
     const dynamicOptionsNodes = this._formData.fileds.filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC);
+    const getListStr = (ins: IFormSelectNodeInstance) => {
+      return `const list = (${ins.reqDataPosition ? `json.${ins.reqDataPosition}` : "json"} || []).map(v => ({ label: v.${ins.reqLabelName || "label"}, value: v.${ins.reqValueName || "value"} }));`;
+    };
     return dynamicOptionsNodes.map(v => {
       const instance = (v as (FormSelectNode)).instance;
       return `const get${capitalize(v.instance.model)}Options = async () => {
         const response = await fetch("${v.instance.optionsUrl}", { method: "${v.instance.optionsUrlMethod?.toUpperCase()}" });
-        const json = await response.json();
-        const list = (${instance.reqDataPosition ? `json.${instance.reqDataPosition}` : "json"} || []).map(v => ({ label: v.${instance.reqLabelName || "label"}, value: v.${instance.reqValueName || "value"} }))
-        formOptions.${v.instance.model}Options = list;
+        const json = await response.json(); ${instance.reqDataPosition ? `\n${getListStr(instance)}` : ""}
+        formOptions.${v.instance.model}Options = ${instance.reqDataPosition ? "list" : "json"};
       }`;
     }).join("\n");
   }
