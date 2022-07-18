@@ -1,14 +1,14 @@
 import { defineComponent, reactive, ref, onMounted } from "vue";
-import { ElForm, ElFormItem, ElSelect, ElOption, ElInput, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox } from "element-plus";
+import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElInput, ElCheckboxGroup, ElCheckbox } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
     const elForm = ref();
     const formData = reactive({
       field105: "",
+      field103: "2",
       field102: "",
       field101: "",
-      field103: "2",
       field104: [],
     });
     const formOptions = reactive({
@@ -17,18 +17,21 @@ export default defineComponent({
       field104Options: [],
     });
     const getField105Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
-      const list = await response.json();
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/getPersonList", { method: "GET" });
+      const json = await response.json();
+      const list = (json.list || []).map(v => ({ label: v.name, value: v.id }));
       formOptions.field105Options = list;
     };
     const getField103Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
-      const list = await response.json();
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/getPersonList", { method: "GET" });
+      const json = await response.json();
+      const list = (json.list || []).map(v => ({ label: v.name, value: v.id }));
       formOptions.field103Options = list;
     };
     const getField104Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
-      const list = await response.json();
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/getPersonList", { method: "GET" });
+      const json = await response.json();
+      const list = (json.list || []).map(v => ({ label: v.name, value: v.id }));
       formOptions.field104Options = list;
     };
     onMounted(() => {
@@ -43,16 +46,16 @@ export default defineComponent({
           { formOptions.field105Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }
         </ElSelect>
       </ElFormItem>
+      <ElFormItem label="单选框" prop="field103">
+        <ElRadioGroup v-model={formData.field103}>
+          { formOptions.field103Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }
+        </ElRadioGroup>
+      </ElFormItem>
       <ElFormItem label="多行输入框" prop="field102">
         <ElInput type="textarea" v-model={formData.field102} placeholder="请输入" />
       </ElFormItem>
       <ElFormItem label="输入框" prop="field101">
         <ElInput v-model={formData.field101} placeholder="请输入" />
-      </ElFormItem>
-      <ElFormItem label="单选框" prop="field103">
-        <ElRadioGroup v-model={formData.field103}>
-          { formOptions.field103Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }
-        </ElRadioGroup>
       </ElFormItem>
       <ElFormItem class="full" label="多选框" prop="field104">
         <ElCheckboxGroup v-model={formData.field104}>

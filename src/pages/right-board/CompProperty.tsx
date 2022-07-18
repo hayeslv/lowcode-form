@@ -3,8 +3,8 @@ import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput, ElOption, ElR
 import { defineComponent, ref } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
-import type { FormNode } from "~/lowform-meta/instance/Node";
-import type { IOptionType } from "~/lowform-meta/type";
+import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
+import type { IFormSelectNodeInstance, IOptionType } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
 import { events } from "~/plugins/events";
 
@@ -52,7 +52,14 @@ export default defineComponent({
     return { form, formConfig, activeNode, onDefaultValueInput, selectMethods };
   },
   render() {
+    // options（选项）渲染
     const optionsRender = (node: FormNode, options: IOptionType[]) => {
+      // “数据类型”初始化为“静态”
+      !node.instance.optionsDataType && (node.instance.optionsDataType = EOptionsDataType.STATIC);
+      // 请求方式默认为“get”
+      !node.instance.optionsUrlMethod && (node.instance.optionsUrlMethod = "get");
+
+      // options项（静态数据中）
       const ItemRender = (item: IOptionType) => {
         return <div key={item.value} class="select-item">
           <ElIcon class="operation-btn" size={22}><Operation /></ElIcon>
@@ -63,10 +70,41 @@ export default defineComponent({
           }}><Remove /></ElIcon>
         </div>;
       };
-      // “数据类型”初始化为“静态”
-      !node.instance.optionsDataType && (node.instance.optionsDataType = EOptionsDataType.STATIC);
-      // 请求方式默认为“get”
-      !node.instance.optionsUrlMethod && (node.instance.optionsUrlMethod = "get");
+      // 静态数据渲染
+      const staticRender = (node: FormNode) => <>
+        {options.map(v => ItemRender(v))}
+        <div style="margin-left: 20px;">
+          <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
+        </div>
+      </>;
+      // 动态数据渲染
+      const dynamicRender = (node: FormSelectNode) => {
+        const instance = node.instance;
+        return <>
+          <ElFormItem label="接口地址：">
+            <ElInput v-model={instance.optionsUrl}
+              v-slots= {{
+                prepend: () => <ElSelect style="width: 80px;" v-model={instance.optionsUrlMethod}>
+                  <ElOption label="get" value="get"></ElOption>
+                </ElSelect>,
+              }}
+              {...{
+                title: instance.optionsUrl,
+              }}
+            ></ElInput>
+          </ElFormItem>
+          <ElFormItem label="数据位置：">
+            <ElInput v-model={instance.reqDataPosition} placeholder="请输入数据位置" clearable />
+          </ElFormItem>
+          <ElFormItem label="标题键名：">
+            <ElInput v-model={instance.reqLabelName} placeholder="请输入标题键名" clearable />
+          </ElFormItem>
+          <ElFormItem label="值键名：">
+            <ElInput v-model={instance.reqValueName} placeholder="请输入值键名" clearable />
+          </ElFormItem>
+        </>;
+      };
+
       return <>
         <ElDivider>选项</ElDivider>
         <ElFormItem label="数据类型：">
@@ -77,31 +115,9 @@ export default defineComponent({
         </ElFormItem>
 
         {/* 静态数据 */}
-        {
-          node.instance.optionsDataType === EOptionsDataType.STATIC && <>
-            {options.map(v => ItemRender(v))}
-            <div style="margin-left: 20px;">
-              <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
-            </div>
-          </>
-        }
+        { node.instance.optionsDataType === EOptionsDataType.STATIC && staticRender(node) }
         {/* 动态数据 */}
-        {
-          node.instance.optionsDataType === EOptionsDataType.DYNAMIC && <>
-            <ElFormItem label="接口地址：">
-              <ElInput v-model={node.instance.optionsUrl}
-                v-slots= {{
-                  prepend: () => <ElSelect style="width: 80px;" v-model={node.instance.optionsUrlMethod}>
-                    <ElOption label="get" value="get"></ElOption>
-                  </ElSelect>,
-                }}
-                {...{
-                  title: node.instance.optionsUrl,
-                }}
-              ></ElInput>
-            </ElFormItem>
-          </>
-        }
+        { node.instance.optionsDataType === EOptionsDataType.DYNAMIC && dynamicRender(node as FormSelectNode) }
         <ElDivider />
       </>;
     };

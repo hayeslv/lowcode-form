@@ -46,14 +46,31 @@ export interface IBaseNode {
   render: (...args: any[]) => JSX.Element;       // 渲染函数
 }
 
+// 选择组件
+export interface ISelectNode extends IBaseNode {
+  reqDataPosition?: string;
+  reqLabelName?: string;
+  reqValueName?: string | number;
+}
+
 // form表单组件
 export interface IFormNodeInstance extends IBaseNode {
   id: number;             // 唯一值（实例化后得到）
   model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
 }
 
-// 平台层面组件
+export interface IFormSelectNodeInstance extends ISelectNode {
+  id: number;             // 唯一值（实例化后得到）
+  model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
+}
+
+// 平台层面组件（基础）
 export interface IBasePlatformNode extends IBaseNode {
+  show: boolean;
+  order?: number;
+}
+// 平台层面组件（选择）
+export interface ISelectPlatformNode extends ISelectNode {
   show: boolean;
   order?: number;
 }
