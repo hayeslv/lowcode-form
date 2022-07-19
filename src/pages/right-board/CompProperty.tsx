@@ -158,7 +158,7 @@ export default defineComponent({
         </ElFormItem>
         <ElFormItem label="默认值：">
           <ElInput
-            modelValue={this.form[instance.model]}
+            modelValue={instance.defaultValue?.toString()}
             onInput={(value) => this.onDefaultValueInput(value, node)}
             placeholder="请输入默认值"
             clearable

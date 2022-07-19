@@ -102,6 +102,7 @@ export class GenerateCode {
   // TODO 使用this._setup，做缓存
   get setup() {
     const valueChange = (value: number | string | string[] | boolean) => {
+      console.log(typeof value === "boolean");
       if (typeof value === "boolean") return Boolean(value);
       if (typeof value === "number") return Number(value);
       if (Array.isArray(value)) {

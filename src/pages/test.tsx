@@ -1,17 +1,17 @@
 import { defineComponent, reactive, ref, onMounted } from "vue";
-import { ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElInputNumber, ElSwitch } from "element-plus";
+import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElInput, ElCheckboxGroup, ElCheckbox, ElInputNumber, ElSwitch } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
     const elForm = ref();
     const formData = reactive({
-      field102: "",
       field105: "",
       field103: "2",
+      field102: "",
       field101: "",
       field104: [],
       field109: 0,
-      field108: false,
+      field111: false,
     });
     const formOptions = reactive({
       field105Options: [],
@@ -41,9 +41,6 @@ export default defineComponent({
     });
 
     return () => <ElForm ref={elForm} model={formData} label-width="100px">
-      <ElFormItem label="多行输入框" prop="field102">
-        <ElInput type="textarea" v-model={formData.field102} placeholder="请输入" />
-      </ElFormItem>
       <ElFormItem label="下拉选择" prop="field105">
         <ElSelect v-model={formData.field105} placeholder="请选择" style="width: 100%;">
           { formOptions.field105Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }
@@ -53,6 +50,9 @@ export default defineComponent({
         <ElRadioGroup v-model={formData.field103}>
           { formOptions.field103Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }
         </ElRadioGroup>
+      </ElFormItem>
+      <ElFormItem label="多行输入框" prop="field102">
+        <ElInput type="textarea" v-model={formData.field102} placeholder="请输入" />
       </ElFormItem>
       <ElFormItem label="输入框" prop="field101">
         <ElInput v-model={formData.field101} placeholder="请输入" />
@@ -65,8 +65,8 @@ export default defineComponent({
       <ElFormItem label="计数器" prop="field109">
         <ElInputNumber v-model={formData.field109} />
       </ElFormItem>
-      <ElFormItem label="开关" prop="field108">
-        <ElSwitch v-model={formData.field108} />
+      <ElFormItem label="开关" prop="field111">
+        <ElSwitch v-model={formData.field111} />
       </ElFormItem>
     </ElForm>;
   },
