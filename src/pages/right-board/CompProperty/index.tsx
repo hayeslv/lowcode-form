@@ -1,12 +1,11 @@
-import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
-import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
+import { ElForm, ElFormItem,  ElInput } from "element-plus";
 import { defineComponent, ref, watch } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
-import type { IOptionType } from "~/lowform-meta/type";
-import { EOptionsDataType } from "~/lowform-meta/type";
 import { events } from "~/plugins/events";
+import { columnRender, optionsRender } from "./FormItemRender";
+import { selectMethods } from "./methods";
 
 export default defineComponent({
   setup() {
@@ -39,127 +38,20 @@ export default defineComponent({
       setFormValue(node.instance.model, value);
     };
 
-    const selectMethods = {
-      removeSelectOptions(node: FormNode, value: any) {
-        const index = node.instance.options!.findIndex(v => v.value === value);
-        node.instance.options?.splice(index, 1);
-      },
-      addSelectOption(node: FormNode) {
-        node.instance.options?.push({ label: "", value: "" });
-      },
-      // 更新动态选项数据
-      async updateDynamicOptions(node: FormSelectNode) {
-        const instance = node!.instance;
-        if (!instance.optionsDataType || instance.optionsDataType === EOptionsDataType.STATIC) return;
-        try {
-          const res = await fetch(instance.optionsUrl!, { method: instance.optionsUrlMethod });
-          const json = await res.json();
-          if (!json || json.code) throw new Error("没有数据");
-          instance.reqOptions = json;
-        } catch (error) {
-          console.log(error);
-          instance.reqOptions = [];
-        }
-      },
-    };
-
     watch(() => activeNode.value?.instance.optionsDataType, () => selectMethods.updateDynamicOptions(activeNode.value as FormSelectNode));
 
-    return { form, formConfig, activeNode, onDefaultValueInput, selectMethods };
+    return { form, formConfig, activeNode, onDefaultValueInput };
   },
   render() {
-    // 列数渲染
-    const columnRender = (node: FormNode) => {
-      const instance = node.instance;
-      // 组件默认占据一列
-      !instance.column && (instance.column = 1);
-
-      return <ElFormItem label="列数：">
-        <ElRadioGroup class="form-column-radio-group" v-model={instance.column}>
-          <ElRadioButton label={1}>1列</ElRadioButton>
-          <ElRadioButton label={2}>2列</ElRadioButton>
-        </ElRadioGroup>
-      </ElFormItem>;
-    };
-
-    // options（选项）渲染
-    const optionsRender = (node: FormNode, options: IOptionType[]) => {
-      // “数据类型”初始化为“静态”
-      !node.instance.optionsDataType && (node.instance.optionsDataType = EOptionsDataType.STATIC);
-      // 请求方式默认为“get”
-      !node.instance.optionsUrlMethod && (node.instance.optionsUrlMethod = "get");
-
-      // options项（静态数据中）
-      const ItemRender = (item: IOptionType) => {
-        return <div key={item.value} class="select-item">
-          <ElIcon class="operation-btn" size={22}><Operation /></ElIcon>
-          <ElInput v-model={item.label} placeholder="选项名" />
-          <ElInput v-model={item.value} placeholder="选项值" />
-          <ElIcon class="close-btn" size={22} {...{
-            onClick: () => this.selectMethods.removeSelectOptions(node, item.value),
-          }}><Remove /></ElIcon>
-        </div>;
-      };
-      // 静态数据渲染
-      const staticRender = (node: FormNode) => <>
-        {options.map(v => ItemRender(v))}
-        <div style="margin-left: 20px;">
-          <ElButton icon={CirclePlus} type="primary" text onClick={() => this.selectMethods.addSelectOption(node)}>添加选项</ElButton>
-        </div>
-      </>;
-      // 动态数据渲染
-      const dynamicRender = (node: FormSelectNode) => {
-        const instance = node.instance;
-        return <>
-          <ElFormItem label="接口地址：">
-            <ElInput v-model={instance.optionsUrl}
-              v-slots= {{
-                prepend: () => <ElSelect style="width: 80px;" v-model={instance.optionsUrlMethod}>
-                  <ElOption label="get" value="get"></ElOption>
-                  <ElOption label="post" value="post"></ElOption>
-                </ElSelect>,
-              }}
-              {...{
-                title: instance.optionsUrl,
-              }}
-              onBlur={() => this.selectMethods.updateDynamicOptions(node)}
-            ></ElInput>
-          </ElFormItem>
-          <ElFormItem label="数据位置：">
-            <ElInput v-model={instance.reqDataPosition} placeholder="请输入数据位置" clearable />
-          </ElFormItem>
-          <ElFormItem label="标题键名：">
-            <ElInput v-model={instance.reqLabelName} placeholder="请输入标题键名" clearable />
-          </ElFormItem>
-          <ElFormItem label="值键名：">
-            <ElInput v-model={instance.reqValueName} placeholder="请输入值键名" clearable />
-          </ElFormItem>
-        </>;
-      };
-
-      return <>
-        <ElDivider>选项</ElDivider>
-        <ElFormItem label="数据类型：">
-          <ElRadioGroup class="form-column-radio-group" v-model={node.instance.optionsDataType}>
-            <ElRadioButton label={EOptionsDataType.STATIC}>静态</ElRadioButton>
-            <ElRadioButton label={EOptionsDataType.DYNAMIC}>动态</ElRadioButton>
-          </ElRadioGroup>
-        </ElFormItem>
-
-        {/* 静态数据 */}
-        { node.instance.optionsDataType === EOptionsDataType.STATIC && staticRender(node) }
-        {/* 动态数据 */}
-        { node.instance.optionsDataType === EOptionsDataType.DYNAMIC && dynamicRender(node as FormSelectNode) }
-        <ElDivider />
-      </>;
-    };
-
     const FormItemsRender = (node: FormNode) => {
       const instance = node.instance;
 
       return <>
         <ElFormItem label="组件类型：">{instance.key}</ElFormItem>
-        { this.formConfig.column === 2 &&  columnRender(node) }
+        {
+          // 如果formConfig的column是2，则组件也可选择列数（渲染相应的配置项）
+          this.formConfig.column === 2 &&  columnRender(node)
+        }
         <ElFormItem label="标题：">
           <ElInput v-model={instance.label} placeholder="请输入标题(label)" clearable />
         </ElFormItem>
@@ -183,7 +75,10 @@ export default defineComponent({
             clearable
           />
         </ElFormItem>
-        { instance.options && optionsRender(node, instance.options) }
+        {
+          // 如果存在options，则渲染相应options的配置项
+          instance.options && optionsRender(node, instance.options)
+        }
       </>;
     };
 
