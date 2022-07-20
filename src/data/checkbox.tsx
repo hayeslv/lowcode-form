@@ -5,7 +5,7 @@ import { EOptionsDataType, EComponentType } from "~/lowform-meta/type";
 
 const data: IBasePlatformNode = {
   show: true,
-  order: 6,
+  order: 2,
   group: EComponentType.SELECT,
   key: "checkbox",
   label: "多选框",

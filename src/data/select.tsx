@@ -5,6 +5,7 @@ import { EOptionsDataType, EComponentType } from "~/lowform-meta/type";
 
 const data: ISelectPlatformNode = {
   show: true,
+  order: 3,
   group: EComponentType.SELECT,
   key: "select",
   label: "下拉选择",

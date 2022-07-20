@@ -5,6 +5,7 @@ import { EComponentType } from "~/lowform-meta/type";
 
 const data: IBasePlatformNode = {
   show: true,
+  order: 4,
   group: EComponentType.SELECT,
   key: "switch",
   label: "开关",

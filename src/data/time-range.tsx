@@ -5,22 +5,23 @@ import { EComponentType } from "~/lowform-meta/type";
 
 const data: ITimePlatformNode = {
   show: true,
-  order: 5,
+  order: 6,
   group: EComponentType.SELECT,
-  key: "time",
-  label: "时间选择",
-  placeholder: "请选择",
+  key: "time-range",
+  label: "时间范围",
   format: "HH:mm:ss",
+  defaultValue: [],
   render: (node: FormTimeNode) => {
     const instance = node.instance;
-    const placeholder = instance.placeholder ?? data.placeholder;
 
     return <ElTimePicker
-      style="width: 100%;"
-      placeholder={placeholder}
       v-model={instance.defaultValue}
+      isRange={true}
       format={instance.format}
       valueFormat={instance.format}
+      rangeSeparator="至"
+      startPlaceholder="开始时间"
+      endPlaceholder="结束时间"
     />;
   },
 };

@@ -9,7 +9,10 @@ export default defineComponent({
       field103: "",
       field104: ["4", "3", "2"],
       field105: true,
-      field109: "19-09-06",
+      field109: "19:09:06",
+      field110: [],
+      field111: "",
+      field112: [],
     });
     const formOptions = reactive({
       field102Options: [],
@@ -51,7 +54,16 @@ export default defineComponent({
         <ElSwitch v-model={formData.field105} />
       </ElFormItem>
       <ElFormItem label="时间选择" prop="field109">
-        <ElTimePicker v-model={formData.field109} format="HH:mm:ss" valueFormat="HH:mm:ss" placeholder="请选择" />
+        <ElTimePicker style="width: 100%;" v-model={formData.field109} format="HH:mm:ss" valueFormat="HH:mm:ss" placeholder="请选择" />
+      </ElFormItem>
+      <ElFormItem label="时间范围" prop="field110">
+        <ElTimePicker v-model={formData.field110} isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
+      </ElFormItem>
+      <ElFormItem label="时间范围" prop="field111">
+        <ElTimePicker v-model={formData.field111} isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
+      </ElFormItem>
+      <ElFormItem label="时间范围" prop="field112">
+        <ElTimePicker v-model={formData.field112} isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
       </ElFormItem>
     </ElForm>;
   },
