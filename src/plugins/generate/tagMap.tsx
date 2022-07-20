@@ -71,11 +71,16 @@ export const tagMap = {
   time: (node: FormTimeNode) => {
     const instance = node.instance;
     const { vModel, placeholder } = attrBuilder(node);
-    return `<ElTimePicker style="width: 100%;" ${vModel} format="${instance.format}" valueFormat="${instance.format}" ${placeholder} />`;
+    return `<ElTimePicker style="width: 100%;" ${vModel} format="${instance.format}" valueFormat="${instance.valueFormat}" ${placeholder} />`;
   },
   "time-range": (node: FormTimeNode) => {
     const instance = node.instance;
     const { vModel } = attrBuilder(node);
-    return `<ElTimePicker ${vModel} isRange={true} format="${instance.format}" valueFormat="${instance.format}" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />`;
+    return `<ElTimePicker ${vModel} isRange={true} format="${instance.format}" valueFormat="${instance.valueFormat}" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />`;
+  },
+  date: (node: FormTimeNode) => {
+    const instance = node.instance;
+    const { vModel, placeholder } = attrBuilder(node);
+    return `<ElDatePicker ${vModel} ${placeholder} type="${instance.dateType}" style="width: 100%;" format="${instance.format}" valueFormat="${instance.valueFormat}" />`;
   },
 };

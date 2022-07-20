@@ -1,6 +1,8 @@
-import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
+import type { DatePickType } from "element-plus";
+import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import { EOptionsDataType } from "~/lowform-meta/type";
 
+// 选择型组件事件
 export const selectMethods = {
   removeSelectOptions(node: FormNode, value: any) {
     const index = node.instance.options!.findIndex(v => v.value === value);
@@ -21,6 +23,40 @@ export const selectMethods = {
     } catch (error) {
       console.log(error);
       instance.reqOptions = [];
+    }
+  },
+};
+
+// 日期型组件事件
+export const dateMethods = {
+  dateTypeChange(node: FormTimeNode, newVal: DatePickType) {
+    const instance = node.instance;
+    switch (newVal) {
+      case "date": {
+        instance.format = "YYYY-MM-DD";
+        instance.valueFormat = "YYYY-MM-DD";
+        break;
+      }
+      case "week": {
+        instance.format = "YYYY年第ww周";
+        instance.valueFormat = "YYYY-MM-DD";
+        break;
+      }
+      case "month": {
+        instance.format = "YYYY-MM";
+        instance.valueFormat = "YYYY-MM";
+        break;
+      }
+      case "year": {
+        instance.format = "YYYY";
+        instance.valueFormat = "YYYY";
+        break;
+      }
+      case "datetime": {
+        instance.format = "YYYY-MM-DD HH:mm:ss";
+        instance.valueFormat = "YYYY-MM-DD HH:mm:ss";
+        break;
+      }
     }
   },
 };

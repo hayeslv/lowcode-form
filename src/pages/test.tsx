@@ -1,5 +1,5 @@
 import { defineComponent, reactive, ref, onMounted } from "vue";
-import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElSwitch, ElTimePicker } from "element-plus";
+import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElSwitch, ElTimePicker, ElDatePicker } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
@@ -9,10 +9,9 @@ export default defineComponent({
       field103: "",
       field104: ["4", "3", "2"],
       field105: true,
-      field109: "19:09:06",
-      field110: [],
-      field111: "",
-      field112: [],
+      field108: "15:57:57",
+      field109: ["15:57:57", "16:57:57"],
+      field110: "2022-07-13 00:02:02",
     });
     const formOptions = reactive({
       field102Options: [],
@@ -53,17 +52,14 @@ export default defineComponent({
       <ElFormItem label="开关" prop="field105">
         <ElSwitch v-model={formData.field105} />
       </ElFormItem>
-      <ElFormItem label="时间选择" prop="field109">
-        <ElTimePicker style="width: 100%;" v-model={formData.field109} format="HH:mm:ss" valueFormat="HH:mm:ss" placeholder="请选择" />
+      <ElFormItem label="时间选择" prop="field108">
+        <ElTimePicker style="width: 100%;" v-model={formData.field108} format="HH-mm-ss" valueFormat="HH:mm:ss" placeholder="请选择" />
       </ElFormItem>
-      <ElFormItem label="时间范围" prop="field110">
-        <ElTimePicker v-model={formData.field110} isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
+      <ElFormItem label="时间范围" prop="field109">
+        <ElTimePicker v-model={formData.field109} isRange={true} format="HH-mm-ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
       </ElFormItem>
-      <ElFormItem label="时间范围" prop="field111">
-        <ElTimePicker v-model={formData.field111} isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
-      </ElFormItem>
-      <ElFormItem label="时间范围" prop="field112">
-        <ElTimePicker v-model={formData.field112} isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
+      <ElFormItem label="日期选择" prop="field110">
+        <ElDatePicker v-model={formData.field110} placeholder="请选择" type="datetime" style="width: 100%;" format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" />
       </ElFormItem>
     </ElForm>;
   },

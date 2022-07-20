@@ -1,3 +1,5 @@
+import type { DatePickType } from "element-plus";
+
 // 组件类型
 export const enum EComponentType {
   BASIC = "basic",          // 基础组件
@@ -57,6 +59,8 @@ export interface ISelectNode extends IBaseNode {
 // 时间组件
 export interface ITimeNode extends IBaseNode {
   format: string;
+  valueFormat: string;
+  dateType?: DatePickType;
 }
 
 interface instanceType {

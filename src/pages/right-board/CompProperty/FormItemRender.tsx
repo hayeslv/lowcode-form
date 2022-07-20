@@ -3,7 +3,7 @@ import { ElButton, ElDivider, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButt
 import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import type { IOptionType } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
-import { selectMethods } from "./methods";
+import { dateMethods, selectMethods } from "./methods";
 
 // 列数渲染
 export const columnRender = (node: FormNode) => {
@@ -96,6 +96,15 @@ export const timeRender = (node: FormTimeNode) => {
   const instance = node.instance;
 
   return <>
+    <ElFormItem label="时间类型：">
+      <ElSelect v-model={instance.dateType} style="width: 100%;" onChange={(value) => dateMethods.dateTypeChange(node, value)}>
+        <ElOption label="日(date)" value="date" />
+        <ElOption label="周(week)" value="week" />
+        <ElOption label="月(month)" value="month" />
+        <ElOption label="年(year)" value="year" />
+        <ElOption label="日期时间(datetime)" value="datetime" />
+      </ElSelect>
+    </ElFormItem>
     <ElFormItem label="时间格式：">
       <ElInput v-model={instance.format} placeholder="请输入时间格式" clearable />
     </ElFormItem>

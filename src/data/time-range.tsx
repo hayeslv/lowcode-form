@@ -10,6 +10,7 @@ const data: ITimePlatformNode = {
   key: "time-range",
   label: "时间范围",
   format: "HH:mm:ss",
+  valueFormat: "HH:mm:ss",
   defaultValue: [],
   render: (node: FormTimeNode) => {
     const instance = node.instance;
@@ -18,7 +19,7 @@ const data: ITimePlatformNode = {
       v-model={instance.defaultValue}
       isRange={true}
       format={instance.format}
-      valueFormat={instance.format}
+      valueFormat={instance.valueFormat}
       rangeSeparator="至"
       startPlaceholder="开始时间"
       endPlaceholder="结束时间"
