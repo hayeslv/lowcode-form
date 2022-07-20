@@ -54,24 +54,30 @@ export interface ISelectNode extends IBaseNode {
   reqOptions?: IOptionType[];
 }
 
-// form表单组件
-export interface IFormNodeInstance extends IBaseNode {
-  id: number;             // 唯一值（实例化后得到）
-  model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
+// 时间组件
+export interface ITimeNode extends IBaseNode {
+  format: string;
 }
 
-export interface IFormSelectNodeInstance extends ISelectNode {
-  id: number;             // 唯一值（实例化后得到）
-  model: string;          // 绑定字段：可能没有，也可能有多个（如日期区间）
+interface instanceType {
+  id: number;         // 唯一值（实例化后得到）
+  model: string;      // 绑定字段：可能没有，也可能有多个（如日期区间）
 }
+interface plantformType {
+  show: boolean;    // 是否显示
+  order?: number;   // 排序
+}
+
+// form表单组件
+export interface IFormNodeInstance extends IBaseNode, instanceType {}
+// 选择类
+export interface IFormSelectNodeInstance extends ISelectNode, instanceType {}
+// 时间类
+export interface IFormTimeNodeInstance extends ITimeNode, instanceType {}
 
 // 平台层面组件（基础）
-export interface IBasePlatformNode extends IBaseNode {
-  show: boolean;
-  order?: number;
-}
+export interface IBasePlatformNode extends IBaseNode, plantformType {}
 // 平台层面组件（选择）
-export interface ISelectPlatformNode extends ISelectNode {
-  show: boolean;
-  order?: number;
-}
+export interface ISelectPlatformNode extends ISelectNode, plantformType {}
+// 平台层面组件（时间）
+export interface ITimePlatformNode extends ITimeNode, plantformType {}

@@ -68,6 +68,20 @@ export default defineComponent({
     return { form, formConfig, activeNode, onDefaultValueInput, selectMethods };
   },
   render() {
+    // 列数渲染
+    const columnRender = (node: FormNode) => {
+      const instance = node.instance;
+      // 组件默认占据一列
+      !instance.column && (instance.column = 1);
+
+      return <ElFormItem label="列数：">
+        <ElRadioGroup class="form-column-radio-group" v-model={instance.column}>
+          <ElRadioButton label={1}>1列</ElRadioButton>
+          <ElRadioButton label={2}>2列</ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>;
+    };
+
     // options（选项）渲染
     const optionsRender = (node: FormNode, options: IOptionType[]) => {
       // “数据类型”初始化为“静态”
@@ -143,21 +157,9 @@ export default defineComponent({
     const FormItemsRender = (node: FormNode) => {
       const instance = node.instance;
 
-      const columnRender = () => {
-        // 组件默认占据一列
-        !instance.column && (instance.column = 1);
-
-        return <ElFormItem label="列数：">
-          <ElRadioGroup class="form-column-radio-group" v-model={instance.column}>
-            <ElRadioButton label={1}>1列</ElRadioButton>
-            <ElRadioButton label={2}>2列</ElRadioButton>
-          </ElRadioGroup>
-        </ElFormItem>;
-      };
-
       return <>
         <ElFormItem label="组件类型：">{instance.key}</ElFormItem>
-        { this.formConfig.column === 2 &&  columnRender() }
+        { this.formConfig.column === 2 &&  columnRender(node) }
         <ElFormItem label="标题：">
           <ElInput v-model={instance.label} placeholder="请输入标题(label)" clearable />
         </ElFormItem>

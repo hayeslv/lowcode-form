@@ -1,7 +1,7 @@
 import { useGlobalId, useNodeList } from "~/hooks";
 import { Emiter } from "~/lowform-utils/Emiter";
 import type { Topic } from "../Topic";
-import type { IBaseNode, IFormNodeInstance, IFormSelectNodeInstance, ISelectNode } from "../type";
+import type { IBaseNode, IFormNodeInstance, IFormSelectNodeInstance, IFormTimeNodeInstance, ISelectNode, ITimeNode } from "../type";
 
 const { getGlobalId } = useGlobalId();
 const { deleteNode } = useNodeList();
@@ -66,6 +66,28 @@ export class FormSelectNode extends FormNode {
       };
     } else {
       this._data = data as IFormSelectNodeInstance;
+    }
+  }
+
+  get instance() {
+    return this._data;
+  }
+}
+
+export class FormTimeNode extends FormNode {
+  protected _data: IFormTimeNodeInstance;
+  constructor(data: ITimeNode | IFormTimeNodeInstance) {
+    super(data);
+    if (typeof (data as IFormTimeNodeInstance).id === "undefined") {
+      // id为undefined，说明是IBaseNode类型
+      const id = useGlobalId().getGlobalId();
+      this._data = {
+        ...data,
+        id,
+        model: `field${id}`,
+      };
+    } else {
+      this._data = data as IFormTimeNodeInstance;
     }
   }
 
