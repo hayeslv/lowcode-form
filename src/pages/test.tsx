@@ -9,12 +9,11 @@ export default defineComponent({
       field103: "",
       field104: ["4", "3", "2"],
       field105: true,
-      field106: "2022-07-19T18:12:08.000Z",
+      field109: "19-09-06",
     });
     const formOptions = reactive({
       field102Options: [],
       field103Options: [],
-      field104Options: [],
     });
     const getField102Options = async() => {
       const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList-other", { method: "GET" });
@@ -26,15 +25,9 @@ export default defineComponent({
       const json = await response.json();
       formOptions.field103Options = json;
     };
-    const getField104Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
-      const json = await response.json();
-      formOptions.field104Options = json;
-    };
     onMounted(() => {
       getField102Options();
       getField103Options();
-      getField104Options();
     });
 
     return () => <ElForm ref={elForm} model={formData} label-width="100px">
@@ -50,14 +43,15 @@ export default defineComponent({
       </ElFormItem>
       <ElFormItem label="多选框" prop="field104">
         <ElCheckboxGroup v-model={formData.field104}>
-          { formOptions.field104Options.map((v: Record<string, number | string>) => <ElCheckbox label={v.value}>{v.label}</ElCheckbox>) }
+          <ElCheckbox label="2">选项二</ElCheckbox>
+          <ElCheckbox label="1">选项yi</ElCheckbox>
         </ElCheckboxGroup>
       </ElFormItem>
       <ElFormItem label="开关" prop="field105">
         <ElSwitch v-model={formData.field105} />
       </ElFormItem>
-      <ElFormItem label="时间选择" prop="field106">
-        <ElTimePicker v-model={formData.field106} placeholder="请选择" />
+      <ElFormItem label="时间选择" prop="field109">
+        <ElTimePicker v-model={formData.field109} format="HH:mm:ss" valueFormat="HH:mm:ss" placeholder="请选择" />
       </ElFormItem>
     </ElForm>;
   },

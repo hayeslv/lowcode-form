@@ -2,9 +2,9 @@ import { ElForm, ElFormItem,  ElInput } from "element-plus";
 import { defineComponent, ref, watch } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
-import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
+import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import { events } from "~/plugins/events";
-import { columnRender, optionsRender } from "./FormItemRender";
+import { columnRender, optionsRender, timeRender } from "./FormItemRender";
 import { selectMethods } from "./methods";
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
     return { form, formConfig, activeNode, onDefaultValueInput };
   },
   render() {
-    const FormItemsRender = (node: FormNode) => {
+    const FormItemsRender = (node: FormNode | FormTimeNode) => {
       const instance = node.instance;
 
       return <>
@@ -78,6 +78,10 @@ export default defineComponent({
         {
           // 如果存在options，则渲染相应options的配置项
           instance.options && optionsRender(node, instance.options)
+        }
+        {
+          // 时间类组件的配置项
+          (node as FormTimeNode).instance.format && timeRender(node as FormTimeNode)
         }
       </>;
     };

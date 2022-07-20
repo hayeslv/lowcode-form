@@ -1,5 +1,5 @@
 import { useFormConfig } from "~/hooks";
-import type { FormNode } from "~/lowform-meta/instance/Node";
+import type { FormNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import { EOptionsDataType } from "~/lowform-meta/type";
 
 const { getFormConfig } = useFormConfig();
@@ -68,8 +68,9 @@ export const tagMap = {
     const { vModel } = attrBuilder(node);
     return `<ElSwitch ${vModel} />`;
   },
-  time: (node: FormNode) => {
+  time: (node: FormTimeNode) => {
+    const instance = node.instance;
     const { vModel, placeholder } = attrBuilder(node);
-    return `<ElTimePicker ${vModel} ${placeholder} />`;
+    return `<ElTimePicker ${vModel} format="${instance.format}" valueFormat="${instance.format}" ${placeholder} />`;
   },
 };

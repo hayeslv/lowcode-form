@@ -1,6 +1,6 @@
 import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
 import { ElButton, ElDivider, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
-import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
+import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import type { IOptionType } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
 import { selectMethods } from "./methods";
@@ -19,7 +19,7 @@ export const columnRender = (node: FormNode) => {
   </ElFormItem>;
 };
 
-// options（选项）渲染
+// options（选项类虚假）-配置项渲染
 export const optionsRender = (node: FormNode, options: IOptionType[]) => {
   // “数据类型”初始化为“静态”
   !node.instance.optionsDataType && (node.instance.optionsDataType = EOptionsDataType.STATIC);
@@ -88,5 +88,16 @@ export const optionsRender = (node: FormNode, options: IOptionType[]) => {
     {/* 动态数据 */}
     { node.instance.optionsDataType === EOptionsDataType.DYNAMIC && dynamicRender(node as FormSelectNode) }
     <ElDivider />
+  </>;
+};
+
+// 时间选择类组件-配置项渲染
+export const timeRender = (node: FormTimeNode) => {
+  const instance = node.instance;
+
+  return <>
+    <ElFormItem label="时间格式：">
+      <ElInput v-model={instance.format} placeholder="请输入时间格式" clearable />
+    </ElFormItem>
   </>;
 };
