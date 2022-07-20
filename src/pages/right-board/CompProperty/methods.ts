@@ -37,6 +37,11 @@ export const dateMethods = {
         instance.valueFormat = "YYYY-MM-DD";
         break;
       }
+      case "daterange": {
+        instance.format = "YYYY-MM-DD";
+        instance.valueFormat = "YYYY-MM-DD";
+        break;
+      }
       case "week": {
         instance.format = "YYYY年第ww周";
         instance.valueFormat = "YYYY-MM-DD";
@@ -47,12 +52,22 @@ export const dateMethods = {
         instance.valueFormat = "YYYY-MM";
         break;
       }
+      case "monthrange": {
+        instance.format = "YYYY-MM";
+        instance.valueFormat = "YYYY-MM";
+        break;
+      }
       case "year": {
         instance.format = "YYYY";
         instance.valueFormat = "YYYY";
         break;
       }
       case "datetime": {
+        instance.format = "YYYY-MM-DD HH:mm:ss";
+        instance.valueFormat = "YYYY-MM-DD HH:mm:ss";
+        break;
+      }
+      case "datetimerange": {
         instance.format = "YYYY-MM-DD HH:mm:ss";
         instance.valueFormat = "YYYY-MM-DD HH:mm:ss";
         break;

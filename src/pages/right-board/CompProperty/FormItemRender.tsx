@@ -94,15 +94,22 @@ export const optionsRender = (node: FormNode, options: IOptionType[]) => {
 // 时间选择类组件-配置项渲染
 export const timeRender = (node: FormTimeNode) => {
   const instance = node.instance;
-
+  if (instance.key !== "date" && instance.key !== "date-range") return <></>;
   return <>
     <ElFormItem label="时间类型：">
       <ElSelect v-model={instance.dateType} style="width: 100%;" onChange={(value) => dateMethods.dateTypeChange(node, value)}>
-        <ElOption label="日(date)" value="date" />
-        <ElOption label="周(week)" value="week" />
-        <ElOption label="月(month)" value="month" />
-        <ElOption label="年(year)" value="year" />
-        <ElOption label="日期时间(datetime)" value="datetime" />
+        { instance.key === "date" && <>
+          <ElOption label="日(date)" value="date" />
+          <ElOption label="周(week)" value="week" />
+          <ElOption label="月(month)" value="month" />
+          <ElOption label="年(year)" value="year" />
+          <ElOption label="日期时间(datetime)" value="datetime" />
+        </> }
+        { instance.key === "date-range" && <>
+          <ElOption label="日期范围(daterange)" value="daterange" />
+          <ElOption label="月范围(monthrange)" value="monthrange" />
+          <ElOption label="日期时间范围(datetimerange)" value="datetimerange" />
+        </> }
       </ElSelect>
     </ElFormItem>
     <ElFormItem label="时间格式：">

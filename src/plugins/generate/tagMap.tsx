@@ -83,4 +83,9 @@ export const tagMap = {
     const { vModel, placeholder } = attrBuilder(node);
     return `<ElDatePicker ${vModel} ${placeholder} type="${instance.dateType}" style="width: 100%;" format="${instance.format}" valueFormat="${instance.valueFormat}" />`;
   },
+  "date-range": (node: FormTimeNode) => {
+    const instance = node.instance;
+    const { vModel } = attrBuilder(node);
+    return `<ElDatePicker ${vModel} type="${instance.dateType}" format="${instance.format}" valueFormat="${instance.valueFormat}" startPlaceholder="开始日期" endPlaceholder="结束日期" rangeSeparator="至" />`;
+  },
 };

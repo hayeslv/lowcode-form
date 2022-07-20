@@ -12,6 +12,7 @@ export default defineComponent({
       field108: "15:57:57",
       field109: ["15:57:57", "16:57:57"],
       field110: "2022-07-13 00:02:02",
+      field113: [],
     });
     const formOptions = reactive({
       field102Options: [],
@@ -59,7 +60,10 @@ export default defineComponent({
         <ElTimePicker v-model={formData.field109} isRange={true} format="HH-mm-ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
       </ElFormItem>
       <ElFormItem label="日期选择" prop="field110">
-        <ElDatePicker v-model={formData.field110} placeholder="请选择" type="datetime" style="width: 100%;" format="YYYY-MM-DD HH:mm:ss" valueFormat="YYYY-MM-DD HH:mm:ss" />
+        <ElDatePicker v-model={formData.field110} placeholder="请选择" type="month" style="width: 100%;" format="YYYY-MM" valueFormat="YYYY-MM" />
+      </ElFormItem>
+      <ElFormItem label="日期范围" prop="field113">
+        <ElDatePicker v-model={formData.field113} type="monthrange" format="YYYY-MM" valueFormat="YYYY-MM" startPlaceholder="开始日期" endPlaceholder="结束日期" rangeSeparator="至" />
       </ElFormItem>
     </ElForm>;
   },
