@@ -1,12 +1,12 @@
 import { useNodeList } from "~/hooks";
 import { ref, toRaw, watch } from "vue";
-import type { FormNode } from "~/lowform-meta/instance/Node";
+import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
 import { EventName } from "~/config";
 import { events } from "~/plugins/events";
 
 const { includeNode, getNodeList } = useNodeList();
 
-const activeNode = ref(null as FormNode | null);
+const activeNode = ref(null as FormNode | FormSelectNode | null);
 
 watch(() => activeNode.value, () => {
   events.emit(EventName.ActiveNodeUpdate, (activeNode.value as FormNode));

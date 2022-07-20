@@ -1,7 +1,7 @@
 import { ElOption, ElSelect } from "element-plus";
-import type { FormNode } from "~/lowform-meta/instance/Node";
+import type { FormSelectNode } from "~/lowform-meta/instance/Node";
 import type { ISelectPlatformNode } from "~/lowform-meta/type";
-import { EComponentType } from "~/lowform-meta/type";
+import { EOptionsDataType, EComponentType } from "~/lowform-meta/type";
 
 const data: ISelectPlatformNode = {
   show: true,
@@ -13,18 +13,22 @@ const data: ISelectPlatformNode = {
     { label: "选项一", value: "1" },
     { label: "选项二", value: "2" },
   ],
-  render: (node: FormNode) => {
+  render: (node: FormSelectNode) => {
     const instance = node.instance;
     const placeholder = instance.placeholder ?? data.placeholder;
-    const options = instance.options ?? data.options ?? [];
+    let options = instance.options ?? data.options ?? [];
+    if (instance.optionsDataType === EOptionsDataType.DYNAMIC) {
+      options = instance.reqOptions || [];
+    }
+    const optionsRender = () => options.map(v => (
+      <ElOption label={v.label} value={v.value}></ElOption>
+    ));
     return <ElSelect
       style="width: 100%"
       placeholder={placeholder}
       v-model={instance.defaultValue}
     >
-      {options.map(v => (
-        <ElOption label={v.label} value={v.value}></ElOption>
-      ))}
+      {optionsRender()}
     </ElSelect>;
   },
 };

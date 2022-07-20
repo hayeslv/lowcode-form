@@ -51,6 +51,7 @@ export interface ISelectNode extends IBaseNode {
   reqDataPosition?: string;
   reqLabelName?: string;
   reqValueName?: string | number;
+  reqOptions?: IOptionType[];
 }
 
 // form表单组件

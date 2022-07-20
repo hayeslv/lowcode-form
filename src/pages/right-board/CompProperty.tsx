@@ -1,6 +1,6 @@
 import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
 import { ElButton, ElDivider, ElForm, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
@@ -47,7 +47,23 @@ export default defineComponent({
       addSelectOption(node: FormNode) {
         node.instance.options?.push({ label: "", value: "" });
       },
+      // 更新动态选项数据
+      async updateDynamicOptions(node: FormSelectNode) {
+        const instance = node!.instance;
+        if (instance.optionsDataType === EOptionsDataType.STATIC) return;
+        try {
+          const res = await fetch(instance.optionsUrl!, { method: instance.optionsUrlMethod });
+          const json = await res.json();
+          if (!json || json.code) throw new Error("没有数据");
+          instance.reqOptions = json;
+        } catch (error) {
+          console.log(error);
+          instance.reqOptions = [];
+        }
+      },
     };
+
+    watch(() => activeNode.value?.instance.optionsDataType, () => selectMethods.updateDynamicOptions(activeNode.value as FormSelectNode));
 
     return { form, formConfig, activeNode, onDefaultValueInput, selectMethods };
   },
@@ -92,6 +108,7 @@ export default defineComponent({
               {...{
                 title: instance.optionsUrl,
               }}
+              onBlur={() => this.selectMethods.updateDynamicOptions(node)}
             ></ElInput>
           </ElFormItem>
           <ElFormItem label="数据位置：">
