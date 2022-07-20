@@ -68,4 +68,8 @@ export const tagMap = {
     const { vModel } = attrBuilder(node);
     return `<ElSwitch ${vModel} />`;
   },
+  time: (node: FormNode) => {
+    const { vModel, placeholder } = attrBuilder(node);
+    return `<ElTimePicker ${vModel} ${placeholder} />`;
+  },
 };

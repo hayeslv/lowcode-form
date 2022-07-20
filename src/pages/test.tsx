@@ -1,28 +1,25 @@
 import { defineComponent, reactive, ref, onMounted } from "vue";
-import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElInput, ElCheckboxGroup, ElCheckbox, ElInputNumber, ElSwitch } from "element-plus";
+import { ElForm, ElFormItem, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCheckboxGroup, ElCheckbox, ElSwitch, ElTimePicker } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
     const elForm = ref();
     const formData = reactive({
-      field105: "",
-      field103: "2",
-      field102: "",
-      field101: "",
-      field104: [],
-      field109: 0,
-      field111: false,
+      field102: "1",
+      field103: "",
+      field104: ["4", "3", "2"],
+      field105: true,
+      field106: "2022-07-19T18:12:08.000Z",
     });
     const formOptions = reactive({
-      field105Options: [],
+      field102Options: [],
       field103Options: [],
       field104Options: [],
     });
-    const getField105Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/getPersonList", { method: "GET" });
+    const getField102Options = async() => {
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList-other", { method: "GET" });
       const json = await response.json();
-      const list = (json.list || []).map(v => ({ label: v.name, value: v.id }));
-      formOptions.field105Options = list;
+      formOptions.field102Options = json;
     };
     const getField103Options = async() => {
       const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
@@ -30,20 +27,20 @@ export default defineComponent({
       formOptions.field103Options = json;
     };
     const getField104Options = async() => {
-      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/select-post", { method: "POST" });
+      const response = await fetch("https://www.fastmock.site/mock/8fc9fb44ed4532591a31c3f669237dec/api/selectList", { method: "GET" });
       const json = await response.json();
       formOptions.field104Options = json;
     };
     onMounted(() => {
-      getField105Options();
+      getField102Options();
       getField103Options();
       getField104Options();
     });
 
     return () => <ElForm ref={elForm} model={formData} label-width="100px">
-      <ElFormItem label="下拉选择" prop="field105">
-        <ElSelect v-model={formData.field105} placeholder="请选择" style="width: 100%;">
-          { formOptions.field105Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }
+      <ElFormItem label="下拉选择" prop="field102">
+        <ElSelect v-model={formData.field102} placeholder="请选择" style="width: 100%;">
+          { formOptions.field102Options.map((v: Record<string, number | string>) => <ElOption label={v.label} value={v.value} />) }
         </ElSelect>
       </ElFormItem>
       <ElFormItem label="单选框" prop="field103">
@@ -51,22 +48,16 @@ export default defineComponent({
           { formOptions.field103Options.map((v: Record<string, number | string>) => <ElRadio label={v.value}>{v.label}</ElRadio>) }
         </ElRadioGroup>
       </ElFormItem>
-      <ElFormItem label="多行输入框" prop="field102">
-        <ElInput type="textarea" v-model={formData.field102} placeholder="请输入" />
-      </ElFormItem>
-      <ElFormItem label="输入框" prop="field101">
-        <ElInput v-model={formData.field101} placeholder="请输入" />
-      </ElFormItem>
       <ElFormItem label="多选框" prop="field104">
         <ElCheckboxGroup v-model={formData.field104}>
           { formOptions.field104Options.map((v: Record<string, number | string>) => <ElCheckbox label={v.value}>{v.label}</ElCheckbox>) }
         </ElCheckboxGroup>
       </ElFormItem>
-      <ElFormItem label="计数器" prop="field109">
-        <ElInputNumber v-model={formData.field109} />
+      <ElFormItem label="开关" prop="field105">
+        <ElSwitch v-model={formData.field105} />
       </ElFormItem>
-      <ElFormItem label="开关" prop="field111">
-        <ElSwitch v-model={formData.field111} />
+      <ElFormItem label="时间选择" prop="field106">
+        <ElTimePicker v-model={formData.field106} placeholder="请选择" />
       </ElFormItem>
     </ElForm>;
   },

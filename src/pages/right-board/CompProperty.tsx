@@ -50,7 +50,7 @@ export default defineComponent({
       // 更新动态选项数据
       async updateDynamicOptions(node: FormSelectNode) {
         const instance = node!.instance;
-        if (instance.optionsDataType === EOptionsDataType.STATIC) return;
+        if (!instance.optionsDataType || instance.optionsDataType === EOptionsDataType.STATIC) return;
         try {
           const res = await fetch(instance.optionsUrl!, { method: instance.optionsUrlMethod });
           const json = await res.json();
