@@ -12,6 +12,8 @@ export default defineComponent({
       field122: "15:45:08",
       field123: true,
       field124: "",
+      field126: "",
+      field127: "",
     });
 
     return () => <ElForm ref={elForm} model={formData} label-width="100px">
@@ -35,6 +37,12 @@ export default defineComponent({
       </ElFormItem>
       <ElFormItem label="输入框" prop="field124">
         <ElInput v-model={formData.field124} placeholder="请输入" {...{ maxlength: 11 }} />
+      </ElFormItem>
+      <ElFormItem label="多行输入框" prop="field126">
+        <ElInput type="textarea" v-model={formData.field126} placeholder="请输入" {...{ maxlength: 10 }} />
+      </ElFormItem>
+      <ElFormItem label="输入框" prop="field127">
+        <ElInput v-model={formData.field127} placeholder="请输入"  />
       </ElFormItem>
     </ElForm>;
   },

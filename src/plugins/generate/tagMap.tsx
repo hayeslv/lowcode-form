@@ -35,8 +35,8 @@ export const tagMap = {
     return `<ElInput ${vModel} ${placeholder} ${params} />`;
   },
   textarea: (node: FormNode) => {
-    const { vModel, placeholder } = attrBuilder(node);
-    return `<ElInput type="textarea" ${vModel} ${placeholder} />`;
+    const { vModel, placeholder, params } = attrBuilder(node);
+    return `<ElInput type="textarea" ${vModel} ${placeholder} ${params} />`;
   },
   number: (node: FormNode) => {
     const { vModel } = attrBuilder(node);

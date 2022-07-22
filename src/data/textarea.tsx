@@ -10,6 +10,7 @@ const data: IBasePlatformNode = {
   key: "textarea",
   label: "多行输入框",
   placeholder: "请输入",
+  maxlength: null,
   render: (node: FormNode) => {
     const instance = node.instance;
 
