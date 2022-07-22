@@ -1,5 +1,5 @@
-import { ElForm, ElScrollbar } from "element-plus";
-import { defineComponent, ref, TransitionGroup } from "vue";
+import { ElForm, ElScrollbar, FormRules } from "element-plus";
+import { defineComponent, reactive, ref, TransitionGroup } from "vue";
 import TopBar from "~/pages/top-bar";
 import "./index.scss";
 import { useFormConfig, useNodeList } from "~/hooks";
@@ -28,6 +28,8 @@ export default defineComponent({
       formConfig.value = getFormConfig();
     });
 
+    // const rules = reactive<FormRules>({})
+
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
       <TopBar></TopBar>
@@ -41,6 +43,7 @@ export default defineComponent({
           }}
           labelPosition={formConfig.value.labelPosition}
           labelWidth={formConfig.value.labelWidth + "px"}
+          // rules={rules}
         >
           <TransitionGroup tag="div" name="myslide" {...{ class: ["drawing-board", formConfig.value.column === 2 && "half"] }}>
             {

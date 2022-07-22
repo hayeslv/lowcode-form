@@ -11,7 +11,7 @@ const { deleteNode } = useNodeList();
  */
 export class FormNode extends Emiter<Topic> {
   protected _data: IFormNodeInstance;
-  public transiting: boolean;
+  public transiting: boolean; // 是否正在过渡
 
   constructor(data: IBaseNode | IFormNodeInstance) {
     super();
@@ -22,6 +22,7 @@ export class FormNode extends Emiter<Topic> {
         ...data,
         id,
         model: `field${id}`,
+        required: false,
       };
     } else {
       this._data = data as IFormNodeInstance;
@@ -63,6 +64,7 @@ export class FormSelectNode extends FormNode {
         ...data,
         id,
         model: `field${id}`,
+        required: false,
       };
     } else {
       this._data = data as IFormSelectNodeInstance;
@@ -85,6 +87,7 @@ export class FormTimeNode extends FormNode {
         ...data,
         id,
         model: `field${id}`,
+        required: false,
       };
     } else {
       this._data = data as IFormTimeNodeInstance;

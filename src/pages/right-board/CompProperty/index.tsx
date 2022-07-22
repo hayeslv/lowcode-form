@@ -1,4 +1,4 @@
-import { ElForm, ElFormItem,  ElInput } from "element-plus";
+import { ElForm, ElFormItem,  ElInput, ElSwitch } from "element-plus";
 import { defineComponent, ref, watch } from "vue";
 import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
@@ -83,6 +83,9 @@ export default defineComponent({
           // 时间类组件的配置项
           (node as FormTimeNode).instance.format && timeRender(node as FormTimeNode)
         }
+        <ElFormItem label="是否必填：">
+          <ElSwitch v-model={instance.required}></ElSwitch>
+        </ElFormItem>
       </>;
     };
 

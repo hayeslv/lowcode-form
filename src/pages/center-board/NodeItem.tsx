@@ -38,6 +38,7 @@ export default defineComponent({
       {
         label: instance.label,
         labelWidth: instance.labelWidth ? instance.labelWidth + "px" : null,
+        required: instance.required,
       },
     );
     const btnRender = () => {
