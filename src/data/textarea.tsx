@@ -17,6 +17,9 @@ const data: IBasePlatformNode = {
       type="textarea"
       placeholder={instance.placeholder ?? data.placeholder}
       v-model={instance.defaultValue}
+      {...{
+        maxlength: parseInt(instance.maxlength?.toString() as string) || null,
+      }}
     />;
   },
 };

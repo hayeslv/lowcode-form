@@ -75,6 +75,11 @@ export default defineComponent({
             clearable
           />
         </ElFormItem>
+        { instance.maxlength !== undefined && <ElFormItem label="最多输入">
+          <ElInput v-model={instance.maxlength} placeholder="最多输入字符数" v-slots={{
+            append: () => <>个字符</>,
+          }}></ElInput>
+        </ElFormItem> }
         {
           // 如果存在options，则渲染相应options的配置项
           instance.options && optionsRender(node, instance.options)

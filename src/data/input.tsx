@@ -10,6 +10,7 @@ const data: IBasePlatformNode = {
   key: "input",
   label: "输入框",
   placeholder: "请输入",
+  maxlength: null,
   clearable: true,
   render: (node: FormNode) => {
     const instance = node.instance;
@@ -17,6 +18,9 @@ const data: IBasePlatformNode = {
       placeholder={instance.placeholder ?? data.placeholder}
       clearable={instance.clearable}
       v-model={instance.defaultValue}
+      {...{
+        maxlength: parseInt(instance.maxlength?.toString() as string) || null,
+      }}
     />;
   },
 };
