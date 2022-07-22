@@ -86,6 +86,9 @@ export default defineComponent({
         <ElFormItem label="是否必填：">
           <ElSwitch v-model={instance.required}></ElSwitch>
         </ElFormItem>
+        { instance.clearable !== undefined && <ElFormItem label="能否清空">
+          <ElSwitch v-model={instance.clearable}></ElSwitch>
+        </ElFormItem> }
       </>;
     };
 

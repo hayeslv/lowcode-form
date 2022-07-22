@@ -10,12 +10,15 @@ const data: IBasePlatformNode = {
   key: "input",
   label: "输入框",
   placeholder: "请输入",
-  render: (node: FormNode) => (
-    <ElInput
-      placeholder={node.instance.placeholder ?? data.placeholder}
-      v-model={node.instance.defaultValue}
-    />
-  ),
+  clearable: true,
+  render: (node: FormNode) => {
+    const instance = node.instance;
+    return <ElInput
+      placeholder={instance.placeholder ?? data.placeholder}
+      clearable={instance.clearable}
+      v-model={instance.defaultValue}
+    />;
+  },
 };
 
 export default data;

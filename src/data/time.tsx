@@ -12,6 +12,7 @@ const data: ITimePlatformNode = {
   placeholder: "请选择",
   format: "HH:mm:ss",
   valueFormat: "HH:mm:ss",
+  clearable: true,
   render: (node: FormTimeNode) => {
     const instance = node.instance;
     const placeholder = instance.placeholder ?? data.placeholder;
@@ -22,6 +23,7 @@ const data: ITimePlatformNode = {
       v-model={instance.defaultValue}
       format={instance.format}
       valueFormat={instance.valueFormat}
+      clearable={instance.clearable}
     />;
   },
 };

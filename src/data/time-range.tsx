@@ -12,6 +12,7 @@ const data: ITimePlatformNode = {
   format: "HH:mm:ss",
   valueFormat: "HH:mm:ss",
   defaultValue: [],
+  clearable: true,
   render: (node: FormTimeNode) => {
     const instance = node.instance;
 
@@ -23,6 +24,7 @@ const data: ITimePlatformNode = {
       rangeSeparator="至"
       startPlaceholder="开始时间"
       endPlaceholder="结束时间"
+      clearable={instance.clearable}
     />;
   },
 };

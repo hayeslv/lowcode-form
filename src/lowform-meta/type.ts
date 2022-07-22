@@ -41,6 +41,7 @@ export interface IBaseNode {
   defaultValue?: number | string | string[] | boolean;  // 默认值
   labelWidth?: number;    // 标签宽度
   column?: number;        // 列数
+  clearable?: boolean;    // 能否清空
   options?: IOptionType[];
   optionsDataType?: EOptionsDataType;
   optionsUrl?: string;    // 获取options的接口地址

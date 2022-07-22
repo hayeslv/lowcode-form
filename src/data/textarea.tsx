@@ -10,13 +10,15 @@ const data: IBasePlatformNode = {
   key: "textarea",
   label: "多行输入框",
   placeholder: "请输入",
-  render: (node: FormNode) => (
-    <ElInput
+  render: (node: FormNode) => {
+    const instance = node.instance;
+
+    return <ElInput
       type="textarea"
-      placeholder={node.instance.placeholder ?? data.placeholder}
-      v-model={node.instance.defaultValue}
-    />
-  ),
+      placeholder={instance.placeholder ?? data.placeholder}
+      v-model={instance.defaultValue}
+    />;
+  },
 };
 
 export default data;

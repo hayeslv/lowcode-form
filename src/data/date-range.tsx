@@ -13,6 +13,7 @@ const data: ITimePlatformNode = {
   format: "YYYY-MM-DD",
   valueFormat: "YYYY-MM-DD",
   dateType: "daterange",
+  clearable: true,
   render: (node: FormTimeNode) => {
     const instance = node.instance;
 
@@ -24,6 +25,7 @@ const data: ITimePlatformNode = {
       format={instance.format}
       valueFormat={instance.valueFormat}
       type={instance.dateType}
+      clearable={instance.clearable}
     />;
   },
 };

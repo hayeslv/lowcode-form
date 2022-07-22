@@ -10,6 +10,7 @@ const data: ISelectPlatformNode = {
   key: "select",
   label: "下拉选择",
   placeholder: "请选择",
+  clearable: true,
   options: [
     { label: "选项一", value: "1" },
     { label: "选项二", value: "2" },
@@ -27,6 +28,7 @@ const data: ISelectPlatformNode = {
     return <ElSelect
       style="width: 100%"
       placeholder={placeholder}
+      clearable={instance.clearable}
       v-model={instance.defaultValue}
     >
       {optionsRender()}
