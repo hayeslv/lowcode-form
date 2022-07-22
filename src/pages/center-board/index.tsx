@@ -1,8 +1,9 @@
-import { ElForm, ElScrollbar, FormRules } from "element-plus";
-import { defineComponent, reactive, ref, TransitionGroup } from "vue";
+import type { FormInstance } from "element-plus";
+import { ElForm, ElScrollbar } from "element-plus";
+import { defineComponent, ref, TransitionGroup } from "vue";
 import TopBar from "~/pages/top-bar";
 import "./index.scss";
-import { useFormConfig, useNodeList } from "~/hooks";
+import { useForm, useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
 import NodeItem from "./NodeItem";
 import type { FormNode } from "~/lowform-meta/instance/Node";
@@ -14,9 +15,12 @@ export default defineComponent({
     const { getNodeList } = useNodeList();
     const { dragenter, dragover, drop } = useContainerDragger();
     const { getFormConfig } = useFormConfig();
+    const { getForm } = useForm();
 
     const nodeList = ref(getNodeList());
     const formConfig = ref(getFormConfig());
+    const form = ref(getForm());
+    const formRef = ref<FormInstance>();
 
     events.on(EventName.NodeListUpdate, () => {
       nodeList.value = getNodeList();
@@ -28,7 +32,11 @@ export default defineComponent({
       formConfig.value = getFormConfig();
     });
 
-    // const rules = reactive<FormRules>({})
+    const formMethods = {
+      valadate() { // 编辑器内不进行验证
+        formRef.value?.clearValidate();
+      },
+    };
 
     return () => <div class="center-board">
       {/* 顶部操作栏 */}
@@ -41,9 +49,11 @@ export default defineComponent({
             onDragover: (e: DragEvent) => dragover(e),
             onDrop: (e: DragEvent) => drop(e),
           }}
+          ref={formRef}
+          model={form}
           labelPosition={formConfig.value.labelPosition}
           labelWidth={formConfig.value.labelWidth + "px"}
-          // rules={rules}
+          onValidate={formMethods.valadate}
         >
           <TransitionGroup tag="div" name="myslide" {...{ class: ["drawing-board", formConfig.value.column === 2 && "half"] }}>
             {
