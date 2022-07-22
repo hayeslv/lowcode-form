@@ -12,6 +12,7 @@ const attrBuilder = (node: FormNode) => {
   const obj: Record<string, string> = {
     vModel: `v-model={${formConfig.formModel}.${instance.model}}`,
     placeholder: instance.placeholder ? `placeholder="${instance.placeholder}"` : "",
+    clearable: instance.clearable !== undefined ? "clearable" : "",
     params: "",
   };
   if (instance.maxlength && !isNaN(parseInt(instance.maxlength.toString()))) {
@@ -31,8 +32,8 @@ const formOptionsMapRender = (node: FormNode, code: string) => {
 
 export const tagMap = {
   input: (node: FormNode) => {
-    const { vModel, placeholder, params } = attrBuilder(node);
-    return `<ElInput ${vModel} ${placeholder} ${params} />`;
+    const { vModel, placeholder, clearable, params } = attrBuilder(node);
+    return `<ElInput ${vModel} ${placeholder} ${clearable} ${params} />`;
   },
   textarea: (node: FormNode) => {
     const { vModel, placeholder, params } = attrBuilder(node);
@@ -44,13 +45,13 @@ export const tagMap = {
   },
   select: (node: FormNode) => {
     const instance = node.instance;
-    const { vModel, placeholder } = attrBuilder(node);
+    const { vModel, placeholder, clearable } = attrBuilder(node);
     const optionStr = (instance.options || [])
       .map(v => `<ElOption label="${v.label}" value="${v.value}" />`)
       .join("\n");
 
     const dynamicRender = formOptionsMapRender(node, "<ElOption label={v.label} value={v.value} />");
-    return `<ElSelect ${vModel} ${placeholder} style="width: 100%;">
+    return `<ElSelect ${vModel} ${placeholder} ${clearable} style="width: 100%;">
       ${instance.optionsDataType === EOptionsDataType.DYNAMIC ? dynamicRender : optionStr}
     </ElSelect>`;
   },
@@ -83,22 +84,22 @@ export const tagMap = {
   },
   time: (node: FormTimeNode) => {
     const instance = node.instance;
-    const { vModel, placeholder } = attrBuilder(node);
-    return `<ElTimePicker style="width: 100%;" ${vModel} format="${instance.format}" valueFormat="${instance.valueFormat}" ${placeholder} />`;
+    const { vModel, placeholder, clearable } = attrBuilder(node);
+    return `<ElTimePicker style="width: 100%;" ${vModel} ${clearable} format="${instance.format}" valueFormat="${instance.valueFormat}" ${placeholder} />`;
   },
   "time-range": (node: FormTimeNode) => {
     const instance = node.instance;
-    const { vModel } = attrBuilder(node);
-    return `<ElTimePicker ${vModel} isRange={true} format="${instance.format}" valueFormat="${instance.valueFormat}" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />`;
+    const { vModel, clearable } = attrBuilder(node);
+    return `<ElTimePicker ${vModel} ${clearable} isRange={true} format="${instance.format}" valueFormat="${instance.valueFormat}" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />`;
   },
   date: (node: FormTimeNode) => {
     const instance = node.instance;
-    const { vModel, placeholder } = attrBuilder(node);
-    return `<ElDatePicker ${vModel} ${placeholder} type="${instance.dateType}" style="width: 100%;" format="${instance.format}" valueFormat="${instance.valueFormat}" />`;
+    const { vModel, placeholder, clearable } = attrBuilder(node);
+    return `<ElDatePicker ${vModel} ${clearable} ${placeholder} type="${instance.dateType}" style="width: 100%;" format="${instance.format}" valueFormat="${instance.valueFormat}" />`;
   },
   "date-range": (node: FormTimeNode) => {
     const instance = node.instance;
-    const { vModel } = attrBuilder(node);
-    return `<ElDatePicker ${vModel} type="${instance.dateType}" format="${instance.format}" valueFormat="${instance.valueFormat}" startPlaceholder="开始日期" endPlaceholder="结束日期" rangeSeparator="至" />`;
+    const { vModel, clearable } = attrBuilder(node);
+    return `<ElDatePicker ${vModel} ${clearable} type="${instance.dateType}" format="${instance.format}" valueFormat="${instance.valueFormat}" startPlaceholder="开始日期" endPlaceholder="结束日期" rangeSeparator="至" />`;
   },
 };
