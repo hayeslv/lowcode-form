@@ -5,11 +5,24 @@ import { EOptionsDataType } from "~/lowform-meta/type";
 const { getFormConfig } = useFormConfig();
 
 const attrBuilder = (node: FormNode) => {
+  const instance = node.instance;
   const formConfig = getFormConfig();
-  return {
-    vModel: `v-model={${formConfig.formModel}.${node.instance.model}}`,
-    placeholder: node.instance.placeholder ? `placeholder="${node.instance.placeholder}"` : "",
+
+  const paramsList: string[] = [];
+  const obj: Record<string, string> = {
+    vModel: `v-model={${formConfig.formModel}.${instance.model}}`,
+    placeholder: instance.placeholder ? `placeholder="${instance.placeholder}"` : "",
+    params: "",
   };
+  if (instance.maxlength && !isNaN(parseInt(instance.maxlength.toString()))) {
+    paramsList.push(`maxlength: ${parseInt(instance.maxlength.toString())}`);
+  }
+
+  if (paramsList.length !== 0) {
+    obj.params = `{...{${paramsList.join(",\n")}}}`;
+  }
+
+  return obj;
 };
 
 const formOptionsMapRender = (node: FormNode, code: string) => {
@@ -18,8 +31,8 @@ const formOptionsMapRender = (node: FormNode, code: string) => {
 
 export const tagMap = {
   input: (node: FormNode) => {
-    const { vModel, placeholder } = attrBuilder(node);
-    return `<ElInput ${vModel} ${placeholder} />`;
+    const { vModel, placeholder, params } = attrBuilder(node);
+    return `<ElInput ${vModel} ${placeholder} ${params} />`;
   },
   textarea: (node: FormNode) => {
     const { vModel, placeholder } = attrBuilder(node);

@@ -121,7 +121,7 @@ export class GenerateCode {
       this._formData.fileds
         .map(v => ({
           key: v.instance.model,
-          value: v.instance.defaultValue === undefined ? "" : v.instance.defaultValue,
+          value: (v.instance.defaultValue === undefined || v.instance.defaultValue === null) ? "" : v.instance.defaultValue,
         }))
         .map(v => `${v.key}: ${valueChange(v.value)}`),
     )].join(",\n");
