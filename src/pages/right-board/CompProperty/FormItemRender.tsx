@@ -1,9 +1,10 @@
 import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
+import type { FormItemRule } from "element-plus";
 import { ElButton, ElDivider, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
 import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import type { IOptionType } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
-import { dateMethods, selectMethods } from "./methods";
+import { dateMethods, ruleMethods, selectMethods } from "./methods";
 
 // 列数渲染
 export const columnRender = (node: FormNode) => {
@@ -87,14 +88,12 @@ export const optionsRender = (node: FormNode, options: IOptionType[]) => {
     { node.instance.optionsDataType === EOptionsDataType.STATIC && staticRender(node) }
     {/* 动态数据 */}
     { node.instance.optionsDataType === EOptionsDataType.DYNAMIC && dynamicRender(node as FormSelectNode) }
-    <ElDivider />
   </>;
 };
 
 // 时间选择类组件-配置项渲染
 export const timeRender = (node: FormTimeNode) => {
   const instance = node.instance;
-  // if (instance.key !== "date" && instance.key !== "date-range") return <></>;
   return <>
     {
       (instance.key === "date" || instance.key === "date-range") &&
@@ -118,5 +117,36 @@ export const timeRender = (node: FormTimeNode) => {
     <ElFormItem label="时间格式：">
       <ElInput v-model={instance.format} placeholder="请输入时间格式" clearable />
     </ElFormItem>
+  </>;
+};
+
+// 验证规则-配置项渲染
+export const ruleRender = (node: FormNode) => {
+  const instance = node.instance;
+
+  const ItemRender = (item: FormItemRule) => <>
+    <span>123</span>
+  </>;
+  return <>
+    <ElDivider>正则校验</ElDivider>
+    {/* <div
+              v-for="(item, index) in activeData.__config__.regList"
+              :key="index"
+              class="reg-item"
+            >
+              <span class="close-btn" @click="activeData.__config__.regList.splice(index, 1)">
+                <i class="el-icon-close" />
+              </span>
+              <el-form-item label="表达式">
+                <el-input v-model="item.pattern" placeholder="请输入正则" />
+              </el-form-item>
+              <el-form-item label="错误提示" style="margin-bottom:0">
+                <el-input v-model="item.message" placeholder="请输入错误提示" />
+              </el-form-item>
+            </div> */}
+    { instance.regList && instance.regList.map(v => ItemRender(v)) }
+    <div style="margin-left: 20px;">
+      <ElButton icon={CirclePlus} type="primary" text onClick={() => ruleMethods.addRule(node)}>添加规则</ElButton>
+    </div>
   </>;
 };

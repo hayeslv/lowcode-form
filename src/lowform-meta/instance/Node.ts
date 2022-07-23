@@ -23,6 +23,7 @@ export class FormNode extends Emiter<Topic> {
         id,
         model: `field${id}`,
         required: false,
+        regList: [],
       };
     } else {
       this._data = data as IFormNodeInstance;
@@ -65,6 +66,7 @@ export class FormSelectNode extends FormNode {
         id,
         model: `field${id}`,
         required: false,
+        regList: [],
       };
     } else {
       this._data = data as IFormSelectNodeInstance;
@@ -88,6 +90,7 @@ export class FormTimeNode extends FormNode {
         id,
         model: `field${id}`,
         required: false,
+        regList: [],
       };
     } else {
       this._data = data as IFormTimeNodeInstance;

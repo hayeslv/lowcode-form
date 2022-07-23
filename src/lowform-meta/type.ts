@@ -1,4 +1,4 @@
-import type { DatePickType } from "element-plus";
+import type { DatePickType, FormItemRule } from "element-plus";
 
 // 组件类型
 export const enum EComponentType {
@@ -69,6 +69,7 @@ interface instanceType {
   id: number;         // 唯一值（实例化后得到）
   model: string;      // 绑定字段：可能没有，也可能有多个（如日期区间）
   required: boolean;  // 是否必填
+  regList: FormItemRule[];
 }
 interface plantformType {
   show: boolean;    // 是否显示

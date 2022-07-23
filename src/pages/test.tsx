@@ -1,4 +1,5 @@
 import { defineComponent, reactive, ref } from "vue";
+import type { FormRules } from "element-plus";
 import { ElForm, ElFormItem, ElDatePicker, ElTimePicker, ElInput } from "element-plus";
 import "./test.scss";
 export default defineComponent({
@@ -11,8 +12,11 @@ export default defineComponent({
       field148: "",
       field151: "",
     });
-    const rules = reactive({
-      field151: [{ required: true, message: "请输入", trigger: "blur" }],
+    const rules = reactive<FormRules>({
+      field151: [
+        { required: true, message: "请输入", trigger: "blur" },
+        { pattern: /^1[3-9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur" },
+      ],
     });
 
     return () => <ElForm ref={elForm} model={formData} rules={rules} label-width="100px">

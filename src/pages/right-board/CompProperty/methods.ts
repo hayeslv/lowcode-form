@@ -75,3 +75,10 @@ export const dateMethods = {
     }
   },
 };
+
+// 规则事件
+export const ruleMethods = {
+  addRule(node: FormNode) {
+    node.instance.regList.push({ pattern: "", message: "", trigger: "blur" });
+  },
+};

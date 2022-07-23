@@ -4,7 +4,7 @@ import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import { events } from "~/plugins/events";
-import { columnRender, optionsRender, timeRender } from "./FormItemRender";
+import { columnRender, optionsRender, ruleRender, timeRender } from "./FormItemRender";
 import { selectMethods } from "./methods";
 
 export default defineComponent({
@@ -80,6 +80,12 @@ export default defineComponent({
             append: () => <>个字符</>,
           }}></ElInput>
         </ElFormItem> }
+        <ElFormItem label="是否必填：">
+          <ElSwitch v-model={instance.required}></ElSwitch>
+        </ElFormItem>
+        { instance.clearable !== undefined && <ElFormItem label="能否清空：">
+          <ElSwitch v-model={instance.clearable}></ElSwitch>
+        </ElFormItem> }
         {
           // 如果存在options，则渲染相应options的配置项
           instance.options && optionsRender(node, instance.options)
@@ -88,12 +94,10 @@ export default defineComponent({
           // 时间类组件的配置项
           (node as FormTimeNode).instance.format && timeRender(node as FormTimeNode)
         }
-        <ElFormItem label="是否必填：">
-          <ElSwitch v-model={instance.required}></ElSwitch>
-        </ElFormItem>
-        { instance.clearable !== undefined && <ElFormItem label="能否清空：">
-          <ElSwitch v-model={instance.clearable}></ElSwitch>
-        </ElFormItem> }
+        {
+          // 正则校验
+          ruleRender(node)
+        }
       </>;
     };
 
