@@ -31,7 +31,7 @@ const wrapForm = (codeStr: string) => {
   const className = formConfig.column === 2 ? "half" : null;
   const classStr = className ? ` class="${className}"` : "";
 
-  return `<ElForm${classStr} ref={${formConfig.formRef}} model={${formConfig.formModel}} label-width="${formConfig.labelWidth}px">
+  return `<ElForm${classStr} ref={${formConfig.formRef}} model={${formConfig.formModel}} rules={${formConfig.formRules}} label-width="${formConfig.labelWidth}px">
   ${codeStr}
 </ElForm>`;
 };
@@ -131,6 +131,14 @@ export class GenerateCode {
       ${formDataStr}
     })`;
 
+    const rules = this._formData.fileds
+      .filter(v => v.instance.required) // TODO 暂时只有required规则
+      .map(v => `${v.instance.model}: [{ required: ${v.instance.required}, message: "请输入", trigger: "blur" }]`);
+
+    const formRules = `const ${this._formData.formRules} = reactive({
+      ${rules.join(",\n")}
+    })`;
+
     const options = this._formData.fileds
       .filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC)
       .map(v => `${v.instance.model}Options: []`)
@@ -146,6 +154,7 @@ export class GenerateCode {
     return `setup(props, { emit }) {
       ${formRef}
       ${formModel}
+      ${formRules}
       ${formOptions}
       ${this.methods}
       ${this.mounted}\n

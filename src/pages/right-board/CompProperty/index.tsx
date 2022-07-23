@@ -75,7 +75,7 @@ export default defineComponent({
             clearable
           />
         </ElFormItem>
-        { instance.maxlength !== undefined && <ElFormItem label="最多输入">
+        { instance.maxlength !== undefined && <ElFormItem label="最多输入：">
           <ElInput v-model={instance.maxlength} placeholder="最多输入字符数" v-slots={{
             append: () => <>个字符</>,
           }}></ElInput>
@@ -91,7 +91,7 @@ export default defineComponent({
         <ElFormItem label="是否必填：">
           <ElSwitch v-model={instance.required}></ElSwitch>
         </ElFormItem>
-        { instance.clearable !== undefined && <ElFormItem label="能否清空">
+        { instance.clearable !== undefined && <ElFormItem label="能否清空：">
           <ElSwitch v-model={instance.clearable}></ElSwitch>
         </ElFormItem> }
       </>;
