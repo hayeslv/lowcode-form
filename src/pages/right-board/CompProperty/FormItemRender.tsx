@@ -1,4 +1,4 @@
-import { CirclePlus, Operation, Remove } from "@element-plus/icons-vue";
+import { CirclePlus, Close, Operation, Remove } from "@element-plus/icons-vue";
 import type { FormItemRule } from "element-plus";
 import { ElButton, ElDivider, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
 import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
@@ -124,27 +124,23 @@ export const timeRender = (node: FormTimeNode) => {
 export const ruleRender = (node: FormNode) => {
   const instance = node.instance;
 
-  const ItemRender = (item: FormItemRule) => <>
-    <span>123</span>
-  </>;
+  const ItemRender = (item: FormItemRule, index: number) => <div class="reg-item" key={index}>
+    <span class="close-btn" onClick={() => ruleMethods.deleteRule(node, index)}>
+      <ElIcon><Close /></ElIcon>
+    </span>
+    <ElFormItem label="表达式">
+      <ElInput v-model={item.pattern} placeholder="请输入正则" />
+    </ElFormItem>
+    <ElFormItem label="错误提示" style="margin-bottom: 0;">
+      <ElInput v-model={item.message} placeholder="请输入错误提示" />
+    </ElFormItem>
+  </div>;
   return <>
     <ElDivider>正则校验</ElDivider>
-    {/* <div
-              v-for="(item, index) in activeData.__config__.regList"
-              :key="index"
-              class="reg-item"
-            >
-              <span class="close-btn" @click="activeData.__config__.regList.splice(index, 1)">
-                <i class="el-icon-close" />
-              </span>
-              <el-form-item label="表达式">
-                <el-input v-model="item.pattern" placeholder="请输入正则" />
-              </el-form-item>
-              <el-form-item label="错误提示" style="margin-bottom:0">
-                <el-input v-model="item.message" placeholder="请输入错误提示" />
-              </el-form-item>
-            </div> */}
-    { instance.regList && instance.regList.map(v => ItemRender(v)) }
+    {
+      // 规则列表
+      instance.regList && instance.regList.map((v, i) => ItemRender(v, i))
+    }
     <div style="margin-left: 20px;">
       <ElButton icon={CirclePlus} type="primary" text onClick={() => ruleMethods.addRule(node)}>添加规则</ElButton>
     </div>

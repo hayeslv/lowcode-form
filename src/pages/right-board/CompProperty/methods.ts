@@ -81,4 +81,7 @@ export const ruleMethods = {
   addRule(node: FormNode) {
     node.instance.regList.push({ pattern: "", message: "", trigger: "blur" });
   },
+  deleteRule(node: FormNode, index: number) {
+    node.instance.regList.splice(index, 1);
+  },
 };
