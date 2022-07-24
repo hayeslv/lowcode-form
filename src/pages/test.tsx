@@ -1,39 +1,45 @@
 import { defineComponent, reactive, ref } from "vue";
-import type { FormRules } from "element-plus";
-import { ElForm, ElFormItem, ElDatePicker, ElTimePicker, ElInput } from "element-plus";
+import { ElForm, ElFormItem, ElInput, ElSelect, ElOption, ElTimePicker, ElDatePicker } from "element-plus";
 import "./test.scss";
 export default defineComponent({
   setup(props, { emit }) {
     const elForm = ref();
     const formData = reactive({
-      field149: [],
-      field150: [],
-      field146: "14:51:43",
-      field148: "",
-      field151: "",
+      field157: "",
+      field158: "",
+      field159: "",
+      field161: [],
+      field162: "",
+      field160: [],
     });
-    const rules = reactive<FormRules>({
-      field151: [
+    const rules = reactive({
+      field157: [
         { required: true, message: "请输入", trigger: "blur" },
         { pattern: /^1[3-9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur" },
       ],
     });
 
     return () => <ElForm ref={elForm} model={formData} rules={rules} label-width="100px">
-      <ElFormItem label="日期范围" prop="field149">
-        <ElDatePicker v-model={formData.field149} clearable type="daterange" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" startPlaceholder="开始日期" endPlaceholder="结束日期" rangeSeparator="至" />
+      <ElFormItem label="输入框" prop="field157">
+        <ElInput v-model={formData.field157} placeholder="请输入" clearable  />
       </ElFormItem>
-      <ElFormItem label="时间范围" prop="field150">
-        <ElTimePicker v-model={formData.field150} clearable isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
+      <ElFormItem label="下拉选择" prop="field158">
+        <ElSelect v-model={formData.field158} placeholder="请选择" clearable style="width: 100%;">
+          <ElOption label="选项一" value="1" />
+          <ElOption label="选项二" value="2" />
+        </ElSelect>
       </ElFormItem>
-      <ElFormItem label="时间选择" prop="field146">
-        <ElTimePicker style="width: 100%;" v-model={formData.field146} clearable format="HH:mm:ss" valueFormat="HH:mm:ss" placeholder="请选择" />
+      <ElFormItem label="时间选择" prop="field159">
+        <ElTimePicker style="width: 100%;" v-model={formData.field159} clearable format="HH:mm:ss" valueFormat="HH:mm:ss" placeholder="请选择" />
       </ElFormItem>
-      <ElFormItem label="日期选择" prop="field148">
-        <ElDatePicker v-model={formData.field148} clearable placeholder="请选择" type="date" style="width: 100%;" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" />
+      <ElFormItem label="日期范围" prop="field161">
+        <ElDatePicker v-model={formData.field161} clearable type="daterange" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" startPlaceholder="开始日期" endPlaceholder="结束日期" rangeSeparator="至" />
       </ElFormItem>
-      <ElFormItem label="输入框" prop="field151">
-        <ElInput v-model={formData.field151} placeholder="请输入" clearable  />
+      <ElFormItem label="日期选择" prop="field162">
+        <ElDatePicker v-model={formData.field162} clearable placeholder="请选择" type="date" style="width: 100%;" format="YYYY-MM-DD" valueFormat="YYYY-MM-DD" />
+      </ElFormItem>
+      <ElFormItem label="时间范围" prop="field160">
+        <ElTimePicker v-model={formData.field160} clearable isRange={true} format="HH:mm:ss" valueFormat="HH:mm:ss" rangeSeparator="至" startPlaceholder="开始时间" endPlaceholder="结束时间" />
       </ElFormItem>
     </ElForm>;
   },

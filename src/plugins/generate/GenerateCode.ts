@@ -6,6 +6,7 @@ import { EOptionsDataType } from "~/lowform-meta/type";
 import type { FormConfigTotalType } from "~/types";
 import { GenerateCodeType } from "~/types";
 import { tagMap } from "./tagMap";
+import type { FormItemRule } from "element-plus";
 
 const { getFormConfig } = useFormConfig();
 
@@ -132,8 +133,17 @@ export class GenerateCode {
     })`;
 
     const rules = this._formData.fileds
-      .filter(v => v.instance.required) // TODO 暂时只有required规则
-      .map(v => `${v.instance.model}: [{ required: ${v.instance.required}, message: "请输入", trigger: "blur" }]`);
+      .filter(v => v.instance.required || (v.instance.regList && v.instance.regList.length !== 0)) // 必填、规则列表不为空
+      .map(v => {
+        const ins = v.instance;
+        const list: string[] = [];
+        if (ins.required) list.push(`{ required: ${ins.required}, message: "请输入", trigger: "blur" }`);
+        if (ins.regList && ins.regList.length !== 0) {
+          ins.regList.forEach((reg: FormItemRule) => list.push(`{ pattern: ${reg.pattern}, message: "${reg.message}", trigger: "blur" }`));
+        }
+
+        return `${ins.model}: [\n${list.join(",\n")}\n]`;
+      });
 
     const formRules = `const ${this._formData.formRules} = reactive({
       ${rules.join(",\n")}
