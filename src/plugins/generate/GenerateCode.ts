@@ -1,29 +1,8 @@
-import { useFormConfig } from "~/hooks";
-import type { FormNode } from "~/lowform-meta/instance/Node";
-import type { FormConfigTotalType } from "~/types";
-import { GenerateCodeType } from "~/types";
-import { tagMap } from "./tagMap";
+import type { FormConfigTotalType, GenerateCodeType } from "~/types";
 import { getSetup } from "./setup";
 import { getImport } from "./import";
-
-const { getFormConfig } = useFormConfig();
-
-const wrapFormItem = (node: FormNode, tagDom: string) => {
-  const formConfig = getFormConfig();
-
-  let labelWidth = "";
-  if (node.instance.labelWidth) labelWidth = ` label-width="${node.instance.labelWidth}px"`;
-
-  const label = `label="${node.instance.label}"`;
-  const prop = `prop="${node.instance.model}"`;
-
-  const className = (formConfig.column === 2) && (node.instance.column === 2) ? "full" : null;
-  const classStr = className ? ` class="${className}"` : "";
-
-  return `<ElFormItem${classStr}${labelWidth} ${label} ${prop}>
-    ${tagDom}
-  </ElFormItem>`;
-};
+import { getCss } from "./css";
+import { getProps } from "./props";
 
 /**
  * 生成代码流程：
@@ -50,64 +29,18 @@ export class GenerateCode {
     this._pageType = type;
   }
 
+  // TODO 做缓存（dirty参数）
   get code() {
     const importStr = getImport(this._formData, this._pageType);
-    return `${importStr}
-    export default defineComponent({
-      ${this.props ? this.props + ",\n" : ""}${this.setup}
-    })
-    ${this.css}
-    `;
-  }
-
-  // TODO 使用this._setup，做缓存（dirty参数）
-  get setup() {
+    const props = getProps(this._pageType);
     const setup = getSetup(this._formData, this._pageType);
-    return setup;
-  }
+    const css = getCss();
 
-  get props() {
-    let propsCode: string | null = null;
-    // TODO 目前只有dialog需要用到props.visible，这里先写死，以后再考虑动态化
-    if (this._pageType === GenerateCodeType.Dialog) {
-      propsCode = `props: {
-        visible: { type: Boolean, default: false },
-      }`;
-    }
-    return propsCode;
-  }
-
-  get css() {
-    return `
-    // .el-form {
-    //   display: flex;
-    //   flex-wrap: wrap;
-    //   &.half {
-    //     > .el-form-item {
-    //       width: 50%;
-    //     }
-    //   }
-    //   > .el-form-item {
-    //     display: flex;
-    //     align-items: flex-start;
-    //     width: 100%;
-    //     &.full {
-    //       width: 100%;
-    //     }
-    //   }
-    // }
+    return `${importStr}
+      export default defineComponent({
+        ${props ? props + ",\n" : ""}${setup}
+      })
+      ${css}
     `;
-  }
-
-  // 获取全部node节点的code字符串（包裹了form-item）
-  getNodesCode() {
-    const nodes = this._formData.fileds; // 当前画布中的元素
-    const codeList: string[] = [];
-    nodes.forEach(node => {
-      let code = tagMap[node.instance.key](node); // 获得组件tag字符串
-      code = wrapFormItem(node, code); // 包裹form-item
-      codeList.push(code);
-    });
-    return codeList;
   }
 }
