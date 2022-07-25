@@ -4,6 +4,7 @@ import type { FormConfigTotalType } from "~/types";
 import { GenerateCodeType } from "~/types";
 import { tagMap } from "./tagMap";
 import { getSetup } from "./setup";
+import { getImport } from "./import";
 
 const { getFormConfig } = useFormConfig();
 
@@ -22,30 +23,6 @@ const wrapFormItem = (node: FormNode, tagDom: string) => {
   return `<ElFormItem${classStr}${labelWidth} ${label} ${prop}>
     ${tagDom}
   </ElFormItem>`;
-};
-
-const wrapForm = (codeStr: string) => {
-  const formConfig = getFormConfig();
-  const className = formConfig.column === 2 ? "half" : null;
-  const classStr = className ? ` class="${className}"` : "";
-
-  return `<ElForm${classStr} ref={${formConfig.formRef}} model={${formConfig.formModel}} rules={${formConfig.formRules}} label-width="${formConfig.labelWidth}px">
-  ${codeStr}
-</ElForm>`;
-};
-
-const wrapDialog = (str: string) => {
-  return `<ElDialog 
-  modelValue={props.visible} 
-  title="Dialog Title"
-  v-slots={{ 
-    footer:  () => <div class="dialog-footer">
-    <ElButton onClick={() => emit("update:visible", false)}>取消</ElButton>
-    <ElButton type="primary" onClick={() => emit("update:visible", false)}>确定</ElButton>
-  </div>
-  }}>
-    ${str}
-  </ElDialog>`;
 };
 
 /**
@@ -74,27 +51,13 @@ export class GenerateCode {
   }
 
   get code() {
-    return `${this.import}
+    const importStr = getImport(this._formData, this._pageType);
+    return `${importStr}
     export default defineComponent({
       ${this.props ? this.props + ",\n" : ""}${this.setup}
     })
     ${this.css}
     `;
-  }
-
-  get _html() {
-    // 每个node的html
-    const codeList = this.getNodesCode();
-    // 转为字符串
-    let codeStr = codeList.join("\n");
-
-    codeStr = wrapForm(codeStr);
-
-    if (this._pageType === GenerateCodeType.Dialog) {
-      codeStr = wrapDialog(codeStr);
-    }
-
-    return codeStr;
   }
 
   // TODO 使用this._setup，做缓存（dirty参数）
@@ -112,18 +75,6 @@ export class GenerateCode {
       }`;
     }
     return propsCode;
-  }
-
-  get import() {
-    const elTags = this._html.match(/El\w*/g);
-    const shouldImportStr = [...new Set(elTags)].join(", ");
-
-    const vueImportList = ["reactive", "ref", "onMounted"];
-    const vueImportStr = vueImportList.filter(v => this.setup.includes(v)).join(", ");
-
-    return `import { defineComponent, ${vueImportStr} } from "vue";
-    import { ${shouldImportStr} } from "element-plus";
-    import "./test.scss"`;
   }
 
   get css() {
