@@ -1,12 +1,9 @@
-import { capitalize } from "./../../utils/shared";
 import { useFormConfig } from "~/hooks";
-import type { FormNode, FormSelectNode } from "~/lowform-meta/instance/Node";
-import type { IFormSelectNodeInstance } from "~/lowform-meta/type";
-import { EOptionsDataType } from "~/lowform-meta/type";
+import type { FormNode } from "~/lowform-meta/instance/Node";
 import type { FormConfigTotalType } from "~/types";
 import { GenerateCodeType } from "~/types";
 import { tagMap } from "./tagMap";
-import type { FormItemRule } from "element-plus";
+import { getSetup } from "./setup";
 
 const { getFormConfig } = useFormConfig();
 
@@ -100,102 +97,10 @@ export class GenerateCode {
     return codeStr;
   }
 
-  // TODO 使用this._setup，做缓存
+  // TODO 使用this._setup，做缓存（dirty参数）
   get setup() {
-    const valueChange = (value: number | string | string[] | boolean) => {
-      if (typeof value === "boolean") return Boolean(value);
-      if (typeof value === "number") return Number(value);
-      if (Array.isArray(value)) {
-        if (value.length === 0) return "[]";
-
-        const valueStr = value.reduce((str, now) => {
-          str += `,"${now}"`;
-          return str;
-        }, "").slice(1);
-        return `[${valueStr}]`;
-      } else {
-        return `"${value}"`;
-      }
-    };
-
-    const formDataStr = [...new Set(
-      this._formData.fileds
-        .map(v => ({
-          key: v.instance.model,
-          value: (v.instance.defaultValue === undefined || v.instance.defaultValue === null) ? "" : v.instance.defaultValue,
-        }))
-        .map(v => `${v.key}: ${valueChange(v.value)}`),
-    )].join(",\n");
-
-    const formRef = `const ${this._formData.formRef} = ref()`;
-    const formModel = `const ${this._formData.formModel} = reactive({
-      ${formDataStr}
-    })`;
-
-    const rules = this._formData.fileds
-      .filter(v => v.instance.required || (v.instance.regList && v.instance.regList.length !== 0)) // 必填、规则列表不为空
-      .map(v => {
-        const ins = v.instance;
-        const list: string[] = [];
-        if (ins.required) list.push(`{ required: ${ins.required}, message: "请输入", trigger: "blur" }`);
-        if (ins.regList && ins.regList.length !== 0) {
-          ins.regList.forEach((reg: FormItemRule) => list.push(`{ pattern: ${reg.pattern}, message: "${reg.message}", trigger: "blur" }`));
-        }
-
-        return `${ins.model}: [\n${list.join(",\n")}\n]`;
-      });
-
-    const formRules = `const ${this._formData.formRules} = reactive({
-      ${rules.join(",\n")}
-    })`;
-
-    const options = this._formData.fileds
-      .filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC)
-      .map(v => `${v.instance.model}Options: []`)
-      .join(",\n");
-
-    // options配置
-    const formOptions = options !== ""
-      ? `const formOptions = reactive({
-        ${options}
-      })`
-      : "";
-
-    return `setup(props, { emit }) {
-      ${formRef}
-      ${formModel}
-      ${formRules}
-      ${formOptions}
-      ${this.methods}
-      ${this.mounted}\n
-      return () => ${this._html}
-    }`;
-  }
-
-  get mounted() {
-    const dynamicOptionsNodes = this._formData.fileds.filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC);
-    if (dynamicOptionsNodes.length === 0) return "";
-
-    const funcList = dynamicOptionsNodes.map(v => `get${capitalize(v.instance.model)}Options();`);
-
-    return `onMounted(() => {
-      ${funcList.join("\n")}
-    })`;
-  }
-
-  get methods() {
-    const dynamicOptionsNodes = this._formData.fileds.filter(v => v.instance.optionsDataType === EOptionsDataType.DYNAMIC);
-    const getListStr = (ins: IFormSelectNodeInstance) => {
-      return `const list = (${ins.reqDataPosition ? `json.${ins.reqDataPosition}` : "json"} || []).map(v => ({ label: v.${ins.reqLabelName || "label"}, value: v.${ins.reqValueName || "value"} }));`;
-    };
-    return dynamicOptionsNodes.map(v => {
-      const instance = (v as (FormSelectNode)).instance;
-      return `const get${capitalize(v.instance.model)}Options = async () => {
-        const response = await fetch("${v.instance.optionsUrl}", { method: "${v.instance.optionsUrlMethod?.toUpperCase()}" });
-        const json = await response.json(); ${instance.reqDataPosition ? `\n${getListStr(instance)}` : ""}
-        formOptions.${v.instance.model}Options = ${instance.reqDataPosition ? "list" : "json"};
-      }`;
-    }).join("\n");
+    const setup = getSetup(this._formData, this._pageType);
+    return setup;
   }
 
   get props() {

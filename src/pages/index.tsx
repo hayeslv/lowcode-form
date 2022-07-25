@@ -49,7 +49,7 @@ export default defineComponent({
       <CenterBoard />
       <RightBoard />
       <CodeTypeDialog v-model:visible={this.codeTypeVisible} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
-      {true && <Test />}
+      {false && <Test />}
     </div>;
   },
 });

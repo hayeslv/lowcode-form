@@ -48,17 +48,17 @@
   .drawing-item{
     position: relative;
     cursor: move;
-    > ::after{
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 999;
-    }
+    // > ::after{
+    //   content: "";
+    //   position: absolute;
+    //   width: 100%;
+    //   height: 100%;
+    //   left: 0;
+    //   top: 0;
+    //   right: 0;
+    //   bottom: 0;
+    //   z-index: 999;
+    // }
   }
   .sortable-ghost {
     position: relative;
