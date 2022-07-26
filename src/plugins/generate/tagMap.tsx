@@ -1,6 +1,7 @@
 import { useFormConfig } from "~/hooks";
 import type { FormNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import { EOptionsDataType } from "~/lowform-meta/type";
+import { iconMapList } from "~/utils";
 
 const { getFormConfig } = useFormConfig();
 
@@ -33,7 +34,13 @@ const formOptionsMapRender = (node: FormNode, code: string) => {
 export const tagMap = {
   input: (node: FormNode) => {
     const { vModel, placeholder, clearable, params } = attrBuilder(node);
-    return `<ElInput ${vModel} ${placeholder} ${clearable} ${params} />`;
+    const ins = node.instance;
+    const prefixIconItem: any = iconMapList.find((v: any) => v.name === ins.prefixIcon);
+    const prefixIconStr = prefixIconItem ? `prefixIcon={${prefixIconItem.name}}` : "";
+    const suffixIconItem: any = iconMapList.find((v: any) => v.name === ins.suffixIcon);
+    const suffixIconStr = suffixIconItem ? `suffixIcon={${suffixIconItem.name}}` : "";
+
+    return `<ElInput ${vModel} ${placeholder} ${clearable} ${params} ${prefixIconStr} ${suffixIconStr} />`;
   },
   textarea: (node: FormNode) => {
     const { vModel, placeholder, params } = attrBuilder(node);

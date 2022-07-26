@@ -81,12 +81,7 @@ export default defineComponent({
       <CenterBoard />
       <RightBoard />
       <CodeTypeDialog v-model:visible={this.dialogVisible.codeType} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
-      <IconsDialog
-        v-model:visible={this.iconDialog.icon}
-        iconType={this.iconDialog.iconType}
-        activeName={this.iconDialog.node ? this.iconDialog.node.instance[this.iconDialog.iconType] as string | undefined : ""}
-        onSelect={this.dialogMethods.iconSelect}
-      />
+      <IconsDialog v-model:visible={this.iconDialog.icon} iconType={this.iconDialog.iconType} activeName={this.iconDialog.node ? this.iconDialog.node.instance[this.iconDialog.iconType] as string | undefined : ""} onSelect={this.dialogMethods.iconSelect} />
       {false && <Test />}
     </div>;
   },
