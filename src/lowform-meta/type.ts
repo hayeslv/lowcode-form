@@ -1,5 +1,4 @@
 import type { DatePickType, FormItemRule } from "element-plus";
-import type { Component } from "vue";
 
 // 组件类型
 export const enum EComponentType {
