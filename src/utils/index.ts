@@ -2,3 +2,4 @@
 export * from "./menu";
 export * from "./generator";
 export * from "./shared";
+export * from "./iconMap";

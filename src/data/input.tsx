@@ -1,3 +1,4 @@
+import { Search } from "@element-plus/icons-vue";
 import { ElInput } from "element-plus";
 import type { FormNode } from "~/lowform-meta/instance/Node";
 import type { IBasePlatformNode } from "~/lowform-meta/type";
@@ -12,6 +13,7 @@ const data: IBasePlatformNode = {
   placeholder: "请输入",
   maxlength: null,
   clearable: true,
+  prefixIcon: Search,
   render: (node: FormNode) => {
     const instance = node.instance;
     return <ElInput
@@ -21,6 +23,7 @@ const data: IBasePlatformNode = {
       {...{
         maxlength: parseInt(instance.maxlength?.toString() as string) || null,
       }}
+      prefixIcon={node.instance.prefixIcon}
     />;
   },
 };

@@ -1,4 +1,5 @@
 import type { DatePickType, FormItemRule } from "element-plus";
+import type { Component } from "vue";
 
 // 组件类型
 export const enum EComponentType {
@@ -42,6 +43,7 @@ export interface IBaseNode {
   labelWidth?: number;    // 标签宽度
   column?: number;        // 列数
   maxlength?: number | null;     // 最大输入数量
+  prefixIcon?: Component;
   clearable?: boolean;    // 能否清空
   options?: IOptionType[];
   optionsDataType?: EOptionsDataType;
