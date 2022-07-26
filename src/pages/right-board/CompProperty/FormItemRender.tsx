@@ -1,9 +1,11 @@
-import { CirclePlus, Close, Operation, Remove } from "@element-plus/icons-vue";
+import { CirclePlus, Close, Operation, Pointer, Remove } from "@element-plus/icons-vue";
 import type { FormItemRule } from "element-plus";
 import { ElButton, ElDivider, ElFormItem, ElIcon, ElInput, ElOption, ElRadioButton, ElRadioGroup, ElSelect } from "element-plus";
+import { EventName } from "~/config";
 import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import type { IOptionType } from "~/lowform-meta/type";
 import { EOptionsDataType } from "~/lowform-meta/type";
+import { events } from "~/plugins/events";
 import { dateMethods, ruleMethods, selectMethods } from "./methods";
 
 // 列数渲染
@@ -144,5 +146,31 @@ export const ruleRender = (node: FormNode) => {
     <div style="margin-left: 20px;">
       <ElButton icon={CirclePlus} type="primary" text onClick={() => ruleMethods.addRule(node)}>添加规则</ElButton>
     </div>
+  </>;
+};
+
+// icon-配置项渲染（前图标、后图标）
+export const iconRender = (node: FormNode): JSX.Element | null => {
+  const instance = node.instance;
+  let pre: JSX.Element | null = null;
+  let suf: JSX.Element | null = null;
+  if (instance.prefixIcon !== undefined) {
+    pre = <ElFormItem label="前图标">
+      <ElInput v-model={instance.prefixIcon} placeholder="请选择前图标" disabled v-slots={{
+        append: () => <ElButton icon={Pointer} onClick={() => events.emit(EventName.IconDialog, { flag: true })}>选择</ElButton>,
+      }} />
+    </ElFormItem>;
+  }
+  if (instance.suffixIcon !== undefined) {
+    suf = <ElFormItem label="后图标">
+      <ElInput v-model={instance.suffixIcon} placeholder="请选择后图标" disabled v-slots={{
+        append: () => <ElButton icon={Pointer}>选择</ElButton>,
+      }} />
+    </ElFormItem>;
+  }
+  if (!pre && !suf) return null;
+  return <>
+    { pre }
+    { suf }
   </>;
 };

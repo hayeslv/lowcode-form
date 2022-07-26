@@ -4,7 +4,7 @@ import { EventName } from "~/config";
 import { useActiveNode, useForm, useFormConfig, useNodeList } from "~/hooks";
 import type { FormNode, FormSelectNode, FormTimeNode } from "~/lowform-meta/instance/Node";
 import { events } from "~/plugins/events";
-import { columnRender, optionsRender, ruleRender, timeRender } from "./FormItemRender";
+import { columnRender, iconRender, optionsRender, ruleRender, timeRender } from "./FormItemRender";
 import { selectMethods } from "./methods";
 
 export default defineComponent({
@@ -75,6 +75,7 @@ export default defineComponent({
             clearable
           />
         </ElFormItem>
+        { iconRender(node) }
         { instance.maxlength !== undefined && <ElFormItem label="最多输入：">
           <ElInput v-model={instance.maxlength} placeholder="最多输入字符数" v-slots={{
             append: () => <>个字符</>,

@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 import LeftBoard from "~/pages/left-board";
 import CenterBoard from "~/pages/center-board";
 import RightBoard from "~/pages/right-board";
@@ -12,11 +12,15 @@ import { events } from "~/plugins/events";
 import { EventName } from "~/config";
 import { generateMethods } from "~/plugins/generate";
 import Test from "./test";
+import IconsDialog from "./dialog/IconsDialog";
 
 export default defineComponent({
   setup() {
     const { keydown } = useGlobalEvent();
-    const codeTypeVisible = ref(false);
+    const dialogVisible = reactive({
+      codeType: false,
+      icon: false,
+    });
     const operateType = ref<TopOperateType>(TopOperateType.Download);
 
     const keyboardMethods = {
@@ -33,22 +37,27 @@ export default defineComponent({
 
     // 监听下载/复制dialog事件
     events.on(EventName.DownloadDialog, (data: any) => {
-      codeTypeVisible.value = data.flag;
+      dialogVisible.codeType = data.flag;
       operateType.value = data.type;
+    });
+
+    events.on(EventName.IconDialog, ({ flag }: any) => {
+      dialogVisible.icon = flag;
     });
 
     onMounted(() => {
       window.addEventListener("keydown", keyboardMethods.keydown);
     });
 
-    return { codeTypeVisible, operateType, generate };
+    return { dialogVisible, operateType, generate };
   },
   render() {
     return <div class="container">
       <LeftBoard />
       <CenterBoard />
       <RightBoard />
-      <CodeTypeDialog v-model:visible={this.codeTypeVisible} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
+      <CodeTypeDialog v-model:visible={this.dialogVisible.codeType} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
+      <IconsDialog v-model:visible={this.dialogVisible.icon} />
       {false && <Test />}
     </div>;
   },

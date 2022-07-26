@@ -43,7 +43,8 @@ export interface IBaseNode {
   labelWidth?: number;    // 标签宽度
   column?: number;        // 列数
   maxlength?: number | null;     // 最大输入数量
-  prefixIcon?: Component;
+  prefixIcon?: string | null;
+  suffixIcon?: string | null;
   clearable?: boolean;    // 能否清空
   options?: IOptionType[];
   optionsDataType?: EOptionsDataType;
