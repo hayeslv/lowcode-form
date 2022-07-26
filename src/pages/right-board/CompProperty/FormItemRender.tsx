@@ -157,14 +157,14 @@ export const iconRender = (node: FormNode): JSX.Element | null => {
   let suf: JSX.Element | null = null;
   if (instance.prefixIcon !== undefined) {
     pre = <ElFormItem label="前图标">
-      <ElInput v-model={instance.prefixIcon} placeholder="请选择前图标" disabled v-slots={{
+      <ElInput v-model={instance.prefixIcon} placeholder="请选择前图标" clearable v-slots={{
         append: () => <ElButton icon={Pointer} onClick={() => events.emit(EventName.IconDialog, { flag: true, iconType: EIconPreSuf.PrefixIcon, node })}>选择</ElButton>,
       }} />
     </ElFormItem>;
   }
   if (instance.suffixIcon !== undefined) {
     suf = <ElFormItem label="后图标">
-      <ElInput v-model={instance.suffixIcon} placeholder="请选择后图标" disabled v-slots={{
+      <ElInput v-model={instance.suffixIcon} placeholder="请选择后图标" clearable v-slots={{
         append: () => <ElButton icon={Pointer} onClick={() => events.emit(EventName.IconDialog, { flag: true, iconType: EIconPreSuf.SuffixIcon, node })}>选择</ElButton>,
       }} />
     </ElFormItem>;
