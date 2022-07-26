@@ -57,7 +57,8 @@
       "@typescript-eslint/no-use-before-define": "off",
       "no-multi-spaces": "off",
       "@typescript-eslint/brace-style": "off",
-      "vue/no-setup-props-destructure": "off"
+      "vue/no-setup-props-destructure": "off",
+      "@typescript-eslint/indent": "off"
     }
   }
 }

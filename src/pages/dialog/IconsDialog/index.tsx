@@ -1,14 +1,18 @@
 import { Search } from "@element-plus/icons-vue";
 import { ElDialog, ElIcon, ElInput } from "element-plus";
+import type { PropType } from "vue";
 import { createVNode, defineComponent, ref, shallowRef, watch } from "vue";
+import type { EIconPreSuf } from "~/types";
 import { iconMapList } from "~/utils";
 import "./index.scss";
 
 export default defineComponent({
   props: {
     visible: { type: Boolean, default: false },
+    iconType: { type: String as PropType<EIconPreSuf>, required: true },
+    activeName: { type: String, default: "" },
   },
-  emits: ["update:visible"],
+  emits: ["update:visible", "select"],
   setup(props, { emit }) {
     const activeIcon = ref<string>();
     const key = ref<string>("");
@@ -22,7 +26,14 @@ export default defineComponent({
       close() {
         emit("update:visible", false);
       },
-      confirm() {
+      open() {
+        key.value = "";
+        activeIcon.value = props.activeName;
+      },
+      select(name: string) {
+        activeIcon.value = name;
+        emit("select", name, props.iconType);
+        emit("update:visible", false);
       },
     };
 
@@ -33,6 +44,7 @@ export default defineComponent({
         closeOnClickModal={false}
         appendToBody={true}
         onClose={dialogMethods.close}
+        onOpen={dialogMethods.open}
         v-slots={{
           header: () => <>
             <span style="margin-right: 15px;">选择图标</span>
@@ -45,6 +57,7 @@ export default defineComponent({
             iconList.value.map((item: any) => <li
               key={item.name}
               class={item.name === activeIcon.value ? "active-item" : ""}
+              onClick={() => dialogMethods.select(item.name)}
             >
               <ElIcon size={30} style="height: 50px;">{createVNode(item)}</ElIcon>
               <div>{item.name}</div>
