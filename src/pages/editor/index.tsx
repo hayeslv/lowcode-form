@@ -1,7 +1,7 @@
 import { defineComponent, onMounted, reactive, ref } from "vue";
-import LeftBoard from "~/pages/left-board";
-import CenterBoard from "~/pages/center-board";
-import RightBoard from "~/pages/right-board";
+import LeftBoard from "./left-board";
+import CenterBoard from "./center-board";
+import RightBoard from "./right-board";
 import "~/style/layout.scss";
 import "~/style/element-reset.scss";
 import type { DialogFormType } from "~/types";
@@ -69,6 +69,11 @@ export default defineComponent({
       iconDialog.node = node;
     });
 
+    // 显示json（抽屉）
+    events.on(EventName.JsonDrawer, ({ flag }: any) => {
+      console.log(flag);
+    });
+
     onMounted(() => {
       window.addEventListener("keydown", keyboardMethods.keydown);
     });
@@ -80,8 +85,11 @@ export default defineComponent({
       <LeftBoard />
       <CenterBoard />
       <RightBoard />
+      {/* 代码生成 */}
       <CodeTypeDialog v-model:visible={this.dialogVisible.codeType} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
+      {/* icon选择 */}
       <IconsDialog v-model:visible={this.iconDialog.icon} iconType={this.iconDialog.iconType} activeName={this.iconDialog.node ? this.iconDialog.node.instance[this.iconDialog.iconType] as string | undefined : ""} onSelect={this.dialogMethods.iconSelect} />
+      {/* 测试组件 */}
       {false && <Test />}
     </div>;
   },

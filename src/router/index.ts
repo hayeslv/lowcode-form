@@ -7,9 +7,14 @@ NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: "/editor",
+    name: "Page",
+    component: () => import("~/pages/page"),
+  },
+  {
     path: "/",
-    name: "Home",
-    component: () => import("~/pages/index"),
+    name: "Editor",
+    component: () => import("~/pages/editor"),
   },
 ];
 

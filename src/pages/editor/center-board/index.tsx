@@ -1,7 +1,7 @@
 import type { FormInstance } from "element-plus";
 import { ElForm, ElScrollbar } from "element-plus";
 import { defineComponent, ref, TransitionGroup } from "vue";
-import TopBar from "~/pages/top-bar";
+import TopBar from "../top-bar";
 import "./index.scss";
 import { useForm, useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";

@@ -1,5 +1,5 @@
 import { ElButton, ElMessageBox } from "element-plus";
-import { Delete, DocumentCopy, Download } from "@element-plus/icons-vue";
+import { Delete, DocumentCopy, Download, View } from "@element-plus/icons-vue";
 import { defineComponent } from "vue";
 import "./index.scss";
 import { useNodeList } from "~/hooks";
@@ -24,12 +24,16 @@ export default defineComponent({
       copy() {
         events.emit(EventName.DownloadDialog, { flag: true, type: TopOperateType.Copy });
       },
+      showJson() {
+        events.emit(EventName.JsonDrawer, { flag: true });
+      },
     };
 
     return { handler };
   },
   render() {
     return <div class="action-bar">
+      <ElButton icon={View} type="primary" text onClick={this.handler.showJson}>查看json</ElButton>
       <ElButton icon={Download} type="primary" text onClick={this.handler.download}>导出vue文件</ElButton>
       <ElButton icon={DocumentCopy} type="primary" text onClick={this.handler.copy}>复制代码</ElButton>
       <ElButton icon={Delete} type="danger" text onClick={this.handler.empty}>清空</ElButton>

@@ -9,4 +9,5 @@ export const enum EventName {
   ActiveNodeUpdate = "ActiveNodeUpdate",
   DownloadDialog = "DownloadDialog",
   IconDialog = "IconDialog",
+  JsonDrawer = "JsonDrawer",
 }
