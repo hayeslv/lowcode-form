@@ -1,7 +1,6 @@
 import type { FormInstance } from "element-plus";
 import { ElForm, ElScrollbar } from "element-plus";
 import { defineComponent, ref, TransitionGroup } from "vue";
-import TopBar from "../top-bar";
 import "./index.scss";
 import { useForm, useFormConfig, useNodeList } from "~/hooks";
 import { useContainerDragger } from "./hooks/useContainerDragger";
@@ -39,8 +38,6 @@ export default defineComponent({
     };
 
     return () => <div class="center-board">
-      {/* 顶部操作栏 */}
-      <TopBar></TopBar>
       <ElScrollbar class="center-scrollbar">
         <ElForm
           class="form-board"

@@ -1,11 +1,13 @@
 import { ElButton, ElMessageBox } from "element-plus";
 import { Delete, DocumentCopy, Download, View } from "@element-plus/icons-vue";
 import { defineComponent } from "vue";
-import "./index.scss";
 import { useNodeList } from "~/hooks";
 import { events } from "~/plugins/events";
 import { EventName } from "~/config";
 import { TopOperateType } from "~/types";
+import logo from "~/assets/logo.png";
+import github from "~/icons/github.svg";
+import "./index.scss";
 
 export default defineComponent({
   setup() {
@@ -32,11 +34,24 @@ export default defineComponent({
     return { handler };
   },
   render() {
-    return <div class="action-bar">
-      <ElButton icon={View} type="primary" text onClick={this.handler.showJson}>查看json</ElButton>
-      <ElButton icon={Download} type="primary" text onClick={this.handler.download}>导出vue文件</ElButton>
-      <ElButton icon={DocumentCopy} type="primary" text onClick={this.handler.copy}>复制代码</ElButton>
-      <ElButton icon={Delete} type="danger" text onClick={this.handler.empty}>清空</ElButton>
+    return <div class="top-bar">
+      <div class="logo-wrapper">
+        <div class="logo">
+          <img src={logo} alt="logo" /> Lowcode Form
+          <a class="github" href="https://github.com/hayeslv/lowcode-form" target="_blank">
+            <img src={github} alt="github" />
+          </a>
+        </div>
+      </div>
+      <div class="action-bar">
+        <ElButton icon={View} type="primary" onClick={this.handler.showJson}>预览</ElButton>
+        <ElButton icon={Download} type="primary" onClick={this.handler.download}>导出</ElButton>
+        <ElButton icon={DocumentCopy} type="primary" onClick={this.handler.copy}>复制代码</ElButton>
+        <ElButton icon={Delete} type="danger" onClick={this.handler.empty}>清空</ElButton>
+      </div>
+      <div class="right-bar">
+
+      </div>
     </div>;
   },
 });

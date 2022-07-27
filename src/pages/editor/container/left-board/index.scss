@@ -1,35 +1,6 @@
 @import "~/style/common.scss";
 
-.logo-wrapper{
-  position: relative;
-  height: 42px;
-  background: #fff;
-  border-bottom: 1px solid #f1e8e8;
-  box-sizing: border-box;
-}
-.logo{
-  position: absolute;
-  left: 12px;
-  top: 6px;
-  line-height: 30px;
-  color: $primary;
-  font-weight: 600;
-  font-size: 17px;
-  white-space: nowrap;
-  > img{
-    width: 30px;
-    height: 30px;
-    vertical-align: top;
-  }
-  .github{
-    display: inline-block;
-    vertical-align: sub;
-    margin-left: 15px;
-    > img{
-      height: 22px;
-    }
-  }
-}
+
 
 .left-scrollbar{
   height: calc(100vh - 42px);

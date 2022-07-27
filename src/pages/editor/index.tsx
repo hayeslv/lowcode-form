@@ -1,9 +1,4 @@
 import { defineComponent, onMounted, reactive, ref } from "vue";
-import LeftBoard from "./left-board";
-import CenterBoard from "./center-board";
-import RightBoard from "./right-board";
-import "~/style/layout.scss";
-import "~/style/element-reset.scss";
 import type { DialogFormType } from "~/types";
 import { EIconPreSuf, TopOperateType } from "~/types";
 import { useActiveNode, useGlobalEvent } from "~/hooks";
@@ -14,6 +9,10 @@ import { generateMethods } from "~/plugins/generate";
 import Test from "./test";
 import IconsDialog from "./dialog/IconsDialog";
 import type { FormNode } from "~/lowform-meta/instance/Node";
+import TopBar from "./top-bar";
+import Container from "./container";
+import "~/style/layout.scss";
+import "~/style/element-reset.scss";
 
 export default defineComponent({
   setup() {
@@ -81,10 +80,9 @@ export default defineComponent({
     return { dialogVisible, operateType, generate, dialogMethods, iconDialog };
   },
   render() {
-    return <div class="container">
-      <LeftBoard />
-      <CenterBoard />
-      <RightBoard />
+    return <div class="editor">
+      <TopBar />
+      <Container />
       {/* 代码生成 */}
       <CodeTypeDialog v-model:visible={this.dialogVisible.codeType} operateType={this.operateType} title="选择生成类型" onConfirm={this.generate} />
       {/* icon选择 */}

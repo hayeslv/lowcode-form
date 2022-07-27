@@ -1,26 +1,30 @@
+.editor{
+  height: 100vh;
+}
+
 .container {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 42px);
 }
 
 .left-board {
   width: 260px;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   left: 0;
   top: 0;
 }
 .center-board {
   width: auto;
-  height: 100vh;
+  height: 100%;
   margin: 0 370px 0 260px;
   box-sizing: border-box;
 }
 .right-board {
   width: 370px;
+  height: 100%;
   position: absolute;
   right: 0;
   top: 0;
-  padding-top: 3px;
 }
